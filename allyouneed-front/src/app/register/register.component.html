@@ -1,0 +1,48 @@
+<div class="example-container mat-elevation-z8">
+  <mat-card class="example-card">
+    <form [formGroup]="loginForm" (ngSubmit)="createAccount()">
+      <div class="form-group">
+        <label for="pseudonyme">Pseudonyme : </label>
+        <input formControlName="pseudonyme" name="pseudonyme" id="pseudonyme" class="form-control" required/>
+      </div>
+      <div *ngIf="f.pseudonyme.errors && submitted" class='alert-danger'> 
+        Ce champs doit être rempli.
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe : Il doit être composé d'au moins une minuscule, une majuscule, un chiffre et faire une taille de minimum 8 caractères</label>
+        <input formControlName="password" type="password" id="password" class="form-control"/>
+      </div>	 
+      <label for="checkbox">
+        <input type="checkbox" id="checkbox" (change)="displayPassword()">
+          <img src="https://image.flaticon.com/icons/png/512/36/36951.png" id="eye"/>
+      </label>
+      <div *ngIf="f.password.errors && submitted" class='alert-danger'> 
+        <div *ngIf="f.password.errors.required">Mot de passe requis.</div>
+        <div *ngIf="f.password.errors.pattern">Mot de passe invalide.</div>
+      </div> 
+      <div class="form-group">
+        <label for="question">Adresse email :</label>
+        <input formControlName="email" name="email" id="email" class="form-control" required/>
+      </div> 
+      <div *ngIf="f.email.errors && submitted" class='alert-danger'> 
+        <div *ngIf="f.email.errors.required">Adresse email requise.</div>
+        <div *ngIf="f.email.errors.email">Adresse email invalide.</div>
+      </div>   
+      <div class="form-group">
+        <label for="question">Question secrète :</label>
+        <input formControlName="question" name="question" id="question" class="form-control" required/>
+      </div>
+      <div *ngIf="f.question.errors && submitted" class='alert-danger'> 
+        Ce champs doit être rempli.
+      </div>
+      <div class="form-group">
+        <label for="reponse">Réponse :</label>
+        <input formControlName="reponse" name="reponse" id="reponse" class="form-control" required/>
+      </div>   
+      <div *ngIf="f.reponse.errors && submitted" class='alert-danger'> 
+        Ce champs doit être rempli.
+      </div>
+        <button class="btn btn-success">Créer le compte</button>
+    </form>
+  </mat-card>
+</div>

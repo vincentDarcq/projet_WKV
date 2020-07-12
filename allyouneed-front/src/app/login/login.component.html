@@ -1,0 +1,35 @@
+<div class="example-container mat-elevation-z8">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title><h2>Se connecter avec Facebook</h2></mat-card-title>
+      <mat-card-subtitle>
+        <button type="button" (click)="signInWithFB()" *ngIf="!loggedIn" mat-flat-button color="primary">Sign In With Facebook</button>
+        <button type="button" (click)="signOut()" *ngIf="loggedIn" mat-flat-button color="primary">Sign Out From Facebook</button>
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <mat-card class="example-card" *ngIf="loggedIn">
+    <mat-card-header>
+      <mat-card-title><h2>Your Facebook Profile:</h2></mat-card-title>
+      <mat-card-subtitle>Full Name: {{fbuser.firstName}} {{fbuser.lastName}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="fbuser.photoUrl" alt="My Facebook Photo" style="width: auto;">
+  </mat-card>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title><h2>Se connecter avec un compte allyouneed</h2></mat-card-title>
+    </mat-card-header>
+    <form (ngSubmit)="checkLogin()" >
+      <div class="form-group">
+          <label for="pseudonyme">Pseudonyme : </label>
+          <input [(ngModel)]="login.pseudonyme" name="pseudonyme" id="pseudonyme" class="form-control" required/>
+      </div>
+      <div class="form-group">
+          <label for="password">Mot de passe : </label>
+          <input [(ngModel)]="login.password" type="password" name="password" id="password" class="form-control" required/>
+      </div>	  
+      <button class="btn btn-success">S'identifier</button>
+      <a [routerLink]="['/editPass']"><button class="btn btn-succes">Mot de passe oublié</button></a>               
+    </form>
+  </mat-card>
+</div>

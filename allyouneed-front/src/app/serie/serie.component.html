@@ -1,0 +1,40 @@
+<h1>{{ movie.titre }}</h1>
+<div class="container mt-5 card">
+  <div class="row">
+    <div class="col-sm-2">
+        <img src="{{ movie.cov }}" width=150 height=200 alt="{{ movie.titre }}"/>         	
+    </div>
+    <ng-container class="row" *ngIf="movie.pegi">
+      <div class="col-sm-2">
+            <img src="{{ movie.pegi }}" width=50 height=50/>         	
+      </div>
+    </ng-container>
+    <ng-container class="row" *ngIf="movie.avertissement">
+      <div class="col-sm-6" style="font-weight: bold;">
+            <p>{{ movie.avertissement }}</p>      	
+      </div>
+    </ng-container>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <label for="genres">Genres : </label>
+      <p>{{ serie.genre }}</p>
+    </div>
+    <div class="form-group">
+      <label for="synopsis">Synopsis : </label>
+      <p>{{ serie.synopsis }}</p>
+    </div>
+    <div class="form-group">
+      <label for="realisateur">Createur : </label>
+      <p>{{ serie.createur }}</p>
+    </div>
+    <div class="form-group">
+      <label for="casting">Casting : </label>
+      <p>{{ serie.casting }}</p>
+    </div>
+    <div class="form-group">
+      <label for="année">Saisons : </label>
+      <p>{{ serie.saisons }}</p>
+    </div>
+    <a [routerLink]="['/serieForm', serie.id ]"><button class="btn btn-primary">Modifier le film</button></a>
+  </div>

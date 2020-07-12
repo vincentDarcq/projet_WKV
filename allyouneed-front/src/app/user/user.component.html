@@ -1,0 +1,8 @@
+<h3>Films favoris de {{ user.pseudonyme }}</h3>
+<ng-container class="row">
+    <div *ngFor="let movie of favoris">
+      <div class="col-sm-2" id="movie">
+        <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+      </div>
+    </div>
+</ng-container>

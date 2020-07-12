@@ -1,0 +1,43 @@
+<div class="container mt-5 card">
+  <div class="card-body">
+      <form (ngSubmit)="validateForm()">
+        <div class="form-group">
+              <label for="titre">Titre : </label>
+              <input [(ngModel)]="newMovie.titre" name="titre" id="titre" class="form-control" required/>
+          </div>
+          <div class="form-group">
+              <label for="synopsis">Synopsis : </label>
+              <input [(ngModel)]="newMovie.synopsis" name="synopsis" id="synopsis" class="form-control" required/>
+          </div>
+          <div class="form-group">
+              <label for="genres">Genres : </label>
+              <input [(ngModel)]="newMovie.genre" name="genres" id="genres" class="form-control" required/>
+          </div>
+          <div class="form-group">
+              <label for="realisateur">Réalisateur : </label>
+              <input [(ngModel)]="newMovie.realisateur" name="realisateur" id="realisateur" class="form-control" required/>
+          </div>
+          <div class="form-group">
+              <label for="casting">Casting : </label>
+              <input [(ngModel)]="newMovie.casting" name="casting" id="casting" class="form-control" required/>
+          </div>
+          <div class="form-group">
+              <label for="cov">Couverture : </label>
+              <input [(ngModel)]="newMovie.cov" name="cov" id="cov" class="form-control" required/>
+          </div>	
+          <div class="form-group">
+              <label for="year">Année : </label>
+              <input [(ngModel)]="newMovie.year" name="year" id="year" class="form-control" required/>
+          </div>	
+          <div class="form-group">
+              <label for="pegi">Pegi : </label>
+              <input [(ngModel)]="newMovie.pegi" name="pegi" id="pegi" class="form-control"/>
+          </div> 
+          <div class="form-group">
+              <label for="avertissement">Avertissement : </label>
+              <input [(ngModel)]="newMovie.avertissement" name="avertissement" id="avertissement" class="form-control"/>
+          </div> 	        
+          <button class="btn btn-success">Ajouter/modifier le film</button>
+      </form>
+   </div>
+  </div>
