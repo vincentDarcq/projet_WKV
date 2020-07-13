@@ -15,6 +15,7 @@ import { Note } from '../models/note';
 export class MainComponent implements OnInit, DoCheck {
 
   private movies: Array<Movie>;
+  private movie: Movie;
   private moviesExcluded: Array<Movie>;
   private genres: Array<string>;
   private realisateurs: Array<string>;
@@ -29,17 +30,32 @@ export class MainComponent implements OnInit, DoCheck {
   private displayRealisateurs: boolean = false;
   private displayActeurs: boolean = false;
   private displayMovie: boolean = false;
+  search: string;
+  searching: boolean = false;
 
   constructor(private movieService: MoviesService,
               private noteService: NotesService) {
 
     this.moviesExcluded = new Array();
+    this.movie = new Movie();
     this.genresExclus = new Array();
     this.realisateursExclus = new Array();
     this.actorsExclus = new Array();
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
+
   ngDoCheck(): void {
+    if(typeof this.search !== 'undefined' && this.search !== ""){
+      for(let movie of this.movies){
+        if(movie.titre.toLowerCase().indexOf(this.search) !== -1){
+          this.movie = movie;
+          this.searching = true;
+          console.log("search = "+this.search)
+        }
+      }
+    }else {
+      this.searching = false;
+    }
   }
 
   ngOnInit() {
@@ -48,6 +64,10 @@ export class MainComponent implements OnInit, DoCheck {
     this.actors = this.movieService.getActors();
     this.realisateurs = this.movieService.getRealisateurs();
     this.notes = this.noteService.getNotes();
+    this.movieService.getSearch().subscribe(
+      (search) => {
+        this.search = search
+      })
   }
 
   genreSelected(){

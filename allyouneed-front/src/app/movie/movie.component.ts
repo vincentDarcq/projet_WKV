@@ -35,7 +35,6 @@ export class MovieComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.idmovie = Number(sessionStorage.getItem('idmovie'))
-    console.log(this.idmovie)
     //On récupère l'id du film dans l'url de navigation
     if(this.idmovie === 0){
       this.idmovie = Number(this.route.snapshot.params.id);

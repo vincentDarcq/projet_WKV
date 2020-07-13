@@ -7,6 +7,12 @@
             <li routerLinkActive="active">
                 <a class="nav-link" routerLink="series"><button class="btn btn-primary">Series</button></a>
             </li>
+            <li routerLinkActive="active">
+                <a class="nav-link">
+                    <img id="imgsearch" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRGgUx5fgqlm6YoijCfbJ_iY4bQ4fcBmuh8sw&usqp=CAU">
+                    <input [(ngModel)]="search" type="text" class="form-control" id="inputsearch"/>
+                </a>
+            </li>
             <li *ngIf="!user" routerLinkActive="active">
                 <a class="nav-link" routerLink="login"><button class="btn btn-primary">S'identifier</button></a>
             </li>

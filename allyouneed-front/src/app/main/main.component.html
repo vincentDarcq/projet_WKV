@@ -55,6 +55,9 @@
   </p-dialog>
   <a [routerLink]="['/movieForm']"><button class="btn btn-succes">Ajouter un film</button></a>
   <ng-container class="row">
+    <div *ngIf="searching">
+      <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+    </div>
     <div *ngFor="let movie of movies">
       <div class="col-sm-2" id="movie" (mouseenter)="showMovie()" (mouseleave)="hideMovie()">
         <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	

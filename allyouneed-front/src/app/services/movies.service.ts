@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Movie } from '../models/movie';
 import { environment as ENV } from '../../environments/environment';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class MoviesService {
   private actors : Array<string>;
   private realisateurs : Array<string>;
   wsUrl: string;
+  private search = new Subject<any>();
 
   constructor(private httpClient: HttpClient) {
     this.movies = new Array();
@@ -113,6 +115,14 @@ export class MoviesService {
       }
     }
     return this.moviesByExclusionSimple;
+  }
+
+  setSearch(search: string){
+    this.search.next(search);
+  }
+
+  getSearch(): Observable<any>{
+    return this.search.asObservable();
   }
    
 }
