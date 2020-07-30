@@ -1,12 +1,8 @@
-<div class="container mt-5 card"> 	
+<body>
+  <div class="container mt-5 card"> 	
   <nav class="navbar navbar-expand-sm bg-light justify-content">
     <ng-container class="row" *ngIf="modeExcSimple">
-      <h2>Exclusion simple</h2>
-      <button class="btn btn-primary" (click)="switchExclusionMode()">Exclusion avancée</button>
-    </ng-container>
-    <ng-container class="row" *ngIf="modeExcAvancee">
-      <h2>Exclusion avancée</h2>
-      <button class="btn btn-primary" (click)="switchExclusionMode()">Exclusion simple</button>
+      <h2>Exclusion genres simple</h2>
     </ng-container>
   </nav>
   <div class="row">
@@ -18,27 +14,12 @@
     </div> 
   </div>
   <a [routerLink]="['/serieForm']"><button class="btn btn-succes">Ajouter une serie</button></a>
-  <ng-container class="row" *ngIf="exclusionSimple || exclusionAvancee; else notExclus">
-    <ng-container class="row" *ngIf="exclusionSimple">
-      <div *ngFor="let serie of seriesByExclusionSimple">
-        <div class="col-sm-2" style="padding: 10px;" id="series">
-          <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" width=150 height=190 alt="{{ movie.titre }}"/></a>  	
-        </div>	 
-      </div>
-    </ng-container>
-    <ng-container class="row" *ngIf="exclusionAvancee">
-      <div *ngFor="let serie of seriesByExclusionAvancee">
-        <div class="col-sm-2" style="padding: 10px;" id="series">
-          <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" width=150 height=190 alt="{{ serie.titre }}"/></a>      	
-        </div>	 
-      </div>  
-    </ng-container> 	        
-  </ng-container>
-  <ng-template class="row" #notExclus>
+  <div class="row">
     <div *ngFor="let serie of series">
-      <div class="col-sm-2" style="padding: 10px;" id="series">
-        <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" width=150 height=190 alt="{{ serie.titre }}"/></a>    	
+      <div class="col-sm-2" id="series">
+        <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" class="image" alt="{{ serie.titre }}"/></a>    	
       </div>	 
     </div>   	        
-  </ng-template>
+  </div>
 </div> 
+</body>

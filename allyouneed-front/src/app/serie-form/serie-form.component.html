@@ -19,25 +19,21 @@
           </div>
           <div class="form-group">
               <label for="casting">Créateur : </label>
-              <input [(ngModel)]="newSerie.createur" name="casting" id="casting" class="form-control" required/>
+              <input [(ngModel)]="newSerie.creator" name="casting" id="casting" class="form-control" required/>
           </div>
           <div class="form-group">
             <label for="casting">Saisons : </label>
-            <input [(ngModel)]="newSerie.saisons" name="saisons" id="saisons" class="form-control" required/>
+            <input [(ngModel)]="newSerie.seasons" name="saisons" id="saisons" class="form-control" required/>
           </div>
           <div class="form-group">
               <label for="cov">Couverture : </label>
               <input [(ngModel)]="newSerie.cov" name="cov" id="cov" class="form-control" required/>
           </div>	
           <div class="form-group">
-              <label for="pegi">Pegi : </label>
-              <input [(ngModel)]="newSerie.pegi" name="pegi" id="pegi" class="form-control"/>
-          </div> 
-          <div class="form-group">
-              <label for="avertissement">Avertissement : </label>
-              <input [(ngModel)]="newSerie.avertissement" name="avertissement" id="avertissement" class="form-control"/>
+              <label for="BA">BA : </label>
+              <input [(ngModel)]="newSerie.ba" name="BA" id="BA" class="form-control"/>
           </div> 	        
-          <button class="btn btn-success">Ajouter la série</button>
+          <button class="btn btn-success">Ajouter/Modifier la série</button>
       </form>
    </div>
   </div>

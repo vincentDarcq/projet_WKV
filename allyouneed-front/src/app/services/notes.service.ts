@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as ENV } from '../../environments/environment';
 import { Note } from '../models/note';
+import { Movie } from '../models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,12 @@ export class NotesService {
 
   wsUrl: string;
   private notes : Array<Note>;
+  private bestMovies : Array<Movie>;
   private note: Number;
 
   constructor(private httpClient: HttpClient) { 
     this.notes = new Array();
+    this.bestMovies = new Array();
     this.wsUrl = ENV.apiUrl + '/notes';
   }
 
@@ -25,6 +28,16 @@ export class NotesService {
       }
       );
     return this.notes;
+  }
+
+  public getBestNotes(): Array<Movie>{
+    this.notes.splice(0, this.notes.length);
+    this.httpClient.get(this.wsUrl + `/best`)
+      .subscribe((list: Array<Movie>) => {
+        this.bestMovies.push(...list);
+      }
+      );
+    return this.bestMovies;
   }
 
   public getNoteForMovie(idmovie: Number): Number {

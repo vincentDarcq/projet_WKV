@@ -15,22 +15,34 @@ export class MoviesService {
   private present: Boolean;
   private index: Number;
   private movies : Array<Movie>;
-  private moviesByExclusionSimple: Array<Movie>;
-  private moviesByExclusionAvancee: Array<Movie>;
+  private movie : Movie;
+  private moviesByExclusionGenres: Array<Movie>;
+  private moviesByExclusionReals: Array<Movie>;
+  private moviesByExclusionActors: Array<Movie>;
+  private moviesByInclusionGenres: Array<Movie>;
+  private moviesByInclusionReals: Array<Movie>;
+  private moviesByInclusionActors: Array<Movie>;
   private genres : Array<string>;
   private actors : Array<string>;
   private realisateurs : Array<string>;
-  wsUrl: string;
+  private wsUrl: string;
   private search = new Subject<any>();
+  private alloUrl = 'http://www.denismortier.be/lab/allocine_api/api.php?op=search&q=toy+story&type=film&par=2';
 
   constructor(private httpClient: HttpClient) {
     this.movies = new Array();
-    this.moviesByExclusionSimple = new Array();
-    this.moviesByExclusionAvancee = new Array();
+    this.movie = new Movie();
+    this.moviesByExclusionGenres = new Array();
+    this.moviesByExclusionReals = new Array();
+    this.moviesByExclusionActors = new Array();
+    this.moviesByInclusionGenres = new Array();
+    this.moviesByInclusionReals = new Array();
+    this.moviesByInclusionActors = new Array();
     this.genres = new Array();
     this.realisateurs = new Array();
     this.actors = new Array();
     this.wsUrl = ENV.apiUrl + '/movies';
+
    }
 
   public getMovies(): Array<Movie> {
@@ -39,6 +51,15 @@ export class MoviesService {
       .subscribe((list: Array<Movie>) => this.movies.push(...list)
       );
     return this.movies;
+  }
+
+  public getMovieFromBack(id: Number): Movie {
+    this.httpClient.get(this.wsUrl + `/${id}`)
+      .subscribe((movie: Movie) => {
+        this.movie = movie
+      }
+      );
+    return this.movie;
   }
 
   public getMovie(id: Number): Movie {
@@ -76,6 +97,11 @@ export class MoviesService {
       });
   }
 
+  public getAllo(){
+    this.httpClient.get(this.alloUrl)
+    .subscribe((list: any) => console.log(list))
+  }
+
   public getGenres(): Array<string> {
     this.genres.splice(0, this.genres.length);
     this.httpClient.get(this.wsUrl + `/genres`)
@@ -99,7 +125,7 @@ export class MoviesService {
   }
 
   public getMovieByExclusionGenres(genres: Array<String>): Array<Movie> {
-    this.moviesByExclusionSimple.splice(0, this.moviesByExclusionSimple.length);
+    this.moviesByExclusionGenres.splice(0, this.moviesByExclusionGenres.length);
     for(let movie of this.movies) {
       this.present = false;
       for(let genre of genres) {
@@ -111,11 +137,109 @@ export class MoviesService {
         }				
       }
       if(!this.present) {
-        this.moviesByExclusionSimple.push(movie);
+        this.moviesByExclusionGenres.push(movie);
       }
     }
-    return this.moviesByExclusionSimple;
+    return this.moviesByExclusionGenres;
   }
+
+  public getMovieByInclusionGenres(genres: Array<String>): Array<Movie> {
+    this.moviesByInclusionGenres.splice(0, this.moviesByInclusionGenres.length);
+    for(let movie of this.movies) {
+      this.present = false;
+      for(let genre of genres) {
+        if(JSON.stringify(movie.genre) != "") {
+          this.index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
+          if(this.index != -1) {
+            this.moviesByInclusionGenres.push(movie)
+          }
+        }				
+      }
+    }
+    if(genres.length >= 1){
+      return this.moviesByInclusionGenres;
+    }else {
+      return this.movies;
+    }
+  }
+
+  public getMovieByExclusionReals(reals: Array<String>): Array<Movie> {
+    this.moviesByExclusionReals.splice(0, this.moviesByExclusionReals.length);
+    for(let movie of this.movies) {
+      this.present = false;
+      for(let real of reals) {
+        if(JSON.stringify(movie.realisateur) != "") {
+          this.index = movie.realisateur.toLowerCase().indexOf(real.toLowerCase());
+          if(this.index != -1) {
+            this.present = true;
+          }
+        }				
+      }
+      if(!this.present) {
+        this.moviesByExclusionReals.push(movie);
+      }
+    }
+    return this.moviesByExclusionReals;
+  }
+
+  public getMovieByInclusionReals(reals: Array<String>): Array<Movie> {
+    this.moviesByInclusionReals.splice(0, this.moviesByInclusionReals.length);
+    for(let movie of this.movies) {
+      for(let real of reals) {
+        if(JSON.stringify(movie.realisateur) != "") {
+          this.index = movie.realisateur.toLowerCase().indexOf(real.toLowerCase());
+          if(this.index != -1) {
+            this.moviesByInclusionReals.push(movie);
+          }
+        }				
+      }
+    }
+    if(reals.length >= 1){
+      return this.moviesByInclusionReals;
+    }else {
+      return this.movies;
+    }
+  }
+
+  public getMovieByExclusionActors(actors: Array<String>): Array<Movie> {
+    this.moviesByExclusionActors.splice(0, this.moviesByExclusionActors.length);
+    for(let movie of this.movies) {
+      this.present = false;
+      for(let actor of actors) {
+        if(JSON.stringify(movie.casting) != "") {
+          this.index = movie.casting.toLowerCase().indexOf(actor.toLowerCase());
+          if(this.index != -1) {
+            this.present = true;
+          }
+        }				
+      }
+      if(!this.present) {
+        this.moviesByExclusionActors.push(movie);
+      }
+    }
+    return this.moviesByExclusionActors;
+  }
+
+  public getMovieByInclusionActors(actors: Array<String>): Array<Movie> {
+    this.moviesByInclusionActors.splice(0, this.moviesByInclusionActors.length);
+    for(let movie of this.movies) {
+      this.present = false;
+      for(let actor of actors) {
+        if(JSON.stringify(movie.casting) != "") {
+          this.index = movie.casting.toLowerCase().indexOf(actor.toLowerCase());
+          if(this.index != -1) {
+            this.moviesByInclusionActors.push(movie);
+          }
+        }				
+      }
+    }
+    if(actors.length >= 1){
+      return this.moviesByInclusionActors;
+    }else {
+      return this.movies;
+    }
+  }
+
 
   setSearch(search: string){
     this.search.next(search);

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
+import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-register',

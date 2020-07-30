@@ -1,9 +1,14 @@
+.navbar{
+    background-color: #367493;
+    margin-bottom: 0;
+}
+
 #inputsearch{
     width: 200px;
 }
 
 #imgsearch{
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     float: left;
 }

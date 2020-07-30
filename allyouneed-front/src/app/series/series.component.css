@@ -1,0 +1,17 @@
+body{
+    background-color: #383D5D;
+}
+
+.image
+{
+    width: 150px;
+    height: 190px;
+}
+
+.container{
+    color: white;
+}
+
+#series{
+    padding: 10px;
+}

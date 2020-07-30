@@ -30,10 +30,9 @@ export class SeriesService {
 
    public getSeries(): Array<Serie> {
     this.series.splice(0, this.series.length);
-    // envoyer la requête
     this.httpClient.get(this.wsUrl)
-      // donner le callback pour traiter la réponse.
-      .subscribe((list: Array<Serie>) => this.series.push(...list)
+      .subscribe((list: Array<Serie>) => 
+      this.series.push(...list)
       );
     return this.series;
   }
@@ -45,25 +44,23 @@ export class SeriesService {
     }
   }
   
-  public createSerie(movie: Serie) {
-    const newMovie = new Serie(movie.titre, movie.synopsis, null);
-      this.httpClient.post<Serie>(this.wsUrl, newMovie)
+  public createSerie(serie: Serie) {
+      this.httpClient.post<Serie>(this.wsUrl, serie)
       .subscribe((serieFromJee) => this.series.push(new Serie(serieFromJee.titre,
         serieFromJee.synopsis, serieFromJee.id, serieFromJee.genre, serieFromJee.casting,
-        serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.pegi,
-        serieFromJee.avertissement))
+        serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.BA))
         );
   }
 
   public updateSerie(serie: Serie) {
+    console.log(serie)
     this.httpClient.put<Serie>(this.wsUrl + `/${serie.id}`, serie)
       .subscribe((serieFromJee) => {
         const index = this.getIndex(serie.id);
         if (index >= 0) {
           this.series.splice(index, 1, new Serie(serieFromJee.titre,
             serieFromJee.synopsis, serieFromJee.id, serieFromJee.genre, serieFromJee.casting,
-            serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.pegi,
-            serieFromJee.avertissement));
+            serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.BA));
         }
       });
   }
@@ -71,10 +68,9 @@ export class SeriesService {
 
   public getGenres(): Array<String> {
     this.genres.splice(0, this.genres.length);
-    // envoyer la requête
     this.httpClient.get(this.wsUrl + `/genres`)
-      // donner le callback pour traiter la réponse.
-      .subscribe((list: Array<String>) => this.genres.push(...list)
+      .subscribe((list: Array<String>) => 
+      this.genres.push(...list)
       );
     return this.genres;
   }

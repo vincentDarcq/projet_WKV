@@ -30,10 +30,11 @@ export class SerieFormComponent implements OnInit {
   validateForm() {
     if (this.id) {
       this.serieService.updateSerie(this.newSerie);
-      this.router.navigate(['/movieForm', this.id ]);
+      console.log(this.newSerie)
+      this.router.navigate(['/series']);
     } else {
       this.serieService.createSerie(this.newSerie);
-      this.router.navigate(['']);
+      this.router.navigate(['/series']);
     }
   }
 

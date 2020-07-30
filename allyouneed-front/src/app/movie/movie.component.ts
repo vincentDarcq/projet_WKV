@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MoviesService } from '../services/movies.service';
@@ -13,7 +13,7 @@ import { NotesService } from '../services/notes.service';
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit, OnDestroy {
+export class MovieComponent implements OnInit {
 
   private index: number;
   private isFavori: boolean;
@@ -31,40 +31,23 @@ export class MovieComponent implements OnInit, OnDestroy {
               private noteMovieService: NotesService,
               private route: ActivatedRoute,
               private loginService: LoginService,
-              private router: Router) {  }
+              private router: Router) { }
 
   ngOnInit() {
-    this.idmovie = Number(sessionStorage.getItem('idmovie'))
-    //On récupère l'id du film dans l'url de navigation
-    if(this.idmovie === 0){
-      this.idmovie = Number(this.route.snapshot.params.id);
-      sessionStorage.setItem('idmovie', this.idmovie.toString())
-    }
-    //On récupère le film via l'id récupérée au dessus
+    this.idmovie = Number(this.route.snapshot.params.id);
     this.movie = this.movieService.getMovie(this.idmovie);
-    //On récupère tous les commentaires
     this.comments = this.commentMovieService.getCommentsMovie(this.idmovie);
-    //On récupère la note moyenne du film
     this.noteMovie = this.noteMovieService.getNote(this.idmovie);
-    //On récupère l'utilisateur s'il y en a un de connecté
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    //Si un user est connecté
     if(this.currentUser !== null){
-      //on check s'il a donné une note au film
       this.noteUserFromBack = this.noteMovieService.getNoteByUserForMovie(this.idmovie, this.currentUser.id);
-      //on check si ce film est dans ses favoris
       if(this.currentUser.filmsfavoris){
         this.index = this.currentUser.filmsfavoris.indexOf(this.movie.titre);
       }
     }
-    //Si le film est dans les favoris du user, on set la variable à true
     if(typeof this.index !== 'undefined' && this.index !== -1){
       this.isFavori = true;
     }
-  }
-
-  ngOnDestroy(){
-    sessionStorage.removeItem('idmovie')
   }
 
   ajouterFavoris(){

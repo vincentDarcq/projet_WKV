@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SeriesService } from '../services/series.service';
+import { Serie } from '../models/serie';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-serie',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SerieComponent implements OnInit {
 
-  constructor() { }
+  private idserie: Number;
+  private serie: Serie;
+
+  constructor(private serieService: SeriesService,
+              private route: ActivatedRoute) { 
+    this.serie = new Serie();
+  }
 
   ngOnInit() {
+    this.idserie = Number(this.route.snapshot.params.id);
+    this.serie = this.serieService.getSerie(this.idserie);
   }
 
 }

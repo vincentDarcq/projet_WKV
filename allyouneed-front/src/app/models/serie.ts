@@ -8,12 +8,11 @@ export class Serie {
     createur: string;
     saisons: number;
     cov: string;
-    pegi: string;
-    avertissement: string;
+    BA: string;
 
     constructor(titre?: string, synopsis?: string, id?: number, 
         genres?: string, casting?: string, createur?: string, 
-        saisons?: number, cov?: string, pegi?: string, avertissement?: string) {
+        saisons?: number, cov?: string, BA?: string) {
 
         this.titre = titre;
         this.synopsis = synopsis;
@@ -23,7 +22,6 @@ export class Serie {
         this.createur = createur;
         this.cov = cov;
         this.saisons = saisons;
-        this.pegi = pegi;
-        this.avertissement = avertissement;
+        this.BA = BA;
     }
 }

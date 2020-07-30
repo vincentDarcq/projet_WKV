@@ -7,7 +7,7 @@ import { Serie } from '../models/serie';
   templateUrl: './series.component.html',
   styleUrls: ['./series.component.css']
 })
-export class SeriesComponent implements OnInit {
+export class SeriesComponent implements OnInit{
 
   private modeExcSimple: Boolean;
   private modeExcAvancee: Boolean;
@@ -24,22 +24,13 @@ export class SeriesComponent implements OnInit {
     this.modeExcAvancee = false;
     this.exclusionSimple = false;
     this.exclusionAvancee = false;
-    this.series = this.SerieService.getSeries();
-    this.genres = this.SerieService.getGenres();
     this.genresExclus = new Array();
   }
 
   ngOnInit() {
-  }
-
-  switchExclusionMode(){
-    if(this.modeExcSimple){
-      this.modeExcSimple = false;
-      this.modeExcAvancee = true;
-    }else {
-      this.modeExcSimple = true;
-      this.modeExcAvancee = false;
-    }
+    this.series = this.SerieService.getSeries();
+    console.log(this.series)
+    this.genres = this.SerieService.getGenres();    
   }
 
   genreSelected(){

@@ -9,6 +9,7 @@ import { MovieComponent } from './movie/movie.component';
 import { MovieFormComponent } from './movie-form/movie-form.component';
 import { SerieFormComponent } from './serie-form/serie-form.component';
 import { UserComponent } from './user/user.component';
+import { SerieComponent } from './serie/serie.component';
 
 const routes: Routes = [
   { path:'', component: MainComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path:'movie/:id', component: MovieComponent},
   { path:'movieForm', component: MovieFormComponent},
   { path:'movieForm/:id', component: MovieFormComponent},
+  { path:'serie/:id', component: SerieComponent},
   { path:'serieForm', component: SerieFormComponent},
   { path:'serieForm/:id', component: SerieFormComponent},
   { path: '**', redirectTo: '' }

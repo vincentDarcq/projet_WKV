@@ -1,19 +1,12 @@
-<h1>{{ movie.titre }}</h1>
+<h1>{{ serie.titre }}</h1>
 <div class="container mt-5 card">
   <div class="row">
     <div class="col-sm-2">
-        <img src="{{ movie.cov }}" width=150 height=200 alt="{{ movie.titre }}"/>         	
+        <img src="{{ serie.cov }}" width=150 height=200 alt="{{ serie.titre }}"/>         	
     </div>
-    <ng-container class="row" *ngIf="movie.pegi">
-      <div class="col-sm-2">
-            <img src="{{ movie.pegi }}" width=50 height=50/>         	
-      </div>
-    </ng-container>
-    <ng-container class="row" *ngIf="movie.avertissement">
-      <div class="col-sm-6" style="font-weight: bold;">
-            <p>{{ movie.avertissement }}</p>      	
-      </div>
-    </ng-container>
+    <div class="col-sm-4">
+      <a href="{{ serie.ba }}" target = "_blank">Bande Annonce</a>         	
+    </div>
   </div>
   <div class="card-body">
     <div class="form-group">
@@ -26,7 +19,7 @@
     </div>
     <div class="form-group">
       <label for="realisateur">Createur : </label>
-      <p>{{ serie.createur }}</p>
+      <p>{{ serie.creator }}</p>
     </div>
     <div class="form-group">
       <label for="casting">Casting : </label>
@@ -34,7 +27,7 @@
     </div>
     <div class="form-group">
       <label for="année">Saisons : </label>
-      <p>{{ serie.saisons }}</p>
+      <p>{{ serie.seasons }}</p>
     </div>
-    <a [routerLink]="['/serieForm', serie.id ]"><button class="btn btn-primary">Modifier le film</button></a>
+    <a [routerLink]="['/serieForm', serie.id ]"><button class="btn btn-primary">Modifier la série</button></a>
   </div>

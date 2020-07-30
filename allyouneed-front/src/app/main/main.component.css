@@ -1,3 +1,8 @@
+.container{
+    color: white;
+    background-color: #383D5D;
+}
+
 #movie
 {
     padding: 10px;
@@ -29,53 +34,68 @@
     height: 50px;
 }
 
-#selectgenre
+#genresExclus
 {
-    width:100px;
+    display: none;
+    position: absolute; 
+    width: 40%; 
+    height: 40%; 
+    top: 70px;
+    right: 250px;
+    background-color: rgb(100, 169, 174); 
+    overflow: scroll;
+    border:3px solid black;
 }
 
-#restoregenre
+#realsExclus
 {
-    width:100px;
+    display: none;
+    position: fixed; 
+    width: 40%; 
+    height: 40%; 
+    top: 70px;
+    right: 250px;
+    background-color: rgb(100, 169, 174); 
+    overflow: scroll;
+    border:3px solid black;
+}
+
+#actorsExclus
+{
+    display: none;
+    position: fixed; 
+    width: 40%; 
+    height: 40%; 
+    top: 70px;
+    right: 250px;
+    background-color: rgb(100, 169, 174); 
+    overflow: scroll;
+    border:3px solid black;
+}
+
+.closePopup{
+    color: white;
+    background-color: black;
     float: right;
 }
 
-.dialogGenres {
-    width: 50vw;
+.corbeille
+{
+    position: relative;
+    top: 70px;
+    right: 0;
+    width: 75px;
 }
 
-@media screen and (max-width: 40em) {
-    .dialogGenres {
-        width: 75vw;
-    }
+body{
+    background-color: #383D5D;
 }
 
-.dialogGenresExclus {
-    width: 50vw;
+#bestMoviesChecked{
+    padding: 0px;
+    margin: 0px;
 }
 
-@media screen and (max-width: 40em) {
-    .dialogGenresExclus {
-        width: 75vw;
-    }
-}
-
-.dialogRealisateurs {
-    width: 50vw;
-}
-
-@media screen and (max-width: 40em) {
-    .dialogRealisateurs {
-        width: 75vw;
-    }
-}
-
-.dialogActeurs {
-    width: 50vw;
-}
-
-@media screen and (max-width: 40em) {
-    .dialogActeurs {
-        width: 75vw;
-    }
+.double_arrows{
+    width: 20px;
 }
