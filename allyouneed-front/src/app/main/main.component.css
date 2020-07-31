@@ -99,3 +99,15 @@ body{
 .double_arrows{
     width: 20px;
 }
+
+#genreSearch{
+    width: 200px;
+}
+
+#realSearch{
+    width: 200px;
+}
+
+#actorSearch{
+    width: 200px;
+}

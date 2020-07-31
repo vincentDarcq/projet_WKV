@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, AfterViewInit } from '@angular/core';
 import { Movie } from '../models/movie';
 import { MoviesService } from '../services/movies.service';
 import { User } from '../models/user';
@@ -23,8 +23,8 @@ export class MainComponent implements OnInit, DoCheck {
   private realisateurs: Array<string>;
   private actors: Array<string>;
   private genresSelected: Array<string>;
-  private realisateursExclus: Array<string>;
-  private actorsExclus: Array<string>;
+  private realisateursSelected: Array<string>;
+  private actorsSelected: Array<string>;
   private currentUser: User;
   private notes: Array<Note>;
   private exclusion: boolean = true;
@@ -33,8 +33,14 @@ export class MainComponent implements OnInit, DoCheck {
   private displayActeurs: boolean = false;
   private displayMovie: boolean = false;
   private bestMoviesChecked: boolean = false;
-  search: string;
-  searching: boolean = false;
+  private genreFound: boolean = false;
+  private realFound: boolean = false;
+  private actorFound: boolean = false;
+  private genreInput: string;
+  private realInput: string;
+  private actorInput: string;
+  private search: string;
+  private searching: boolean = false;
 
   constructor(private movieService: MoviesService,
               private noteService: NotesService) {
@@ -44,15 +50,15 @@ export class MainComponent implements OnInit, DoCheck {
     this.bestHeightMovies = new Array();
     this.bestGrades = new Array();
     this.genresSelected = new Array();
-    this.realisateursExclus = new Array();
-    this.actorsExclus = new Array();
+    this.realisateursSelected = new Array();
+    this.actorsSelected = new Array();
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
-
+  
   
   ngOnInit() {    
     this.movies = this.movieService.getMovies();
-    this.genres = this.movieService.getGenres();
+    this.genres = this.movieService.getGenres()
     this.actors = this.movieService.getActors();
     this.realisateurs = this.movieService.getRealisateurs();
     this.notes = this.noteService.getNotes();
@@ -61,8 +67,8 @@ export class MainComponent implements OnInit, DoCheck {
       (search) => {
         this.search = search
       })
-  }
-  
+    }
+
   testAllo(){
     this.movieService.getAllo()
   }
@@ -107,7 +113,20 @@ export class MainComponent implements OnInit, DoCheck {
     this.exclusion = !this.exclusion;
   }
 
-  genreSelected(genreSelected: string){    
+  genreSearched(searchValue: string){
+    this.genreFound = false
+    for(let genre of this.genres){
+      if(genre === searchValue){
+        this.genreFound = true;
+        this.genreInput = genre;
+      }
+    }
+  }
+
+  genreSelected(genreSelected: string){  
+    if(this.genreInput === genreSelected){
+      this.genreFound = false
+    }
     for (let genre of this.genres){
       if(genre === genreSelected){
         this.genresSelected.push(genre);
@@ -126,6 +145,7 @@ export class MainComponent implements OnInit, DoCheck {
     for (let genre of this.genresSelected){
       if(genre === genreRestored){
         this.genres.push(genre);
+        this.genres.sort()
         var index = this.genresSelected.indexOf(genre)
         this.genresSelected.splice(index, 1)
       }
@@ -134,62 +154,89 @@ export class MainComponent implements OnInit, DoCheck {
       this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected);
     } else{
       this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected);
-    }  }
+    }
+  }
+
+  realSearched(searchValue: string){
+    this.realFound = false
+    for(let real of this.realisateurs){
+      if(real === searchValue){
+        this.realFound = true;
+        this.realInput = real;
+      }
+    }
+  }
 
   realSelected(realSelected: string){
+    if(this.realInput === realSelected){
+      this.realFound = false
+    }
     for (let real of this.realisateurs){
       if(real === realSelected){
-        this.realisateursExclus.push(real);
+        this.realisateursSelected.push(real);
         var index = this.realisateurs.indexOf(real)
         this.realisateurs.splice(index, 1)
       }
     }
     if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursExclus);
+      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
     }else {
-      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursExclus);
+      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
     }
   }
 
   realRestored(realRestored: string){
-    for (let real of this.realisateursExclus){
+    for (let real of this.realisateursSelected){
       if(real === realRestored){
         this.realisateurs.push(real);
-        var index = this.realisateursExclus.indexOf(real)
-        this.realisateursExclus.splice(index, 1)
+        var index = this.realisateursSelected.indexOf(real)
+        this.realisateursSelected.splice(index, 1)
       }
     }
     if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursExclus);
+      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
     }else {
-      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursExclus);
+      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
+    }
+  }
+
+  actorSearched(searchValue: string){
+    this.actorFound = false
+    for(let actor of this.actors){
+      if(actor === searchValue){
+        this.actorFound = true;
+        this.actorInput = actor;
+      }
     }
   }
 
   actorSelected(actorSelected: string){
+    if(this.actorInput === actorSelected){
+      this.actorFound = false
+    }
     for (let actor of this.actors){
       if(actor === actorSelected){
-        this.actorsExclus.push(actor);
+        this.actorsSelected.push(actor);
         var index = this.actors.indexOf(actor)
         this.actors.splice(index, 1)
       }
     }
     if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionActors(this.actorsExclus);
+      this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
     }else {
-      this.movies = this.movieService.getMovieByInclusionActors(this.actorsExclus);
+      this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
     }
   }
 
   actorRestored(actorRestored: string){
-    for (let actor of this.actorsExclus){
+    for (let actor of this.actorsSelected){
       if(actor === actorRestored){
         this.actors.push(actor);
-        var index = this.actorsExclus.indexOf(actor)
-        this.actorsExclus.splice(index, 1)
+        var index = this.actorsSelected.indexOf(actor)
+        this.actorsSelected.splice(index, 1)
       }
     }
-    this.movies = this.movieService.getMovieByExclusionActors(this.actorsExclus);
+    this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
   }
 
   public showGenres(){
