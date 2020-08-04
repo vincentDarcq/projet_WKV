@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck, AfterViewInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Movie } from '../models/movie';
 import { MoviesService } from '../services/movies.service';
 import { User } from '../models/user';
@@ -20,6 +20,9 @@ export class MainComponent implements OnInit, DoCheck {
   private movieSearched: Array<Movie>;
   private moviesExcluded: Array<Movie>;
   private genres: Array<string>;
+  private genresSimple: Array<string> = ["animation", "biopic", "comédie", "documentaire", 
+    "drame", "histoire", "thriller", "epouvante-horreur", "science fiction", "aventure"];
+  private genresAvance: Array<string>;
   private realisateurs: Array<string>;
   private actors: Array<string>;
   private genresSelected: Array<string>;
@@ -29,6 +32,7 @@ export class MainComponent implements OnInit, DoCheck {
   private notes: Array<Note>;
   private exclusion: boolean = true;
   private displayGenres: boolean = false;
+  private displayGenresAvance: boolean = false;
   private displayRealisateurs: boolean = false;
   private displayActeurs: boolean = false;
   private displayMovie: boolean = false;
@@ -50,6 +54,7 @@ export class MainComponent implements OnInit, DoCheck {
     this.bestHeightMovies = new Array();
     this.bestGrades = new Array();
     this.genresSelected = new Array();
+    this.genresAvance = new Array();
     this.realisateursSelected = new Array();
     this.actorsSelected = new Array();
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -58,7 +63,7 @@ export class MainComponent implements OnInit, DoCheck {
   
   ngOnInit() {    
     this.movies = this.movieService.getMovies();
-    this.genres = this.movieService.getGenres()
+    this.genres = this.movieService.getGenres();
     this.actors = this.movieService.getActors();
     this.realisateurs = this.movieService.getRealisateurs();
     this.notes = this.noteService.getNotes();
@@ -74,6 +79,13 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
+    if(this.genresAvance.length === 0 && this.genres.length >= 1){
+      for(let genre of this.genres){
+        if(this.genresSimple.indexOf(genre) === -1){
+          this.genresAvance.push(genre)
+        }
+      }
+    }
     if(typeof this.search !== 'undefined' && this.search !== ""){
       this.movieSearched.splice(0, this.movieSearched.length)
       for(let movie of this.movies){
@@ -110,34 +122,59 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   switchMode(){
-    this.exclusion = !this.exclusion;
+    this.exclusion = !this.exclusion
   }
 
   genreSearched(searchValue: string){
     this.genreFound = false
-    for(let genre of this.genres){
-      if(genre === searchValue){
-        this.genreFound = true;
-        this.genreInput = genre;
-      }
+    this.realFound = false
+    this.actorFound = false
+    var indexGenre = this.genres.indexOf(searchValue)
+    var indexReal = this.realisateurs.indexOf(searchValue)
+    var indexActor = this.actors.indexOf(searchValue)
+    if(indexGenre !== -1){
+      this.genreFound = true;
+      this.genreInput = searchValue
+    }else if(indexReal !== -1){
+      this.realFound = true
+      this.realInput = searchValue
+    }else if(indexActor !== -1){
+      this.actorFound = true
+      this.actorInput = searchValue
     }
   }
 
-  genreSelected(genreSelected: string){  
-    if(this.genreInput === genreSelected){
+  selected(selected: string){  
+    if(this.genreInput === selected){
       this.genreFound = false
     }
-    for (let genre of this.genres){
-      if(genre === genreSelected){
-        this.genresSelected.push(genre);
-        var index = this.genres.indexOf(genre)
-        this.genres.splice(index, 1)
+    var indexGenreSimple = this.genresSimple.indexOf(selected)
+    var indexReal = this.realisateurs.indexOf(selected)
+    var indexActor = this.actors.indexOf(selected)
+    if(indexGenreSimple !== -1){
+      this.genresSelected.push(selected)
+      this.genresSimple.splice(indexGenreSimple, 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected)
+      } else{
+        this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected)
       }
-    }
-    if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected);
-    } else{
-      this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected);
+    }else if(indexReal !== -1){
+      this.realisateursSelected.push(selected)
+      this.realisateurs.splice(indexReal, 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
+      }else {
+        this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
+      }
+    }else if(indexActor !== -1){
+      this.actorsSelected.push(selected)
+      this.actors.splice(indexActor, 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
+      }else {
+        this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
+      }
     }
   }
 
@@ -158,30 +195,12 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   realSearched(searchValue: string){
-    this.realFound = false
+    
     for(let real of this.realisateurs){
       if(real === searchValue){
         this.realFound = true;
         this.realInput = real;
       }
-    }
-  }
-
-  realSelected(realSelected: string){
-    if(this.realInput === realSelected){
-      this.realFound = false
-    }
-    for (let real of this.realisateurs){
-      if(real === realSelected){
-        this.realisateursSelected.push(real);
-        var index = this.realisateurs.indexOf(real)
-        this.realisateurs.splice(index, 1)
-      }
-    }
-    if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
-    }else {
-      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
     }
   }
 
@@ -201,30 +220,12 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   actorSearched(searchValue: string){
-    this.actorFound = false
+    
     for(let actor of this.actors){
       if(actor === searchValue){
         this.actorFound = true;
         this.actorInput = actor;
       }
-    }
-  }
-
-  actorSelected(actorSelected: string){
-    if(this.actorInput === actorSelected){
-      this.actorFound = false
-    }
-    for (let actor of this.actors){
-      if(actor === actorSelected){
-        this.actorsSelected.push(actor);
-        var index = this.actors.indexOf(actor)
-        this.actors.splice(index, 1)
-      }
-    }
-    if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
-    }else {
-      this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
     }
   }
 

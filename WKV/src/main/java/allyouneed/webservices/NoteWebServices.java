@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import allyouneed.metier.Movie;
 import allyouneed.metier.MovieService;
 import allyouneed.metier.NoteMovie;
 import allyouneed.metier.NoteMovieService;
@@ -45,5 +46,10 @@ public class NoteWebServices {
 		NoteMovie noteMovie = new NoteMovie(note, this.movieService.read(idmovie), this.userService.read(iduser));
 		this.noteMovieService.create(noteMovie);
 		return note;
+	}
+	
+	@GetMapping("/best")
+	public List<Movie> bestMovies(){
+		return this.noteMovieService.getBestGrades();
 	}
 }
