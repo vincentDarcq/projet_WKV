@@ -12,3 +12,7 @@
     height: 35px;
     float: left;
 }
+
+button{
+    background-color: transparent;
+}
