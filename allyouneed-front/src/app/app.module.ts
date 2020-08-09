@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DialogModule } from 'primeng/dialog';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 
 let config = new AuthServiceConfig([
@@ -49,7 +50,8 @@ export function provideConfig() {
     SerieFormComponent,
     SerieComponent,
     UserComponent,
-    EditPasswordComponent
+    EditPasswordComponent,
+    StarRatingComponent
   ],
   imports: [
     BrowserAnimationsModule,

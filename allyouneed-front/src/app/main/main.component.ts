@@ -5,7 +5,6 @@ import { User } from '../models/user';
 import { NotesService } from '../services/notes.service';
 import { Note } from '../models/note';
 
-
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -20,10 +19,15 @@ export class MainComponent implements OnInit, DoCheck {
   private movieSearched: Array<Movie>;
   private moviesExcluded: Array<Movie>;
   private genres: Array<string>;
-  private genresSimple: Array<string> = ["animation", "biopic", "comédie", "documentaire", 
-    "drame", "histoire", "thriller", "epouvante-horreur", "science fiction", "aventure"];
+  private genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
+    "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
   private genresAvance: Array<string>;
+  private avances : Array<string>;
   private realisateurs: Array<string>;
+  private tenReals: Array<string>;
+  private tenR: Array<string>;
+  private tenActors: Array<string>;
+  private tenA: Array<string>;
   private actors: Array<string>;
   private genresSelected: Array<string>;
   private realisateursSelected: Array<string>;
@@ -35,7 +39,6 @@ export class MainComponent implements OnInit, DoCheck {
   private displayGenresAvance: boolean = false;
   private displayRealisateurs: boolean = false;
   private displayActeurs: boolean = false;
-  private displayMovie: boolean = false;
   private bestMoviesChecked: boolean = false;
   private genreFound: boolean = false;
   private realFound: boolean = false;
@@ -58,10 +61,21 @@ export class MainComponent implements OnInit, DoCheck {
     this.realisateursSelected = new Array();
     this.actorsSelected = new Array();
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-  }
+  }  
   
-  
-  ngOnInit() {    
+  ngOnInit() {   
+    this.genresAvance = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
+    "Musical", "Romance", "Super Héros", "Gore", "Français"]
+    this.avances = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
+    "Musical", "Romance", "Super Héros", "Gore", "Français"]
+    this.tenReals = ["Steven Spielberg", "Michael Bay", "Tim Burton", "Ron Howard",
+    "James Cameron", "Ridley Scott", "Chris Colombus", "Guy Ritchie", "Martin Scorcese", "David Fincher"]
+    this.tenR = ["Steven Spielberg", "Michael Bay", "Tim Burton", "Ron Howard",
+    "James Cameron", "Ridley Scott", "Chris Colombus", "Guy Ritchie", "Martin Scorcese", "David Fincher"]
+    this.tenActors = ["Al Pacino", "Robert De Niro", "Leonardo DiCaprio", "Kevin Spacey",
+    "Marlon Brando", "Clint Eastwood", "Morgan Freeman", "Johnny Depp", "Jack Nicholson", "Joaquin Phoenix"]
+    this.tenA = ["Al Pacino", "Robert De Niro", "Leonardo DiCaprio", "Kevin Spacey",
+    "Marlon Brando", "Clint Eastwood", "Morgan Freeman", "Johnny Depp", "Jack Nicholson", "Joaquin Phoenix"]
     this.movies = this.movieService.getMovies();
     this.genres = this.movieService.getGenres();
     this.actors = this.movieService.getActors();
@@ -79,13 +93,6 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if(this.genresAvance.length === 0 && this.genres.length >= 1){
-      for(let genre of this.genres){
-        if(this.genresSimple.indexOf(genre) === -1){
-          this.genresAvance.push(genre)
-        }
-      }
-    }
     if(typeof this.search !== 'undefined' && this.search !== ""){
       this.movieSearched.splice(0, this.movieSearched.length)
       for(let movie of this.movies){
@@ -125,20 +132,17 @@ export class MainComponent implements OnInit, DoCheck {
     this.exclusion = !this.exclusion
   }
 
-  genreSearched(searchValue: string){
+  searched(searchValue: string){
     this.genreFound = false
     this.realFound = false
     this.actorFound = false
-    var indexGenre = this.genres.indexOf(searchValue)
-    var indexReal = this.realisateurs.indexOf(searchValue)
-    var indexActor = this.actors.indexOf(searchValue)
-    if(indexGenre !== -1){
+    if(this.genres.indexOf(searchValue) !== -1){
       this.genreFound = true;
       this.genreInput = searchValue
-    }else if(indexReal !== -1){
+    }else if(this.realisateurs.indexOf(searchValue) !== -1){
       this.realFound = true
       this.realInput = searchValue
-    }else if(indexActor !== -1){
+    }else if(this.actors.indexOf(searchValue) !== -1){
       this.actorFound = true
       this.actorInput = searchValue
     }
@@ -147,29 +151,39 @@ export class MainComponent implements OnInit, DoCheck {
   selected(selected: string){  
     if(this.genreInput === selected){
       this.genreFound = false
+    }else if(this.realInput === selected){
+      this.realFound = false
+    }else if(this.actorInput === selected){
+      this.actorFound = false
     }
-    var indexGenreSimple = this.genresSimple.indexOf(selected)
-    var indexReal = this.realisateurs.indexOf(selected)
-    var indexActor = this.actors.indexOf(selected)
-    if(indexGenreSimple !== -1){
+    if(this.genres.indexOf(selected.toLowerCase()) !== -1){
+      if(this.genresSimple.indexOf(selected) !== -1){
+        this.genresSimple.splice(this.genresSimple.indexOf(selected), 1)
+      }
+      if(this.genresAvance.indexOf(selected) !== -1){
+        this.genresAvance.splice(this.genresAvance.indexOf(selected), 1)
+      }
       this.genresSelected.push(selected)
-      this.genresSimple.splice(indexGenreSimple, 1)
       if(this.exclusion){
         this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected)
       } else{
         this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected)
       }
-    }else if(indexReal !== -1){
+    }else if(this.realisateurs.indexOf(selected.toLowerCase()) !== -1){
+      if(this.tenReals.indexOf(selected) !== -1){
+        this.tenReals.splice(this.tenReals.indexOf(selected), 1)
+      }
       this.realisateursSelected.push(selected)
-      this.realisateurs.splice(indexReal, 1)
       if(this.exclusion){
         this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
       }else {
         this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
       }
-    }else if(indexActor !== -1){
+    }else if(this.actors.indexOf(selected.toLowerCase()) !== -1){
+      if(this.tenActors.indexOf(selected) !== -1){
+        this.tenActors.splice(this.tenActors.indexOf(selected), 1)
+      }
       this.actorsSelected.push(selected)
-      this.actors.splice(indexActor, 1)
       if(this.exclusion){
         this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
       }else {
@@ -178,122 +192,99 @@ export class MainComponent implements OnInit, DoCheck {
     }
   }
 
-  genreRestored(genreRestored: string){
-    for (let genre of this.genresSelected){
-      if(genre === genreRestored){
-        this.genres.push(genre);
-        this.genres.sort()
-        var index = this.genresSelected.indexOf(genre)
-        this.genresSelected.splice(index, 1)
+  restored(restored: string){
+    var indexGenre = this.genresSelected.indexOf(restored)
+    var indexReal = this.realisateursSelected.indexOf(restored)
+    var indexActor = this.actorsSelected.indexOf(restored)
+    if(indexGenre !== -1){
+      if(this.avances.indexOf(restored) !== -1){
+        this.genresAvance.push(restored)
+      }else {
+        this.genresSimple.push(restored)
       }
-    }
-    if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected);
-    } else{
-      this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected);
-    }
-  }
-
-  realSearched(searchValue: string){
-    
-    for(let real of this.realisateurs){
-      if(real === searchValue){
-        this.realFound = true;
-        this.realInput = real;
+      this.genresSelected.splice(this.genresSelected.indexOf(restored), 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected);
+      } else{
+        this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected);
       }
-    }
-  }
-
-  realRestored(realRestored: string){
-    for (let real of this.realisateursSelected){
-      if(real === realRestored){
-        this.realisateurs.push(real);
-        var index = this.realisateursSelected.indexOf(real)
-        this.realisateursSelected.splice(index, 1)
+    }else if(indexReal !== -1){
+      if(this.tenR.indexOf(restored) !== -1){
+        this.tenReals.push(restored)
       }
-    }
-    if(this.exclusion){
-      this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
-    }else {
-      this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
-    }
-  }
-
-  actorSearched(searchValue: string){
-    
-    for(let actor of this.actors){
-      if(actor === searchValue){
-        this.actorFound = true;
-        this.actorInput = actor;
+      this.realisateursSelected.splice(this.realisateursSelected.indexOf(restored), 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
+      }else {
+        this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
+      }
+    }else if(indexActor !== -1){
+      if(this.tenA.indexOf(restored) !== -1){
+        this.tenActors.push(restored)
+      }
+      this.actorsSelected.splice(this.actorsSelected.indexOf(restored), 1)
+      if(this.exclusion){
+        this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
+      }else {
+        this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
       }
     }
   }
 
-  actorRestored(actorRestored: string){
-    for (let actor of this.actorsSelected){
-      if(actor === actorRestored){
-        this.actors.push(actor);
-        var index = this.actorsSelected.indexOf(actor)
-        this.actorsSelected.splice(index, 1)
-      }
-    }
-    this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
-  }
-
-  public showGenres(){
+  showGenresSimples(){
     this.displayGenres = true;
   }
 
-  public hideGenres(){
+  hideGenresSimples(){
     this.displayGenres = false;
   }
 
-  public showGenresExclus(){
+  showGenresAvance(){
+    this.displayGenresAvance = true;
+  }
+
+  hideGenresAvance(){
+    this.displayGenresAvance = false;
+  }
+
+  showGenresExclus(){
     document.getElementById("genresExclus").style.display = "block";
   }
 
-  public hideGenresExclus(){
+  hideGenresExclus(){
     document.getElementById("genresExclus").style.display = "none";
   }
 
-  public showRealisateurs(){
+  showRealisateurs(){
     this.displayRealisateurs = true;
   }
 
-  public hideRealisateurs(){
+  hideRealisateurs(){
     this.displayRealisateurs = false;
   }
 
-  public showRealsExclus(){
+  showRealsExclus(){
     document.getElementById("realsExclus").style.display = "block";
   }
 
-  public hideRealsExclus(){
+  hideRealsExclus(){
     document.getElementById("realsExclus").style.display = "none";
   }
 
-  public showActeurs(){
+  showActeurs(){
     this.displayActeurs = true;
   }
 
-  public hideActeurs(){
+  hideActeurs(){
     this.displayActeurs = false;
   }
 
-  public showActorsExclus(){
+  showActorsExclus(){
     document.getElementById("actorsExclus").style.display = "block";
   }
 
-  public hideActorsExclus(){
+  hideActorsExclus(){
     document.getElementById("actorsExclus").style.display = "none";
-  }
-
-  public showMovie(){
-    this.displayMovie = true;
-  }
-
-  public hideMovie(){
-    this.displayMovie = false;
   }
 
 }

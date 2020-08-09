@@ -89,4 +89,8 @@ export class MovieComponent implements OnInit {
     this.noteMovieService.giveMarkForMovie(this.idmovie, this.currentUser.id, this.noteUser);
     this.noteUserFromBack = this.noteUser;
   }
+
+  onRateChange = (score) => {
+    this.noteUser = score;
+  }
 }

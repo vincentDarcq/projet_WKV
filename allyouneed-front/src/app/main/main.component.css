@@ -1,6 +1,6 @@
 .container{
     color: white;
-    background-color: #383D5D;
+    background-color:#478688;
 }
 
 #movie
@@ -82,13 +82,13 @@
 .corbeille
 {
     position: relative;
-    top: 70px;
+    top: 20px;
     right: 0;
     width: 75px;
 }
 
 body{
-    background-color: #383D5D;
+    background-color:#478688;
 }
 
 #bestMoviesChecked{
