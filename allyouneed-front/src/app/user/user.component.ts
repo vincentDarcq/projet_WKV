@@ -22,7 +22,7 @@ export class UserComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'))
+    this.user = JSON.parse(localStorage.getItem('currentUser'))
     this.movies = this.movieService.getMovies()
   }
 

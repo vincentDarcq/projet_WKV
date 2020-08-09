@@ -19,7 +19,9 @@
           <p *ngIf="noteMovie == -1">Aucune note n'est donnée pour ce film</p>
       </div>
       <div class="col-sm-6" *ngIf="currentUser">
-        <p *ngIf="noteUserFromBack != -1">Votre note pour ce film : {{ noteUserFromBack }}</p>
+        <p *ngIf="noteUserFromBack != -1">Votre note pour ce film : 
+          <app-star-rating [score]="noteUserFromBack" [forDisplay]="true"></app-star-rating>
+        </p>
         <p *ngIf="noteUserFromBack == -1">
           Notez ce film :
           <app-star-rating [maxScore]="5" [forDisplay]="false" (rateChanged)="onRateChange($event)"></app-star-rating>

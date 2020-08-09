@@ -22,7 +22,8 @@ export class HeaderComponent implements OnInit, DoCheck {
               private router: Router) { }
 
   ngOnInit() {
-    this.loginService.getCurrentUser().subscribe(user => { 
+    this.user = this.loginService.getCurrentUser()
+    this.loginService.getCurrentUserAsObs().subscribe(user => { 
       this.user = user;
     });
   }
@@ -35,12 +36,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.authService.authState.subscribe((user) => {
       this.loggedIn = (user != null);
     });
-    if(this.loggedIn){
-      this.signOutwithFB();
-      this.loginService.logout()
-    }else {
-      this.loginService.logout();
-    }
+    this.loginService.logout();
     this.router.navigate(['']);
   }
 

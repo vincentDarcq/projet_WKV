@@ -62,17 +62,21 @@ export class LoginService {
   }
 
   public login(user: User){
-    sessionStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUser.next(user);
   }
 
   public logout() {
-    sessionStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
     this.currentUser.next();
   }
 
-  public getCurrentUser(): Observable<any> {
-    return this.currentUser.asObservable();
+  public getCurrentUserAsObs(): Observable<any> {
+    return this.currentUser.asObservable()
+  }
+
+  public getCurrentUser(): User {
+    return JSON.parse(localStorage.getItem('currentUser'))
   }
 
   private getIndex(id: Number): number {
