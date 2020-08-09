@@ -53,23 +53,25 @@ public class MovieService extends RestService<Movie> {
 	public List<String> getRealisateurs(){
 		List<Movie> movies = this.readAll();
 		List<String> realisateurs = new ArrayList<String>();
+		String realisateur;
 		for(Movie movie : movies) {
+			realisateur = movie.getRealisateur().toLowerCase();
 			if(movie.getRealisateur() != null) {
-				int indexEnd = movie.getRealisateur().indexOf(", ");
+				int indexEnd = realisateur.indexOf(", ");
 				if(indexEnd == -1) {
-					if(!realisateurs.contains(movie.getRealisateur().toLowerCase())) {
-						realisateurs.add(movie.getRealisateur().toLowerCase());
+					if(!realisateurs.contains(realisateur.toLowerCase())) {
+						realisateurs.add(realisateur.toLowerCase());
 					}
 				}else {				
 					while(indexEnd != -1) {
-						if(!realisateurs.contains(movie.getRealisateur().substring(0, indexEnd).toLowerCase())){
-							realisateurs.add(movie.getRealisateur().substring(0, indexEnd).toLowerCase());
+						if(!realisateurs.contains(realisateur.substring(0, indexEnd).toLowerCase())){
+							realisateurs.add(realisateur.substring(0, indexEnd).toLowerCase());
 						}
-						movie.setRealisateur(movie.getRealisateur().substring(indexEnd+2));
-						indexEnd = movie.getRealisateur().indexOf(", ");
+						realisateur = realisateur.substring(indexEnd+2);
+						indexEnd = realisateur.indexOf(", ");
 					}
-					if(!realisateurs.contains(movie.getRealisateur().toLowerCase())) {
-						realisateurs.add(movie.getRealisateur().toLowerCase());
+					if(!realisateurs.contains(realisateur.toLowerCase())) {
+						realisateurs.add(realisateur.toLowerCase());
 					}
 				}
 			}
@@ -93,23 +95,25 @@ public class MovieService extends RestService<Movie> {
 	public List<String> getActors(){
 		List<Movie> movies = this.readAll();
 		List<String> actors = new ArrayList<String>();
+		String casting;
 		for(Movie movie : movies) {
+			casting = movie.getCasting().toLowerCase();
 			if(movie.getCasting() != null) {
-				int indexEnd = movie.getCasting().indexOf(", ");
+				int indexEnd = casting.indexOf(", ");
 				if(indexEnd == -1) {
-					if(!actors.contains(movie.getCasting().toLowerCase())) {
-						actors.add(movie.getCasting().toLowerCase());
+					if(!actors.contains(casting.toLowerCase())) {
+						actors.add(casting.toLowerCase());
 					}
 				}else {				
 					while(indexEnd != -1) {
-						if(!actors.contains(movie.getCasting().substring(0, indexEnd).toLowerCase())){
-							actors.add(movie.getCasting().substring(0, indexEnd).toLowerCase());
+						if(!actors.contains(casting.substring(0, indexEnd).toLowerCase())){
+							actors.add(casting.substring(0, indexEnd).toLowerCase());
 						}
-						movie.setCasting(movie.getCasting().substring(indexEnd+2));
-						indexEnd = movie.getCasting().indexOf(", ");
+						casting = casting.substring(indexEnd+2);
+						indexEnd = casting.indexOf(", ");
 					}
-					if(!actors.contains(movie.getCasting().toLowerCase())) {
-						actors.add(movie.getCasting().toLowerCase());
+					if(!actors.contains(casting.toLowerCase())) {
+						actors.add(casting.toLowerCase());
 					}
 				}
 			}

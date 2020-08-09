@@ -23,23 +23,25 @@ public class SerieService extends RestService<Serie>{
 	public List<String> getGenres(){
 		List<Serie> series = this.getDao().findAll();
 		List<String> genres = new ArrayList<String>();
+		String genre;
 		for(Serie serie : series) {
+			genre = serie.getGenre().toLowerCase();
 			if(serie.getGenre() != null) {				
 				int indexEnd = serie.getGenre().indexOf(", ");
 				if(indexEnd == -1) {
-					if(!genres.contains(serie.getGenre().toLowerCase())) {
-						genres.add(serie.getGenre().toLowerCase());
+					if(!genres.contains(genre.toLowerCase())) {
+						genres.add(genre.toLowerCase());
 					}
 				}else {				
 					while(indexEnd != -1) {
-						if(!genres.contains(serie.getGenre().substring(0, indexEnd).toLowerCase())){
-							genres.add(serie.getGenre().substring(0, indexEnd).toLowerCase());
+						if(!genres.contains(genre.substring(0, indexEnd).toLowerCase())){
+							genres.add(genre.substring(0, indexEnd).toLowerCase());
 						}
-						serie.setGenre(serie.getGenre().substring(indexEnd+2));
-						indexEnd = serie.getGenre().indexOf(", ");
+						genre = genre.substring(indexEnd+2);
+						indexEnd = genre.indexOf(", ");
 					}
-					if(!genres.contains(serie.getGenre().toLowerCase())) {
-						genres.add(serie.getGenre().toLowerCase());
+					if(!genres.contains(genre.toLowerCase())) {
+						genres.add(genre.toLowerCase());
 					}
 				}
 			}
