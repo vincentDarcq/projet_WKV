@@ -1,5 +1,5 @@
 <body>
-  <div class="container mt-5 card"> 	
+  <div class="container"> 	
     <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion">Mode Inclusion</button>
     <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion">Mode Exclusion</button>
     <button class="btn btn-primary" (click)="testAllo()">Test</button>
@@ -28,8 +28,7 @@
         <input *ngIf="displayActeurs" (input)="searched($event.target.value)" type="text" class="form-control" id="actorSearch"/>
       </div>
     </div>
-  <p-dialog class="row" [(visible)]="displayGenres">
-    <div class="row">
+    <p-dialog [(visible)]="displayGenres">
       <div class="col-sm-10">
         <div *ngIf="genreFound">
           <label for="{{ genreInput }}">{{ genreInput }} : </label>
@@ -45,19 +44,17 @@
       <div class="col-sm-2">
         <img class="corbeille" (click)="showGenresExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
       </div>  
-    </div> 
-  </p-dialog>
-  <div id="genresExclus">
-    <div *ngFor="let genre of genresSelected">
-      <div class="col-sm-2">
-        <label for="{{ genre }}">{{ genre }} : </label>
-        <input type="checkbox" id="{{ genre }}" (change)="restored(genre)" class="form-control">
-      </div>	
-    </div>
-    <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
-  </div>  
-  <p-dialog class="row" [(visible)]="displayGenresAvance">
-    <div class="row">
+    </p-dialog>
+    <div id="genresExclus">
+      <div *ngFor="let genre of genresSelected">
+        <div class="col-sm-2">
+          <label for="{{ genre }}">{{ genre }} : </label>
+          <input type="checkbox" id="{{ genre }}" (change)="restored(genre)" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
+    </div>  
+    <p-dialog [(visible)]="displayGenresAvance">
       <div class="col-sm-10">
         <div *ngIf="genreFound">
           <label for="{{ genreInput }}">{{ genreInput }} : </label>
@@ -73,19 +70,17 @@
       <div class="col-sm-2">
         <img class="corbeille" (click)="showGenresExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
       </div>  
-    </div> 
-  </p-dialog>
-  <div id="genresExclus">
-    <div *ngFor="let genre of genresSelected">
-      <div class="col-sm-2">
-        <label for="{{ genre }}">{{ genre }} : </label>
-        <input type="checkbox" id="{{ genre }}" (change)="restored(genre, 'avance')" class="form-control">
-      </div>	
-    </div>
-    <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
-  </div>     
-  <p-dialog class="row" [(visible)]="displayRealisateurs">
-    <div class="row">
+    </p-dialog>
+    <div id="genresExclus">
+      <div *ngFor="let genre of genresSelected">
+        <div class="col-sm-2">
+          <label for="{{ genre }}">{{ genre }} : </label>
+          <input type="checkbox" id="{{ genre }}" (change)="restored(genre, 'avance')" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
+    </div>     
+    <p-dialog [(visible)]="displayRealisateurs">
       <div class="col-sm-10">
         <div *ngIf="realFound">
           <label for="{{ realInput }}">{{ realInput }} : </label>
@@ -101,19 +96,17 @@
       <div class="col-sm-2">
         <img class="corbeille" (click)="showRealsExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
       </div>
+    </p-dialog>
+    <div id="realsExclus">
+      <div *ngFor="let real of realisateursSelected">
+        <div class="col-sm-2">
+          <label for="{{ real }}">{{ real }} : </label>
+          <input type="checkbox" id="{{ real }}" (change)="restored(real)" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideRealsExclus()" class="closePopup">Fermer</button>
     </div>
-  </p-dialog>
-  <div id="realsExclus">
-    <div *ngFor="let real of realisateursSelected">
-      <div class="col-sm-2">
-        <label for="{{ real }}">{{ real }} : </label>
-        <input type="checkbox" id="{{ real }}" (change)="restored(real)" class="form-control">
-      </div>	
-    </div>
-    <button (click)="hideRealsExclus()" class="closePopup">Fermer</button>
-  </div>
-  <p-dialog class="row" [(visible)]="displayActeurs">
-    <div class="row">
+    <p-dialog [(visible)]="displayActeurs">
       <div class="col-sm-10">
         <div *ngIf="actorFound">
           <label for="{{ actorInput }}">{{ actorInput }} : </label>
@@ -129,81 +122,76 @@
       <div class="col-sm-2">
         <img class="corbeille" (click)="showActorsExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
       </div>
+    </p-dialog>
+    <div id="actorsExclus">
+      <div *ngFor="let acteur of actorsSelected">
+        <div class="col-sm-2">
+          <label for="{{ acteur }}">{{ acteur }} : </label>
+          <input type="checkbox" id="{{ acteur }}" (change)="restored(acteur)" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideActorsExclus()" class="closePopup">Fermer</button>
     </div>
-  </p-dialog>
-  <div id="actorsExclus">
-    <div *ngFor="let acteur of actorsSelected">
-      <div class="col-sm-2">
-        <label for="{{ acteur }}">{{ acteur }} : </label>
-        <input type="checkbox" id="{{ acteur }}" (change)="restored(acteur)" class="form-control">
-      </div>	
-    </div>
-    <button (click)="hideActorsExclus()" class="closePopup">Fermer</button>
-  </div>
-  <a [routerLink]="['/movieForm']"><button class="btn btn-succes">Ajouter un film</button></a>
-  <div *ngIf="searching">
-    <div class="row">
-      <h2><strong>Votre Recherche</strong></h2>
-      <div *ngFor="let movie of movieSearched">
-        <div class="col-sm-2" id="movie">
-          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+    <a [routerLink]="['/movieForm']"><button class="btn btn-succes">Ajouter un film</button></a>
+    <div *ngIf="searching">
+      <div class="row">
+        <h2><strong>Votre Recherche</strong></h2>
+        <div *ngFor="let movie of movieSearched">
+          <div class="col-sm-2" id="movie">
+            <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row" *ngIf="bestMoviesChecked">
-    <h2><strong>Selection</strong></h2>
-    <div class="col-sm-3" id="bestMovie">
-      <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov }}" class="image" alt="{{ bestMovie.titre }}"></a>
-      <br>
-      <div class="block">
-        <app-star-rating [score]="bestMovie.note" [forDisplay]="true"></app-star-rating>
-      </div> 
-      {{ bestMovie.year }}
-    </div>
-    <div class="col-sm-9">
-      <div *ngFor="let movie of bestHeightMovies">
-        <div class="col-sm-3" id="movie">
-          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+    <div *ngIf="bestMoviesChecked">
+      <h2><strong>Selection</strong></h2>
+      <div class="col-sm-3" id="bestMovie">
+        <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov }}" class="image" alt="{{ bestMovie.titre }}"></a>
+        <br>
+        <div class="block">
+          <app-star-rating [score]="bestMovie.note" [forDisplay]="true"></app-star-rating>
+        </div> 
+        {{ bestMovie.year }}
+      </div>
+      <div class="col-sm-9">
+        <div *ngFor="let movie of bestHeightMovies">
+          <div class="col-sm-3" id="movie" [ngbTooltip]="tipContent">
+            <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
     <h2><strong>Les films</strong></h2>
     <div *ngFor="let movie of movies">
-      <div class="col-sm-2" id="movie">
+      <div class="col-sm-2" id="movie" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
         <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
       </div>	
-      <div class="popup">
-        <div class="col-sm-6" *ngIf="movie.avertissement" style="font-weight: bold;">
-          <p>{{ movie.avertissement }}</p>      	
+      <ng-template #tipContent>
+        <div class="row">
+          <div class="col-sm">
+            <label for="synopsis">Synopsis : </label>
+            {{ movie.synopsis }}
+          </div>
+          <span>{{ movie.avertissement }}</span>    	
+          <span><img src="{{ movie.pegi }}" style="width: 45px;"/></span>  	
+          <div class="col-sm-6">
+            <label for="genres">Genres : </label>
+            {{ movie.genre }}
+          </div>          
+          <div class="col-sm-6">
+            <label for="realisateur">realisateur : </label>
+            {{ movie.realisateur }}
+          </div>
+          <div class="col-sm-6">
+            <label for="casting">casting : </label>
+            {{ movie.casting }}
+          </div>
+          <div class="col-sm-6">
+            <label for="année">Année : </label>
+            {{ movie.year }}
+          </div>
         </div>
-        <div class="col-sm-6" *ngIf="movie.pegi">
-          <img src="{{ movie.pegi }}" style="width: 45px;"/>      	
-        </div>
-        <div class="col-sm-6">
-          <label for="genres">Genres : </label>
-          <p>{{ movie.genre }}</p>
-        </div>
-        <div class="col-sm-6">
-          <label for="synopsis">Synopsis : </label>
-          <p>{{ movie.synopsis }}</p>
-        </div>
-        <div class="col-sm-6">
-          <label for="realisateur">realisateur : </label>
-          <p>{{ movie.realisateur }}</p>
-        </div>
-        <div class="col-sm-6">
-          <label for="casting">casting : </label>
-          <p>{{ movie.casting }}</p>
-        </div>
-        <div class="col-sm-6">
-          <label for="année">Année : </label>
-          <p>{{ movie.year }}</p>
-        </div>
-      </div> 
+      </ng-template> 
     </div>
-  </div>
-</div> 
+  </div> 
 </body>

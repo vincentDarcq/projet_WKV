@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, DoCheck } from '@angular/core';
 import { Movie } from '../models/movie';
 import { MoviesService } from '../services/movies.service';
 import { User } from '../models/user';
@@ -8,6 +8,7 @@ import { Note } from '../models/note';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit, DoCheck {

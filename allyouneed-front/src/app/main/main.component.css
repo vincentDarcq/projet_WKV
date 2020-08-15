@@ -111,3 +111,9 @@ body{
 #actorSearch{
     width: 200px;
 }
+
+.my-custom-class .tooltip-inner {
+    background-color: darkgreen;
+    max-width: 60%;
+    font-size: 75%;
+  }

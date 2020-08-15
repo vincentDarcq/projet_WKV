@@ -27,7 +27,7 @@ export class MoviesService {
   private realisateurs : Array<string>;
   private wsUrl: string;
   private search = new Subject<any>();
-  private alloUrl = 'http://www.denismortier.be/lab/allocine_api/api.php?op=search&q=toy+story&type=film&par=2';
+  private alloUrl = 'http://www.omdbapi.com/?t=ronin&apikey=6b81888&type=movie';
 
   constructor(private httpClient: HttpClient) {
     this.movies = new Array();

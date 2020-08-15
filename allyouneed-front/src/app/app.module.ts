@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DialogModule } from 'primeng/dialog';
 import { StarRatingComponent } from './star-rating/star-rating.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 let config = new AuthServiceConfig([
@@ -64,7 +65,8 @@ export function provideConfig() {
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    DialogModule
+    DialogModule,
+    NgbModule
     ],
   providers: [
     {
