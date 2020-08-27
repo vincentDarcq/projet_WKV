@@ -57,36 +57,7 @@
             <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
           </div>
           <ng-template #tipContent>
-            <div class="row">
-              <div class="col-sm-6">
-                <label for="synopsis">Synopsis : </label>
-                {{ movie.synopsis }}
-                <p>
-                  <span>{{ movie.avertissement }}</span>    	
-                </p>
-                <p>
-                  <span><img src="{{ movie.pegi }}" style="width: 25px;"/></span>  	
-                </p>
-              </div>
-              <div class="col-sm-6">
-                <p>
-                  <label for="genres">Genres : </label>
-                  {{ movie.genre }}
-                </p>
-                <p>
-                  <label for="realisateur">realisateur : </label>
-                  {{ movie.realisateur }}
-                </p>
-                <p>
-                  <label for="casting">casting : </label>
-                  {{ movie.casting }}
-                </p>
-                <p>
-                  <label for="année">Année : </label>
-                  {{ movie.year }}
-                </p>
-              </div>
-            </div>
+            <app-infobulle [movie]="movie"></app-infobulle>
           </ng-template>
         </div>
       </div>
@@ -98,36 +69,7 @@
         <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
       </div>	
       <ng-template #tipContent>
-        <div class="row">
-          <div class="col-sm-6">
-            <label for="synopsis">Synopsis : </label>
-            {{ movie.synopsis }}
-            <p>
-              <span>{{ movie.avertissement }}</span>    	
-            </p>
-            <p>
-              <span><img src="{{ movie.pegi }}" style="width: 25px;"/></span>  	
-            </p>
-          </div>
-          <div class="col-sm-6">
-            <p>
-              <label for="genres">Genres : </label>
-              {{ movie.genre }}
-            </p>
-            <p>
-              <label for="realisateur">realisateur : </label>
-              {{ movie.realisateur }}
-            </p>
-            <p>
-              <label for="casting">casting : </label>
-              {{ movie.casting }}
-            </p>
-            <p>
-              <label for="année">Année : </label>
-              {{ movie.year }}
-            </p>
-          </div>
-        </div>
+        <app-infobulle [movie]="movie"></app-infobulle>
       </ng-template> 
     </div>
   </div> 

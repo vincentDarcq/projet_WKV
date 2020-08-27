@@ -25,6 +25,7 @@ import { DialogModule } from 'primeng/dialog';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CheckboxesComponent } from './checkboxes/checkboxes.component';
+import { InfobulleComponent } from './infobulle/infobulle.component';
 
 
 let config = new AuthServiceConfig([
@@ -54,7 +55,8 @@ export function provideConfig() {
     UserComponent,
     EditPasswordComponent,
     StarRatingComponent,
-    CheckboxesComponent
+    CheckboxesComponent,
+    InfobulleComponent
   ],
   imports: [
     BrowserAnimationsModule,
