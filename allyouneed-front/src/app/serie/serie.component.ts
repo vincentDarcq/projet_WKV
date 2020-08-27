@@ -10,8 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SerieComponent implements OnInit {
 
-  private idserie: Number;
-  private serie: Serie;
+  idserie: Number;
+  serie: Serie;
 
   constructor(private serieService: SeriesService,
               private route: ActivatedRoute) { 

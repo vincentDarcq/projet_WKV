@@ -12,8 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MovieFormComponent implements OnInit {
 
-  private newMovie: Movie;
-  private id: Number;
+  newMovie: Movie;
+  id: Number;
 
   constructor(private movieService: MoviesService,
               private route: ActivatedRoute,

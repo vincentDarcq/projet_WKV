@@ -15,16 +15,16 @@ import { NotesService } from '../services/notes.service';
 })
 export class MovieComponent implements OnInit {
 
-  private index: number;
-  private isFavori: boolean;
-  private idmovie: Number;
-  private movie: Movie;
-  private currentUser: User;
-  private comments: Array<Comment>;
-  private comment: string;
-  private noteMovie: Number;
-  private noteUserFromBack: Number;
-  private noteUser: Number;
+  index: number;
+  isFavori: boolean;
+  idmovie: Number;
+  movie: Movie;
+  currentUser: User;
+  comments: Array<Comment>;
+  comment: string;
+  noteMovie: Number;
+  noteUserFromBack: Number;
+  noteUser: Number;
 
   constructor(private movieService: MoviesService,
               private commentMovieService: CommentsService,
@@ -90,7 +90,7 @@ export class MovieComponent implements OnInit {
     this.noteUserFromBack = this.noteUser;
   }
 
-  onRateChange = (score) => {
+  onRateChange(score){
     this.noteUser = score;
   }
 }

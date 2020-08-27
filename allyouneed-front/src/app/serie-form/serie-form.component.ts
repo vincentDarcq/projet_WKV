@@ -10,8 +10,8 @@ import { SeriesService } from '../services/series.service';
 })
 export class SerieFormComponent implements OnInit {
 
-  private newSerie: Serie;
-  private id: Number;
+  newSerie: Serie;
+  id: Number;
 
   constructor(private serieService: SeriesService,
               private route: ActivatedRoute,

@@ -13,42 +13,40 @@ import { Note } from '../models/note';
 })
 export class MainComponent implements OnInit, DoCheck {
 
-  private movies: Array<Movie>;
-  private bestMovie: Movie;
-  private bestHeightMovies: Array<Movie>;
-  private bestGrades: Array<Movie>;
-  private movieSearched: Array<Movie>;
-  private moviesExcluded: Array<Movie>;
-  private genres: Array<string>;
-  private genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
-    "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
-  private genresAvance: Array<string>;
-  private avances : Array<string>;
-  private realisateurs: Array<string>;
-  private tenReals: Array<string>;
-  private tenR: Array<string>;
-  private tenActors: Array<string>;
-  private tenA: Array<string>;
-  private actors: Array<string>;
-  private genresSelected: Array<string>;
-  private realisateursSelected: Array<string>;
-  private actorsSelected: Array<string>;
-  private currentUser: User;
-  private notes: Array<Note>;
-  private exclusion: boolean = true;
-  private displayGenres: boolean = false;
-  private displayGenresAvance: boolean = false;
-  private displayRealisateurs: boolean = false;
-  private displayActeurs: boolean = false;
-  private bestMoviesChecked: boolean = false;
-  private genreFound: boolean = false;
-  private realFound: boolean = false;
-  private actorFound: boolean = false;
-  private genreInput: string;
-  private realInput: string;
-  private actorInput: string;
-  private search: string;
-  private searching: boolean = false;
+  movies: Array<Movie>;
+  bestMovie: Movie;
+  bestHeightMovies: Array<Movie>;
+  bestGrades: Array<Movie>;
+  movieSearched: Array<Movie>;
+  moviesExcluded: Array<Movie>;
+  genres: Array<string>;
+  genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
+  "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
+  genresAvance: Array<string>;
+  avances : Array<string>;
+  realisateurs: Array<string>;
+  tenReals: Array<string>;
+  tenActors: Array<string>;
+  actors: Array<string>;
+  genresSelected: Array<string>;
+  realisateursSelected: Array<string>;
+  actorsSelected: Array<string>;
+  currentUser: User;
+  notes: Array<Note>;
+  exclusion: boolean = true;
+  displayGenres: boolean = false;
+  displayGenresAvance: boolean = false;
+  displayRealisateurs: boolean = false;
+  displayActeurs: boolean = false;
+  bestMoviesChecked: boolean = false;
+  genreFound: boolean = false;
+  realFound: boolean = false;
+  actorFound: boolean = false;
+  genreInput: string;
+  realInput: string;
+  actorInput: string;
+  search: string;
+  searching: boolean = false;
 
   constructor(private movieService: MoviesService,
               private noteService: NotesService) {
@@ -67,15 +65,9 @@ export class MainComponent implements OnInit, DoCheck {
   ngOnInit() {   
     this.genresAvance = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
     "Musical", "Romance", "Super Héros", "Gore", "Français"]
-    this.avances = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
-    "Musical", "Romance", "Super Héros", "Gore", "Français"]
     this.tenReals = ["Steven Spielberg", "Michael Bay", "Tim Burton", "Ron Howard",
     "James Cameron", "Ridley Scott", "Chris Colombus", "Guy Ritchie", "Martin Scorcese", "David Fincher"]
-    this.tenR = ["Steven Spielberg", "Michael Bay", "Tim Burton", "Ron Howard",
-    "James Cameron", "Ridley Scott", "Chris Colombus", "Guy Ritchie", "Martin Scorcese", "David Fincher"]
     this.tenActors = ["Al Pacino", "Robert De Niro", "Leonardo DiCaprio", "Kevin Spacey",
-    "Marlon Brando", "Clint Eastwood", "Morgan Freeman", "Johnny Depp", "Jack Nicholson", "Joaquin Phoenix"]
-    this.tenA = ["Al Pacino", "Robert De Niro", "Leonardo DiCaprio", "Kevin Spacey",
     "Marlon Brando", "Clint Eastwood", "Morgan Freeman", "Johnny Depp", "Jack Nicholson", "Joaquin Phoenix"]
     this.movies = this.movieService.getMovies();
     this.genres = this.movieService.getGenres();
@@ -89,7 +81,7 @@ export class MainComponent implements OnInit, DoCheck {
       })
     }
 
-  testAllo(){
+  testIMDB(){
     this.movieService.getAllo()
   }
 
@@ -137,97 +129,38 @@ export class MainComponent implements OnInit, DoCheck {
     this.genreFound = false
     this.realFound = false
     this.actorFound = false
-    if(this.genres.indexOf(searchValue) !== -1){
+    if(this.genres.indexOf(searchValue.toLowerCase()) !== -1){
       this.genreFound = true;
       this.genreInput = searchValue
-    }else if(this.realisateurs.indexOf(searchValue) !== -1){
+    }else if(this.realisateurs.indexOf(searchValue.toLowerCase()) !== -1){
       this.realFound = true
       this.realInput = searchValue
-    }else if(this.actors.indexOf(searchValue) !== -1){
+    }else if(this.actors.indexOf(searchValue.toLowerCase()) !== -1){
       this.actorFound = true
       this.actorInput = searchValue
     }
   }
 
-  selected(selected: string){  
-    if(this.genreInput === selected){
-      this.genreFound = false
-    }else if(this.realInput === selected){
-      this.realFound = false
-    }else if(this.actorInput === selected){
-      this.actorFound = false
-    }
-    if(this.genres.indexOf(selected.toLowerCase()) !== -1){
-      if(this.genresSimple.indexOf(selected) !== -1){
-        this.genresSimple.splice(this.genresSimple.indexOf(selected), 1)
-      }
-      if(this.genresAvance.indexOf(selected) !== -1){
-        this.genresAvance.splice(this.genresAvance.indexOf(selected), 1)
-      }
-      this.genresSelected.push(selected)
+  selected(selected: Array<string>, type: string){  
+    if(type === "genres"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected)
-      } else{
-        this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected)
-      }
-    }else if(this.realisateurs.indexOf(selected.toLowerCase()) !== -1){
-      if(this.tenReals.indexOf(selected) !== -1){
-        this.tenReals.splice(this.tenReals.indexOf(selected), 1)
-      }
-      this.realisateursSelected.push(selected)
-      if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
-      }else {
-        this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
-      }
-    }else if(this.actors.indexOf(selected.toLowerCase()) !== -1){
-      if(this.tenActors.indexOf(selected) !== -1){
-        this.tenActors.splice(this.tenActors.indexOf(selected), 1)
-      }
-      this.actorsSelected.push(selected)
-      if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
-      }else {
-        this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
+        this.movies = this.movieService.getMovieByExclusionGenres(selected)
+      }else{
+        this.movies = this.movieService.getMovieByInclusionGenres(selected)
       }
     }
-  }
-
-  restored(restored: string){
-    var indexGenre = this.genresSelected.indexOf(restored)
-    var indexReal = this.realisateursSelected.indexOf(restored)
-    var indexActor = this.actorsSelected.indexOf(restored)
-    if(indexGenre !== -1){
-      if(this.avances.indexOf(restored) !== -1){
-        this.genresAvance.push(restored)
-      }else {
-        this.genresSimple.push(restored)
-      }
-      this.genresSelected.splice(this.genresSelected.indexOf(restored), 1)
+    if(type === "realisateurs"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionGenres(this.genresSelected);
-      } else{
-        this.movies = this.movieService.getMovieByInclusionGenres(this.genresSelected);
-      }
-    }else if(indexReal !== -1){
-      if(this.tenR.indexOf(restored) !== -1){
-        this.tenReals.push(restored)
-      }
-      this.realisateursSelected.splice(this.realisateursSelected.indexOf(restored), 1)
-      if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionReals(this.realisateursSelected);
+        this.movies = this.movieService.getMovieByExclusionReals(selected);
       }else {
-        this.movies = this.movieService.getMovieByInclusionReals(this.realisateursSelected);
+        this.movies = this.movieService.getMovieByInclusionReals(selected);
       }
-    }else if(indexActor !== -1){
-      if(this.tenA.indexOf(restored) !== -1){
-        this.tenActors.push(restored)
-      }
-      this.actorsSelected.splice(this.actorsSelected.indexOf(restored), 1)
+    }
+    if(type === "acteurs"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionActors(this.actorsSelected);
+        this.movies = this.movieService.getMovieByExclusionActors(selected);
       }else {
-        this.movies = this.movieService.getMovieByInclusionActors(this.actorsSelected);
+        this.movies = this.movieService.getMovieByInclusionActors(selected);
       }
     }
   }
@@ -248,14 +181,6 @@ export class MainComponent implements OnInit, DoCheck {
     this.displayGenresAvance = false;
   }
 
-  showGenresExclus(){
-    document.getElementById("genresExclus").style.display = "block";
-  }
-
-  hideGenresExclus(){
-    document.getElementById("genresExclus").style.display = "none";
-  }
-
   showRealisateurs(){
     this.displayRealisateurs = true;
   }
@@ -264,28 +189,12 @@ export class MainComponent implements OnInit, DoCheck {
     this.displayRealisateurs = false;
   }
 
-  showRealsExclus(){
-    document.getElementById("realsExclus").style.display = "block";
-  }
-
-  hideRealsExclus(){
-    document.getElementById("realsExclus").style.display = "none";
-  }
-
   showActeurs(){
     this.displayActeurs = true;
   }
 
   hideActeurs(){
     this.displayActeurs = false;
-  }
-
-  showActorsExclus(){
-    document.getElementById("actorsExclus").style.display = "block";
-  }
-
-  hideActorsExclus(){
-    document.getElementById("actorsExclus").style.display = "none";
   }
 
 }

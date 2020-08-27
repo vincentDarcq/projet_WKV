@@ -15,15 +15,15 @@ export class SeriesService {
   private present: Boolean;
   private index: Number;
   private series : Array<Serie>;
-  private seriesByExclusionSimple: Array<Serie>;
-  private seriesByExclusionAvancee: Array<Serie>;
+  private seriesByExclusionGenres: Array<Serie>;
+  private seriesByInclusionGenres: Array<Serie>;
   private genres : Array<String>;
   wsUrl: string;
 
   constructor(private httpClient: HttpClient) {
     this.series = new Array();
-    this.seriesByExclusionSimple = new Array();
-    this.seriesByExclusionAvancee = new Array();
+    this.seriesByExclusionGenres = new Array();
+    this.seriesByInclusionGenres = new Array();
     this.genres = new Array();
     this.wsUrl = ENV.apiUrl + '/series';
    }
@@ -48,7 +48,7 @@ export class SeriesService {
       this.httpClient.post<Serie>(this.wsUrl, serie)
       .subscribe((serieFromJee) => this.series.push(new Serie(serieFromJee.titre,
         serieFromJee.synopsis, serieFromJee.id, serieFromJee.genre, serieFromJee.casting,
-        serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.BA))
+        serieFromJee.creator, serieFromJee.seasons, serieFromJee.cov, serieFromJee.ba))
         );
   }
 
@@ -60,7 +60,7 @@ export class SeriesService {
         if (index >= 0) {
           this.series.splice(index, 1, new Serie(serieFromJee.titre,
             serieFromJee.synopsis, serieFromJee.id, serieFromJee.genre, serieFromJee.casting,
-            serieFromJee.createur, serieFromJee.saisons, serieFromJee.cov, serieFromJee.BA));
+            serieFromJee.creator, serieFromJee.seasons, serieFromJee.cov, serieFromJee.ba));
         }
       });
   }
@@ -75,8 +75,8 @@ export class SeriesService {
     return this.genres;
   }
 
-  public getSerieByExclusionSimple(genres: Array<String>): Array<Serie> {
-    this.seriesByExclusionSimple.splice(0, this.seriesByExclusionSimple.length);
+  public getSerieByExclusionGenres(genres: Array<String>): Array<Serie> {
+    this.seriesByExclusionGenres.splice(0, this.seriesByExclusionGenres.length);
     for(let serie of this.series) {
       this.present = false;
       for(let genre of genres) {
@@ -88,43 +88,29 @@ export class SeriesService {
         }				
       }
       if(!this.present) {
-        this.seriesByExclusionSimple.push(serie);
+        this.seriesByExclusionGenres.push(serie);
       }
     }
-    return this.seriesByExclusionSimple;
+    return this.seriesByExclusionGenres;
   }
 
-  public getSerieByExclusionAvancee(genres: Array<String>): Array<Serie>{
-    this.seriesByExclusionAvancee.splice(0, this.seriesByExclusionAvancee.length);
-    for(let movie of this.series) {
-      this.nbGenres = 0;
+  public getSerieByInclusionGenres(genres: Array<String>): Array<Serie> {
+    this.seriesByInclusionGenres.splice(0, this.seriesByInclusionGenres.length);
+    for(let serie of this.series) {
+      this.present = false;
       for(let genre of genres) {
-        if(JSON.stringify(movie.genre) != "") {
-          this.index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
+        if(JSON.stringify(serie.genre) != "") {
+          this.index = serie.genre.toLowerCase().indexOf(genre.toLowerCase());
           if(this.index != -1) {
-            this.nbGenres ++;
+            this.seriesByInclusionGenres.push(serie)
           }
-        }
-      }
-      if(this.nbGenres != this.nombreAttributs(movie.genre)){
-        this.seriesByExclusionAvancee.push(movie);
+        }				
       }
     }
-    return this.seriesByExclusionAvancee;
-  }
-
-  public nombreAttributs(attributs: String): Number {
-    this.nb = 1;
-    this.plusieurs = attributs.indexOf(", ");
-    if(this.plusieurs == -1) {
-      return this.nb;
+    if(genres.length >= 1){
+      return this.seriesByInclusionGenres;
     }else {
-      while(this.plusieurs != -1) {
-        attributs = attributs.substring(this.plusieurs+2);
-        this.plusieurs = attributs.indexOf(", ");
-        this.nb ++;
-      }
-      return this.nb;
+      return this.series;
     }
   }
 

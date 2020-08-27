@@ -12,9 +12,8 @@ export class Movie {
     avertissement: string;
     note: Number;
 
-    constructor(titre?: string, synopsis?: string, id?: number, 
-        genres?: string, casting?: string, realisateur?: string, 
-        cov?: string, year?: number, pegi?: string, avertissement?: string) {
+    constructor(titre?: string, synopsis?: string, genres?: string, casting?: string, realisateur?: string, 
+        cov?: string, year?: number, pegi?: string, avertissement?: string, id?: number) {
 
         this.titre = titre;
         this.synopsis = synopsis;

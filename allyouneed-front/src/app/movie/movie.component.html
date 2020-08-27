@@ -54,12 +54,12 @@
         <label for="année">Année : </label>
         <p>{{ movie.year }}</p>
       </div>
-      <nav class="navbar navbar-default">
-        <ul class="nav navbar-nav">
-          <li routerLinkActive="active">
+      <nav class="navbar navbar-expand-lg">
+        <ul class="navbar-nav mr-auto">
+          <li routerLinkActive="nav-item active">
             <a [routerLink]="['/movieForm', movie.id ]" class="nav-link"><button class="btn btn-primary">Modifier le film</button></a>
           </li>
-          <li *ngIf="!isFavori" routerLinkActive="active">
+          <li *ngIf="!isFavori" routerLinkActive="nav-item active">
             <a (click)="ajouterFavoris()" class="nav-link"><button class="btn btn-primary">ajouter aux favoris</button></a>
           </li>
         </ul>

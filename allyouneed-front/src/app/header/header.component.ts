@@ -12,9 +12,9 @@ import { MoviesService } from '../services/movies.service';
 })
 export class HeaderComponent implements OnInit, DoCheck {
 
-  private user: User;
+  user: User;
   loggedIn: boolean;
-  public search: string;
+  search: string;
 
   constructor(private loginService: LoginService,
               private movieService: MoviesService,

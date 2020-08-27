@@ -27,7 +27,11 @@ export class MoviesService {
   private realisateurs : Array<string>;
   private wsUrl: string;
   private search = new Subject<any>();
-  private alloUrl = 'http://www.omdbapi.com/?t=ronin&apikey=6b81888&type=movie';
+  private alloUrl = 'http://www.omdbapi.com/?apikey=6b81888&s=inception';
+  private genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
+    "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
+  private genresAvance = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
+    "Musical", "Romance", "Super Héros", "Gore", "Français"];
 
   constructor(private httpClient: HttpClient) {
     this.movies = new Array();
@@ -78,9 +82,9 @@ export class MoviesService {
   public createMovie(movie: Movie) {
       this.httpClient.post<Movie>(this.wsUrl, movie)
       .subscribe((movieFromJee) => this.movies.push(new Movie(movieFromJee.titre,
-        movieFromJee.synopsis, movieFromJee.id, movieFromJee.genre, movieFromJee.casting,
+        movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
         movieFromJee.realisateur, movieFromJee.cov, movieFromJee.year, movieFromJee.pegi,
-        movieFromJee.avertissement))
+        movieFromJee.avertissement, movieFromJee.id))
         );
   }
 
@@ -90,16 +94,43 @@ export class MoviesService {
         const index = this.getIndexMovie(movie.id);
         if (index >= 0) {
           this.movies.splice(index, 1, new Movie(movieFromJee.titre,
-            movieFromJee.synopsis, movieFromJee.id, movieFromJee.genre, movieFromJee.casting,
+            movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
             movieFromJee.realisateur, movieFromJee.cov, movieFromJee.year, movieFromJee.pegi,
-            movieFromJee.avertissement));
+            movieFromJee.avertissement, movieFromJee.id));
         }
       });
   }
 
   public getAllo(){
+    var newMovie
     this.httpClient.get(this.alloUrl)
-    .subscribe((list: any) => console.log(list))
+    .subscribe((movie: any) => {
+      console.log(movie.Search)
+      //newMovie = new Movie(movie.Title, movie.Plot, this.getGenresFromApi(movie.Genre), movie.Actors, movie.Director, movie.Poster,
+      //movie.Year)
+      //this.createMovie(newMovie)
+    })
+  }
+
+  getGenresFromApi(genre: string): string{
+    var genres = ""
+    while(genre.indexOf(", ") !== -1){
+      if(this.genresSimple.indexOf(genre.substring(0, genre.indexOf(", "))) !== -1 || 
+      this.genresAvance.indexOf(genre.substring(0, genre.indexOf(", "))) !== -1){
+        if(genres !== ""){
+          genres = genres + genre.substring(0, genre.indexOf(", "))
+        }else {
+          genres = genres + genre.substring(0, genre.indexOf(", ")) + ", "
+        }
+        genre = genre.substring(genre.indexOf(", ")+2)
+      }else {
+        genre = genre.substring(genre.indexOf(", ")+2)
+      }
+    }
+    if(this.genresSimple.indexOf(genre) !== -1 || this.genresAvance.indexOf(genre) !== -1){
+      genres = genres + genre
+    }
+    return genres
   }
 
   public getGenres(): Array<string> {

@@ -1,0 +1,24 @@
+.corbeille
+{
+    position: relative;
+    top: 20px;
+    right: 0;
+    width: 75px;
+}
+
+.checkbox{
+    margin-right: 5px;
+}
+
+#itemsExclus
+{
+    display: none;
+    position: absolute; 
+    width: 40%; 
+    height: 40%; 
+    top: 70px;
+    right: 250px;
+    background-color: rgb(100, 169, 174); 
+    overflow: scroll;
+    border:3px solid black;
+}

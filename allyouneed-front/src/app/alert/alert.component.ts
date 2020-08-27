@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./alert.component.css']
 })
 export class AlertComponent implements OnInit {
-  private subscription: Subscription;
+  subscription: Subscription;
   message: any;
 
   constructor(private alertService: AlertService) { }

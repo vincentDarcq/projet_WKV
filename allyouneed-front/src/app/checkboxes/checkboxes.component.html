@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-sm-10">
+        <div *ngIf="itemFound">
+            <input type="checkbox" (change)="selected(itemInput)" class="checkbox">
+            <label for="{{ itemInput }}" i18n>{{ itemInput }}</label>
+        </div>
+        <div *ngFor="let item of items">
+            <div class="col-sm-3">
+                <input type="checkbox" (change)="selected(item)" class="checkbox">
+                <label i18n>{{ item }}</label>
+            </div>	
+        </div> 
+    </div>
+    <div class="col-sm-2">
+        <img class="corbeille" (click)="showItemsExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
+    </div>  
+</div>
+<div id="itemsExclus">
+    <div *ngFor="let item of itemSelected">
+      <div class="col-sm-3">
+        <input type="checkbox" id="{{ item }}" (change)="restored(item)" class="checkbox">
+        <label for="{{ item }}" i18n>{{ item }} : </label>
+      </div>	
+    </div>
+    <button (click)="hideItemsExclus()" class="closePopup" i18n>Fermer</button>
+</div>

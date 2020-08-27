@@ -1,25 +1,90 @@
 <body>
-  <div class="container mt-5 card"> 	
-  <nav class="navbar navbar-expand-sm bg-light justify-content">
-    <ng-container class="row" *ngIf="modeExcSimple">
-      <h2>Exclusion genres simple</h2>
-    </ng-container>
-  </nav>
-  <div class="row">
-    <div *ngFor="let genre of genres">
+  <div class="container"> 	
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion">Mode Inclusion</button>
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion">Mode Exclusion</button>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="btn btn-succes">genres simples</div>
+        <img *ngIf="!displayGenres" class="double_arrows" (click)="showGenresSimples()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
+        <img *ngIf="displayGenres" class="double_arrows" (click)="hideGenresSimples()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
+      </div>
+      <div class="col-sm-3">
+        <div class="btn btn-succes">genres avancés</div>
+        <img *ngIf="!displayGenresAvance" class="double_arrows" (click)="showGenresAvance()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
+        <img *ngIf="displayGenresAvance" class="double_arrows" (click)="hideGenresAvance()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
+        <input *ngIf="displayGenresAvance" (input)="genreAvanceSearched($event.target.value)" type="text" class="form-control" id="genreSearch"/>
+      </div>
+      <div class="col-sm-3">
+        <div class="btn btn-succes">Réalisateurs</div>
+        <img *ngIf="!displayRealisateurs" class="double_arrows" (click)="showRealisateurs()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
+        <img *ngIf="displayRealisateurs" class="double_arrows" (click)="hideRealisateurs()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
+        <input *ngIf="displayRealisateurs" (input)="searched($event.target.value)" type="text" class="form-control" id="realSearch"/>
+      </div>
+      <div class="col-sm-3">
+        <div class="btn btn-succes">Acteurs</div>
+        <img *ngIf="!displayActeurs" class="double_arrows" (click)="showActeurs()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
+        <img *ngIf="displayActeurs" class="double_arrows" (click)="hideActeurs()" src="https://image.flaticon.com/icons/svg/60/60640.svg">  
+        <input *ngIf="displayActeurs" (input)="searched($event.target.value)" type="text" class="form-control" id="actorSearch"/>
+      </div>
+    </div>
+    <p-dialog [(visible)]="displayGenres">
+      <div class="col-sm-10">
+        <div *ngIf="genreFound">
+          <label for="{{ genreInput }}">{{ genreInput }} : </label>
+          <input type="checkbox" (change)="selected(genreInput)" class="form-control">
+        </div>
+        <div *ngFor="let genre of genresSimple">
+          <div class="col-sm-2">
+            <label for="{{ genre }}">{{ genre }} : </label>
+            <input type="checkbox" (change)="selected(genre)" class="form-control">
+          </div>	
+        </div> 
+      </div>
       <div class="col-sm-2">
-        <label for="{{ genre }}">{{ genre }} : </label>
-        <input type="checkbox" id="{{ genre }}" (change)="genreSelected()" class="form-control">
-      </div>	 
-    </div> 
-  </div>
+        <img class="corbeille" (click)="showGenresExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
+      </div>  
+    </p-dialog>
+    <div id="genresExclus">
+      <div *ngFor="let genre of genresSelected">
+        <div class="col-sm-2">
+          <label for="{{ genre }}">{{ genre }} : </label>
+          <input type="checkbox" id="{{ genre }}" (change)="restored(genre)" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
+    </div>  
+    <p-dialog [(visible)]="displayGenresAvance">
+      <div class="col-sm-10">
+        <div *ngIf="genreFound">
+          <label for="{{ genreInput }}">{{ genreInput }} : </label>
+          <input type="checkbox" (change)="selected(genreInput)" class="form-control">
+        </div>
+        <div *ngFor="let genre of genresAvance">
+          <div class="col-sm-2">
+            <label for="{{ genre }}">{{ genre }} : </label>
+            <input type="checkbox" (change)="selected(genre)" class="form-control">
+          </div>	
+        </div> 
+      </div>
+      <div class="col-sm-2">
+        <img class="corbeille" (click)="showGenresExclus()" src="https://image.flaticon.com/icons/svg/3221/3221845.svg">
+      </div>  
+    </p-dialog>
+    <div id="genresExclus">
+      <div *ngFor="let genre of genresSelected">
+        <div class="col-sm-2">
+          <label for="{{ genre }}">{{ genre }} : </label>
+          <input type="checkbox" id="{{ genre }}" (change)="restored(genre, 'avance')" class="form-control">
+        </div>	
+      </div>
+      <button (click)="hideGenresExclus()" class="closePopup">Fermer</button>
+    </div>     
   <a [routerLink]="['/serieForm']"><button class="btn btn-succes">Ajouter une serie</button></a>
-  <div class="row">
-    <div *ngFor="let serie of series">
-      <div class="col-sm-2" id="series">
-        <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" class="image" alt="{{ serie.titre }}"/></a>    	
-      </div>	 
-    </div>   	        
-  </div>
+  <h2><strong>Les séries</strong></h2>
+  <div *ngFor="let serie of series">
+    <div class="col-sm-2" id="series">
+      <a [routerLink]="['/serie', serie.id ]"><img src="{{ serie.cov }}" class="image" alt="{{ serie.titre }}"/></a>    	
+    </div>	 
+  </div>   	        
 </div> 
 </body>

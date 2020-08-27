@@ -8,20 +8,6 @@
     padding: 10px;
 }
 
-#movie:hover ~ .popup
-{
-    position: fixed;
-    display: block;
-    top: 0;
-    background-color: rgba(0,0,0,1);
-    color: white;
-}
-
-.popup
-{
-    display: none;
-}
-
 .image
 {
     width: 150px;
@@ -79,14 +65,6 @@
     float: right;
 }
 
-.corbeille
-{
-    position: relative;
-    top: 20px;
-    right: 0;
-    width: 75px;
-}
-
 body{
     background-color:#478688;
 }
@@ -113,7 +91,9 @@ body{
 }
 
 .my-custom-class .tooltip-inner {
-    background-color: darkgreen;
-    max-width: 60%;
+    background-color: darkblue;
+    max-width: 50%;
     font-size: 75%;
   }
+
+

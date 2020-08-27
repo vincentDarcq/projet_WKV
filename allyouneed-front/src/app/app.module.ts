@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +24,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DialogModule } from 'primeng/dialog';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CheckboxesComponent } from './checkboxes/checkboxes.component';
 
 
 let config = new AuthServiceConfig([
@@ -52,7 +53,8 @@ export function provideConfig() {
     SerieComponent,
     UserComponent,
     EditPasswordComponent,
-    StarRatingComponent
+    StarRatingComponent,
+    CheckboxesComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -71,7 +73,7 @@ export function provideConfig() {
   providers: [
     {
       provide: AuthServiceConfig,
-      useFactory: provideConfig
+      useFactory: provideConfig,
     }
   ],
   bootstrap: [AppComponent]

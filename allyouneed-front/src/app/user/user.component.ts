@@ -10,9 +10,9 @@ import { Movie } from '../models/movie';
 })
 export class UserComponent implements OnInit, DoCheck {
 
-  private user: User;
-  private movies: Array<Movie>;
-  private favoris: Array<Movie>;
+  user: User;
+  movies: Array<Movie>;
+  favoris: Array<Movie>;
   favorisFilled: boolean = false;
 
   constructor(private movieService: MoviesService) { 
