@@ -1,76 +1,86 @@
-<body>
-  <div class="container"> 	
-    <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion">Mode Inclusion</button>
-    <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion">Mode Exclusion</button>
+<div class="container"> 
+  <h2>Vous ne savez pas ce que vous voulez, mais vous savez ce que vous ne voulez pas... Exclusio est là !</h2>
+  <h3>Un simple clique et vous enlevez ce qui ne vous plait pas, Exclusio se charge du reste !</h3>	
+  <div class="mode">
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion">Passer en mode Inclusion</button>
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion">Passer en mode Exclusion</button>
+    <button (click)="testIMDB()">test Api</button>
+  </div>
+  <ul>
+    <li [ngClass]="{'items':displayGenres}">
+      <button (click)="displayBoxes('genresSimples')" class="btn btn-link mb-2" i18n>Exclusions simples</button>
+    </li>
+    <li [ngClass]="{'items':displayGenresAvance}">
+      <button (click)="displayBoxes('genresAvances')" class="btn btn-link mb-2" i18n>Sous genres</button>
+      <input *ngIf="displayGenresAvance" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    </li>
+    <li [ngClass]="{'items':displayRealisateurs}">
+      <button (click)="displayBoxes('reals')" class="btn btn-link mb-2" i18n>Réalisateurs</button>
+      <input *ngIf="displayRealisateurs" placeholder="Chercher un réalisateur" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    </li>
+    <li [ngClass]="{'items':displayActeurs}">
+      <button (click)="displayBoxes('acteurs')" class="btn btn-link mb-2" i18n>Acteurs</button>
+      <input *ngIf="displayActeurs" placeholder="Chercher un acteur" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    </li>
+  </ul>
+  <app-checkboxes *ngIf="displayGenres" [items]="genresSimple" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayGenresAvance" [items]="genresAvance" [itemFound]="genreFound" [itemInput]="genreInput" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayRealisateurs" [items]="tenReals" [itemFound]="realFound" [itemInput]="realInput" (itemsSelected)="selected($event, 'realisateurs')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayActeurs" [items]="tenActors" [itemFound]="actorFound" [itemInput]="actorInput" (itemsSelected)="selected($event, 'acteurs')"></app-checkboxes>     
+  <br>
+  <div *ngIf="searching">
+    <h2><strong>Votre Recherche</strong></h2>
     <div class="row">
-      <div class="col-sm">
-        <div class="btn btn-succes" i18n>genres simples</div>
-        <img *ngIf="!displayGenres" class="double_arrows" (click)="showGenresSimples()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
-        <img *ngIf="displayGenres" class="double_arrows" (click)="hideGenresSimples()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
-      </div>
-      <div class="col-sm">
-        <div class="btn btn-succes" i18n>genres avancés</div>
-        <img *ngIf="!displayGenresAvance" class="double_arrows" (click)="showGenresAvance()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
-        <img *ngIf="displayGenresAvance" class="double_arrows" (click)="hideGenresAvance()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
-        <input *ngIf="displayGenresAvance" (input)="genreAvanceSearched($event.target.value)" type="text" class="form-control" id="genreSearch"/>
-      </div>
-      <div class="col-sm">
-        <div class="btn btn-succes" i18n>Réalisateurs</div>
-        <img *ngIf="!displayRealisateurs" class="double_arrows" (click)="showRealisateurs()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
-        <img *ngIf="displayRealisateurs" class="double_arrows" (click)="hideRealisateurs()" src="https://image.flaticon.com/icons/svg/60/60640.svg">
-        <input *ngIf="displayRealisateurs" (input)="searched($event.target.value)" type="text" class="form-control" id="realSearch"/>
-      </div>
-      <div class="col-sm">
-        <div class="btn btn-succes" i18n>Acteurs</div>
-        <img *ngIf="!displayActeurs" class="double_arrows" (click)="showActeurs()" src="https://image.flaticon.com/icons/svg/60/60920.svg">
-        <img *ngIf="displayActeurs" class="double_arrows" (click)="hideActeurs()" src="https://image.flaticon.com/icons/svg/60/60640.svg">  
-        <input *ngIf="displayActeurs" (input)="searched($event.target.value)" type="text" class="form-control" id="actorSearch"/>
-      </div>
-    </div>
-    <app-checkboxes *ngIf="displayGenres" [items]="genresSimple" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
-    <app-checkboxes *ngIf="displayGenresAvance" [items]="genresAvance" [itemFound]="genreFound" [itemInput]="genreInput" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
-    <app-checkboxes *ngIf="displayRealisateurs" [items]="tenReals" [itemFound]="realFound" [itemInput]="realInput" (itemsSelected)="selected($event, 'realisateurs')"></app-checkboxes>  
-    <app-checkboxes *ngIf="displayActeurs" [items]="tenActors" [itemFound]="actorFound" [itemInput]="actorInput" (itemsSelected)="selected($event, 'acteurs')"></app-checkboxes>     
-    <div *ngIf="searching">
-      <h2><strong>Votre Recherche</strong></h2>
-      <div class="row">
-        <div *ngFor="let movie of movieSearched">
-          <div class="col-sm-2" id="movie">
-            <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
-          </div>
+      <div *ngFor="let movie of movieSearched">
+        <div class="col-sm-2" id="movie">
+          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
         </div>
       </div>
     </div>
-    <div *ngIf="bestMoviesChecked">
-      <h2><strong i18n>Selection</strong></h2>
-      <div class="col-sm-3" id="bestMovie">
-        <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov }}" class="image" alt="{{ bestMovie.titre }}"></a>
-        <br>
-        <div class="block">
-          <app-star-rating [score]="bestMovie.note" [forDisplay]="true"></app-star-rating>
-        </div> 
-        {{ bestMovie.year }}
-      </div>
-      <div class="col-sm-9">
-        <div *ngFor="let movie of bestHeightMovies">
-          <div class="col-sm-3" id="movie" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
-            <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
-          </div>
-          <ng-template #tipContent>
-            <app-infobulle [movie]="movie"></app-infobulle>
-          </ng-template>
+  </div>
+  <ul>
+    <li class="navbar-nav mr-auto">
+      <h1><strong i18n>Selection de films</strong></h1>
+    </li>
+  </ul>
+  <ul class="navbar-nav mr-auto navbar-right">
+    <div class="checkboxrondes">
+      Compact <input type="checkbox" class="rond">
+      Complet <input type="checkbox" class="rond">
+    </div>
+  </ul>
+  <hr>
+  <div *ngIf="bestMoviesChecked" id="bestMoviesChecked" class="row">
+    <div class="col-sm-3" id="bestMovie">
+      <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov }}" class="image" alt="{{ bestMovie.titre }}"></a>
+      <br>
+      {{ bestMovie.titre }}
+      <div class="block">
+        <app-star-rating [score]="bestMovie.note" [forDisplay]="true"></app-star-rating>
+      </div> 
+      {{ bestMovie.year }}<br>
+      <div class="synospis">{{ bestMovie.synopsis }}</div>
+    </div>
+    <div class="col-sm-9">
+      <div *ngFor="let movie of bestEightMovies">
+        <div class="col-sm-3" id="bestEightMovie" openDelay="1000" placement="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
+          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
         </div>
+        <ng-template #tipContent>
+          <app-infobulle [movie]="movie"></app-infobulle>
+        </ng-template>
       </div>
     </div>
-    <a [routerLink]="['/movieForm']"><button class="btn btn-primary">Ajouter un film</button></a>
-    <h2><strong>Les films</strong></h2>
-    <div *ngFor="let movie of movies">
-      <div class="col-sm-2" id="movie" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
-        <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
-      </div>	
-      <ng-template #tipContent>
-        <app-infobulle [movie]="movie"></app-infobulle>
-      </ng-template> 
-    </div>
-  </div> 
-</body>
+  </div>
+  <a [routerLink]="['/movieForm']"><button class="btn btn-primary">Ajouter un film</button></a>
+  <h1><strong>Les films</strong></h1>
+  <div *ngFor="let movie of movies">
+    <div class="col-sm-2" id="movie" openDelay="1000" position="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
+      <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+    </div>	
+    <ng-template #tipContent>
+      <app-infobulle [movie]="movie"></app-infobulle>
+    </ng-template> 
+  </div>
+</div> 
+

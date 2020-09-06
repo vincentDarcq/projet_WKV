@@ -34,6 +34,7 @@ export class MovieComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    this.movieService.getMovies()
     this.idmovie = Number(this.route.snapshot.params.id);
     this.movie = this.movieService.getMovie(this.idmovie);
     this.comments = this.commentMovieService.getCommentsMovie(this.idmovie);

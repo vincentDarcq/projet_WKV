@@ -25,7 +25,7 @@ export class CheckboxesComponent implements OnInit{
       this.itemFound = false
     }
     this.items.splice(this.items.indexOf(selected), 1)
-    this.itemSelected.push(selected.toLowerCase())
+    this.itemSelected.push(selected)
     this.itemsSelected.next(this.itemSelected)
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { User } from '../models/user';
 import { AuthService } from "angularx-social-login";
@@ -14,7 +14,8 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   user: User;
   loggedIn: boolean;
-  search: string;
+  @Output() search = new EventEmitter();
+  movieSearch: string
 
   constructor(private loginService: LoginService,
               private movieService: MoviesService,
@@ -29,7 +30,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(){
-    this.sendSearchToMain()
+    this.search.next(this.movieSearch)
   }
 
   logout(){
@@ -38,10 +39,6 @@ export class HeaderComponent implements OnInit, DoCheck {
     });
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  sendSearchToMain(){
-    this.movieService.setSearch(this.search);
   }
 
   signOutwithFB(): void {

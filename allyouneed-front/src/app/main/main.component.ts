@@ -15,11 +15,11 @@ export class MainComponent implements OnInit, DoCheck {
 
   movies: Array<Movie>;
   bestMovie: Movie;
-  bestHeightMovies: Array<Movie>;
+  bestEightMovies: Array<Movie>;
   bestGrades: Array<Movie>;
   movieSearched: Array<Movie>;
   moviesExcluded: Array<Movie>;
-  genres: Array<string>;
+  genre: Array<string>;
   genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
   "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
   genresAvance: Array<string>;
@@ -34,7 +34,7 @@ export class MainComponent implements OnInit, DoCheck {
   currentUser: User;
   notes: Array<Note>;
   exclusion: boolean = true;
-  displayGenres: boolean = false;
+  displayGenres: boolean = true;
   displayGenresAvance: boolean = false;
   displayRealisateurs: boolean = false;
   displayActeurs: boolean = false;
@@ -45,7 +45,6 @@ export class MainComponent implements OnInit, DoCheck {
   genreInput: string;
   realInput: string;
   actorInput: string;
-  search: string;
   searching: boolean = false;
 
   constructor(private movieService: MoviesService,
@@ -53,51 +52,39 @@ export class MainComponent implements OnInit, DoCheck {
 
     this.moviesExcluded = new Array();
     this.movieSearched = new Array();
-    this.bestHeightMovies = new Array();
+    this.bestEightMovies = new Array();
     this.bestGrades = new Array();
+    this.genre = new Array();
     this.genresSelected = new Array();
     this.genresAvance = new Array();
     this.realisateursSelected = new Array();
+    this.tenActors = new Array();
     this.actorsSelected = new Array();
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }  
   
   ngOnInit() {   
-    this.genresAvance = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
-    "Musical", "Romance", "Super Héros", "Gore", "Français"]
-    this.tenReals = ["Steven Spielberg", "Michael Bay", "Tim Burton", "Ron Howard",
-    "James Cameron", "Ridley Scott", "Chris Colombus", "Guy Ritchie", "Martin Scorcese", "David Fincher"]
-    this.tenActors = ["Al Pacino", "Robert De Niro", "Leonardo DiCaprio", "Kevin Spacey",
-    "Marlon Brando", "Clint Eastwood", "Morgan Freeman", "Johnny Depp", "Jack Nicholson", "Joaquin Phoenix"]
+    this.tenReals = this.movieService.getTenReals();
+    this.tenActors = this.movieService.getTenActors();
     this.movies = this.movieService.getMovies();
-    this.genres = this.movieService.getGenres();
+    this.genre = this.movieService.getGenres();
     this.actors = this.movieService.getActors();
     this.realisateurs = this.movieService.getRealisateurs();
     this.notes = this.noteService.getNotes();
     this.bestGrades = this.noteService.getBestNotes();
     this.movieService.getSearch().subscribe(
       (search) => {
-        this.search = search
+        this.movieSearch(search)
       })
     }
 
   testIMDB(){
-    this.movieService.getAllo()
+    this.movieService.getApi()
   }
 
   ngDoCheck(): void {
-    if(typeof this.search !== 'undefined' && this.search !== ""){
-      this.movieSearched.splice(0, this.movieSearched.length)
-      for(let movie of this.movies){
-        if(movie.titre.toLowerCase().indexOf(this.search) !== -1){
-          if(this.movieSearched.indexOf(movie) === -1){
-            this.movieSearched.push(movie);
-            this.searching = true;
-          }
-        }
-      }
-    }else {
-      this.searching = false;
+    if(this.genre.length > 0 && this.genresAvance.length === 0){
+      this.genresAvance = this.movieService.getGenresAvances();
     }
     if(this.bestGrades.length >=1 && !this.bestMoviesChecked){
       this.bestMoviesChecked = true;
@@ -116,8 +103,24 @@ export class MainComponent implements OnInit, DoCheck {
       }
       this.bestMovie = this.bestGrades[0];
       for(let i=1; i<9; i++){
-        this.bestHeightMovies.push(this.bestGrades[i]);
+        this.bestEightMovies.push(this.bestGrades[i]);
       }
+    }
+  }
+
+  movieSearch(search: string){
+    if(typeof search !== 'undefined' && search !== ""){
+      this.movieSearched.splice(0, this.movieSearched.length)
+      for(let movie of this.movies){
+        if(movie.titre.toLowerCase().indexOf(search) !== -1){
+          if(this.movieSearched.indexOf(movie) === -1){
+            this.movieSearched.push(movie);
+            this.searching = true;
+          }
+        }
+      }
+    }else {
+      this.searching = false;
     }
   }
 
@@ -129,7 +132,7 @@ export class MainComponent implements OnInit, DoCheck {
     this.genreFound = false
     this.realFound = false
     this.actorFound = false
-    if(this.genres.indexOf(searchValue.toLowerCase()) !== -1){
+    if(this.genresAvance.indexOf(searchValue.toLowerCase()) !== -1){
       this.genreFound = true;
       this.genreInput = searchValue
     }else if(this.realisateurs.indexOf(searchValue.toLowerCase()) !== -1){
@@ -165,36 +168,28 @@ export class MainComponent implements OnInit, DoCheck {
     }
   }
 
-  showGenresSimples(){
-    this.displayGenres = true;
-  }
-
-  hideGenresSimples(){
-    this.displayGenres = false;
-  }
-
-  showGenresAvance(){
-    this.displayGenresAvance = true;
-  }
-
-  hideGenresAvance(){
-    this.displayGenresAvance = false;
-  }
-
-  showRealisateurs(){
-    this.displayRealisateurs = true;
-  }
-
-  hideRealisateurs(){
-    this.displayRealisateurs = false;
-  }
-
-  showActeurs(){
-    this.displayActeurs = true;
-  }
-
-  hideActeurs(){
+  displayBoxes(type: string){
+    if(type === "genresSimples"){
+      this.displayGenres = !this.displayGenres;
+      this.displayGenresAvance = false;
+      this.displayRealisateurs = false;
+      this.displayActeurs = false;
+    }else if(type === "genresAvances"){
+      this.displayGenresAvance = !this.displayGenresAvance;
+      this.displayGenres = false;
+      this.displayRealisateurs = false;
     this.displayActeurs = false;
+    }else if(type === "reals"){
+      this.displayRealisateurs = !this.displayRealisateurs;
+      this.displayGenres = false;
+      this.displayGenresAvance = false;
+      this.displayActeurs = false;
+    }else if(type === "acteurs"){
+      this.displayActeurs = !this.displayActeurs;
+      this.displayGenres = false;
+      this.displayGenresAvance = false;
+      this.displayRealisateurs = false;
+    }
   }
 
 }

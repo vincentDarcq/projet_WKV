@@ -2,29 +2,35 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" routerLink=""><button class="btn btn-primary">Films</button></a>
+                <h2 class="nav-link" style="color: white;">Exclusio</h2>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" routerLink="series"><button class="btn btn-primary">Series</button></a>
+                <a class="nav-link" routerLink=""><button class="btn btn-link mb-2">Films</button></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="series"><button class="btn btn-link mb-2">Series</button></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link">
                     <img id="imgsearch" src="https://image.flaticon.com/icons/svg/3077/3077325.svg">
-                    <input [(ngModel)]="search" type="text" class="form-control" id="inputsearch"/>
+                    <input placeholder="Chercher un film ici..." [(ngModel)]="movieSearch" type="text" class="form-control" id="inputsearch"/>
                 </a>
             </li>
+        </ul>
+        <ul class="navbar-nav mr-auto navbar-right">
             <li *ngIf="!user" class="nav-item active">
-                <a class="nav-link" routerLink="login"><button class="btn btn-primary">S'identifier</button></a>
+                <a class="nav-link" routerLink="login"><button class="btn btn-link mb-2">S'identifier <span class="fa fa-user"></span></button></a>
             </li>
             <li *ngIf="!user" class="nav-item active">
-                <a class="nav-link" routerLink="register"><button class="btn btn-primary">Créer un compte</button></a>
+                <a class="nav-link" routerLink="register"><button class="btn btn-link mb-2">Créer un compte</button></a>
             </li>
             <li *ngIf="user" class="nav-item active">
-                <a class="nav-link" routerLink="user"><button class="btn btn-primary">{{ user.pseudonyme }}</button></a>
+                <a class="nav-link" routerLink="user"><button class="btn btn-link mb-2">{{ user.pseudonyme }}</button></a>
             </li>
             <li *ngIf="user" class="nav-item active">
-                <a class="nav-link"><button class="btn btn-primary" (click)="logout()">Se déconnecter</button></a>
+                <a class="nav-link"><button class="btn btn-link mb-2" (click)="logout()">Se déconnecter</button></a>
             </li>
         </ul>
+        <hr>
     </div>
 </nav>

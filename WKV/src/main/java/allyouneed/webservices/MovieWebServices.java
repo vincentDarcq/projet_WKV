@@ -76,4 +76,13 @@ public class MovieWebServices {
 		return this.movieService.getActors();
 	}
 
+	@GetMapping("/tenActeurs")
+	public List<String> listTenActors() {
+		return this.movieService.getTenActorsByOccurences();
+	}
+	
+	@GetMapping("/tenRealisateurs")
+	public List<String> listTenReals() {
+		return this.movieService.getTenRealsByOccurences();
+	}
 }

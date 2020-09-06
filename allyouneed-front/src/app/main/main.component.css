@@ -1,99 +1,108 @@
-.container{
+.container
+{
+    background-size: 100%;
     color: white;
-    background-color:#478688;
+    padding: 0px;
+    margin: 0px;
 }
 
 #movie
 {
     padding: 10px;
 }
-
 .image
 {
     width: 150px;
-    height: 190px;
+    height: 150px;
 }
-
 .pegi
 {
     width: 50px;
     height: 50px;
 }
 
-#genresExclus
+#bestMoviesChecked
 {
-    display: none;
-    position: absolute; 
-    width: 40%; 
-    height: 40%; 
-    top: 70px;
-    right: 250px;
-    background-color: rgb(100, 169, 174); 
-    overflow: scroll;
-    border:3px solid black;
+    position:relative;
 }
-
-#realsExclus
+#bestMovie
 {
-    display: none;
-    position: fixed; 
-    width: 40%; 
-    height: 40%; 
-    top: 70px;
-    right: 250px;
-    background-color: rgb(100, 169, 174); 
-    overflow: scroll;
-    border:3px solid black;
+    position:relative;
 }
-
-#actorsExclus
+input[type=text]
 {
-    display: none;
-    position: fixed; 
-    width: 40%; 
-    height: 40%; 
-    top: 70px;
-    right: 250px;
-    background-color: rgb(100, 169, 174); 
-    overflow: scroll;
-    border:3px solid black;
+    width: 175px;
+    height: 30px;
+    border-radius: 10px;
 }
-
-.closePopup{
+.rond
+{
+    margin-right: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    height: 10px;
+    width: 10px;
+    background:transparent;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+.my-custom-class .tooltip-inner 
+{
+    background-color: darkblue;
+    max-width: 300px;
+}
+ul 
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+li 
+{
+    display:inline-block;
+    vertical-align: top;
+}
+.btn-link
+{
     color: white;
-    background-color: black;
+    background-color: transparent;
+    position: relative;
+}
+.mode
+{
     float: right;
 }
-
-body{
-    background-color:#478688;
+.items
+{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+h2, h3
+{
+    text-align: center;
+    margin: 0%;
+    padding: 0%;
+}
+hr
+{
+    position: relative;
+    color: white;
+    top: 10px;
+}
+.checkboxrondes
+{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+#bestEightMovie
+{
+    padding: 10px;
+}
+.synospis
+{
+    width: 80%; 
+    height: 20%; 
+    overflow-y: scroll;
 }
 
-#bestMoviesChecked{
-    padding: 0px;
-    margin: 0px;
-}
-
-.double_arrows{
-    width: 20px;
-}
-
-#genreSearch{
-    width: 200px;
-}
-
-#realSearch{
-    width: 200px;
-}
-
-#actorSearch{
-    width: 200px;
-}
-
-.my-custom-class .tooltip-inner {
-    background-color: darkblue;
-    max-width: 50%;
-    font-size: 75%;
-  }
 
 

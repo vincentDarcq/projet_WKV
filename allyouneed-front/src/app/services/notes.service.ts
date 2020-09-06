@@ -21,12 +21,11 @@ export class NotesService {
   }
 
   public getNotes(): Array<Note>{
-    this.notes.splice(0, this.notes.length);
+    this.notes.splice(0, this.notes.length)
     this.httpClient.get(this.wsUrl)
       .subscribe((list: Array<Note>) => {
-        this.notes.push(...list);
-      }
-      );
+        this.notes.push(...list)
+      });
     return this.notes;
   }
 

@@ -24,14 +24,17 @@ export class MoviesService {
   private moviesByInclusionActors: Array<Movie>;
   private genres : Array<string>;
   private actors : Array<string>;
+  private tenActors : Array<string>;
+  private tenReals : Array<string>;
   private realisateurs : Array<string>;
   private wsUrl: string;
   private search = new Subject<any>();
-  private alloUrl = 'http://www.omdbapi.com/?apikey=6b81888&s=inception';
-  private genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
-    "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
-  private genresAvance = ["Guerre", "Policier", "Jeunesse", "Fantasy", "Action",
-    "Musical", "Romance", "Super Héros", "Gore", "Français"];
+  private IMDBApi = 'http://www.omdbapi.com/?apikey=6b81888&s=inception';
+  private wikiApi = 'http://fr.wikipedia.org/w/api.php?action=opensearch&search=inception'
+  private genresSimple: Array<string> = ["animation", "biopic", "comédie", "documentaire", 
+    "drame", "histoire", "thriller", "epouvante-Horreur", "science fiction", "aventure"];
+  private genresAvance: Array<string>;
+
 
   constructor(private httpClient: HttpClient) {
     this.movies = new Array();
@@ -43,27 +46,27 @@ export class MoviesService {
     this.moviesByInclusionReals = new Array();
     this.moviesByInclusionActors = new Array();
     this.genres = new Array();
+    this.genresAvance = new Array();
     this.realisateurs = new Array();
     this.actors = new Array();
+    this.tenActors = new Array();
+    this.tenReals = new Array();
     this.wsUrl = ENV.apiUrl + '/movies';
 
    }
 
   public getMovies(): Array<Movie> {
     this.movies.splice(0, this.movies.length);
-    this.httpClient.get(this.wsUrl)
-      .subscribe((list: Array<Movie>) => this.movies.push(...list)
-      );
+    if(sessionStorage.getItem('movies') === null){
+      this.httpClient.get(this.wsUrl)
+        .subscribe((list: Array<Movie>) => {
+          this.movies.push(...list)
+          sessionStorage.setItem('movies', JSON.stringify(this.movies))
+        });
+    }else{
+      this.movies = JSON.parse(sessionStorage.getItem('movies'))
+    }
     return this.movies;
-  }
-
-  public getMovieFromBack(id: Number): Movie {
-    this.httpClient.get(this.wsUrl + `/${id}`)
-      .subscribe((movie: Movie) => {
-        this.movie = movie
-      }
-      );
-    return this.movie;
   }
 
   public getMovie(id: Number): Movie {
@@ -101,9 +104,9 @@ export class MoviesService {
       });
   }
 
-  public getAllo(){
+  public getApi(){
     var newMovie
-    this.httpClient.get(this.alloUrl)
+    this.httpClient.get(this.wikiApi)
     .subscribe((movie: any) => {
       console.log(movie.Search)
       //newMovie = new Movie(movie.Title, movie.Plot, this.getGenresFromApi(movie.Genre), movie.Actors, movie.Director, movie.Poster,
@@ -133,13 +136,25 @@ export class MoviesService {
     return genres
   }
 
-  public getGenres(): Array<string> {
+  public getGenres(): Array<string>{
     this.genres.splice(0, this.genres.length);
     this.httpClient.get(this.wsUrl + `/genres`)
-      .subscribe((list: Array<string>) => this.genres.push(...list)
-      );
-    return this.genres;
+      .subscribe((list: Array<string>) => {
+        this.genres.push(...list)
+      });
+      return this.genres
   } 
+
+  public getGenresAvances(): Array<string> {
+    this.genresAvance.splice(0, this.genresAvance.length);
+    for(let genre of this.genres){
+      if(this.genresSimple.indexOf(genre) === -1){
+        genre = genre[0].toUpperCase()+genre.substring(1)
+        this.genresAvance.push(genre)
+      }
+    }
+    return this.genresAvance
+  }
 
   public getRealisateurs(): Array<string> {
     this.httpClient.get(this.wsUrl + `/realisateurs`)
@@ -153,6 +168,22 @@ export class MoviesService {
     .subscribe((list: Array<string>) => this.actors.push(...list)
     );
     return this.actors;
+  }
+
+  public getTenActors(): Array<string> {
+    this.httpClient.get(this.wsUrl + `/tenActeurs`)
+    .subscribe((list: Array<string>) => {
+      this.tenActors.push(...list)
+    });
+    return this.tenActors;
+  }
+
+  public getTenReals(): Array<string> {
+    this.httpClient.get(this.wsUrl + `/tenRealisateurs`)
+    .subscribe((list: Array<string>) => {
+      this.tenReals.push(...list)
+    });
+    return this.tenReals;
   }
 
   public getMovieByExclusionGenres(genres: Array<String>): Array<Movie> {

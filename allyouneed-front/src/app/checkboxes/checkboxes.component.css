@@ -1,13 +1,19 @@
 .corbeille
 {
     position: relative;
-    top: 20px;
-    right: 0;
-    width: 75px;
+    width: 60px;
+    top: 4px;
 }
 
-.checkbox{
+input{
     margin-right: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    height: 15px;
+    width: 15px;
+    background:transparent;
+    border: 1px solid #ccc;
 }
 
 #itemsExclus
@@ -21,4 +27,35 @@
     background-color: rgb(100, 169, 174); 
     overflow: scroll;
     border:3px solid black;
+    padding: 0;
+}
+
+.closePopup{
+    color: white;
+    background-color: black;
+    float: right;
+}
+.row{  
+    background-color:rgba(0, 0, 0, 0.2);
+}
+.col-sm-3
+{
+    width: 200px;
+    background-color:rgba(0, 0, 0, 0.3);
+    margin-right: 1px;
+    margin-bottom: 5px;
+    vertical-align: middle;
+}
+.col-sm-4
+{
+    width: 200px;
+    background-color:rgba(0, 0, 0, 0.3);
+    margin-right: 1px;
+    margin-bottom: 5px;
+    vertical-align: middle;
+}
+.col-sm-1
+{
+    background-color:rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
