@@ -1,0 +1,10 @@
+<carousel *ngFor="let movie of movies; let i = index" cellsToShow="4">
+    <div class="carousel-cell">
+        <div class="item">
+            <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov_horizontale }}" class="image" alt="{{ movie.titre }}"/></a>
+            <span class="fa fa-chevron-down" (click)="showDetails(movie)"*ngIf="!show"></span>  	
+            <span class="fa fa-chevron-up" (click)="hideDetails()" *ngIf="show"></span>
+            <app-infobulle [movie]="movie" *ngIf="item === movie"></app-infobulle>
+        </div> 
+    </div>
+</carousel>

@@ -57,15 +57,10 @@ export class MoviesService {
 
   public getMovies(): Array<Movie> {
     this.movies.splice(0, this.movies.length);
-    if(sessionStorage.getItem('movies') === null){
-      this.httpClient.get(this.wsUrl)
-        .subscribe((list: Array<Movie>) => {
-          this.movies.push(...list)
-          sessionStorage.setItem('movies', JSON.stringify(this.movies))
-        });
-    }else{
-      this.movies = JSON.parse(sessionStorage.getItem('movies'))
-    }
+    this.httpClient.get(this.wsUrl)
+      .subscribe((list: Array<Movie>) =>
+        this.movies.push(...list)
+        );
     return this.movies;
   }
 
@@ -77,6 +72,7 @@ export class MoviesService {
   }
 
   private getIndexMovie(id: Number): number {
+    console.log("movies = "+this.movies)
     return this.movies.findIndex(
       (movie) => movie.id === id
     );
@@ -86,8 +82,8 @@ export class MoviesService {
       this.httpClient.post<Movie>(this.wsUrl, movie)
       .subscribe((movieFromJee) => this.movies.push(new Movie(movieFromJee.titre,
         movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
-        movieFromJee.realisateur, movieFromJee.cov, movieFromJee.year, movieFromJee.pegi,
-        movieFromJee.avertissement, movieFromJee.id))
+        movieFromJee.realisateur, movieFromJee.cov_verticale, movieFromJee.cov_horizontale,
+        movie.time, movieFromJee.year, movieFromJee.pegi, movieFromJee.avertissement, movieFromJee.id))
         );
   }
 
@@ -98,15 +94,15 @@ export class MoviesService {
         if (index >= 0) {
           this.movies.splice(index, 1, new Movie(movieFromJee.titre,
             movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
-            movieFromJee.realisateur, movieFromJee.cov, movieFromJee.year, movieFromJee.pegi,
-            movieFromJee.avertissement, movieFromJee.id));
+            movieFromJee.realisateur, movieFromJee.cov_verticale, movieFromJee.cov_horizontale,
+            movie.time, movieFromJee.year, movieFromJee.pegi, movieFromJee.avertissement, movieFromJee.id));
         }
       });
   }
 
   public getApi(){
     var newMovie
-    this.httpClient.get(this.wikiApi)
+    this.httpClient.get(this.IMDBApi)
     .subscribe((movie: any) => {
       console.log(movie.Search)
       //newMovie = new Movie(movie.Title, movie.Plot, this.getGenresFromApi(movie.Genre), movie.Actors, movie.Director, movie.Poster,
@@ -171,6 +167,7 @@ export class MoviesService {
   }
 
   public getTenActors(): Array<string> {
+    this.tenActors.splice(0, this.tenActors.length);
     this.httpClient.get(this.wsUrl + `/tenActeurs`)
     .subscribe((list: Array<string>) => {
       this.tenActors.push(...list)
@@ -179,6 +176,7 @@ export class MoviesService {
   }
 
   public getTenReals(): Array<string> {
+    this.tenReals.splice(0, this.tenReals.length);
     this.httpClient.get(this.wsUrl + `/tenRealisateurs`)
     .subscribe((list: Array<string>) => {
       this.tenReals.push(...list)

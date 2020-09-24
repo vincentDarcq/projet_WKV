@@ -1,0 +1,56 @@
+
+.carousel-cell{
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    margin:2px 0;
+}
+
+.gauche{
+    position: sticky;
+    float: left;
+    padding: 20px;
+    font-size: 6em;
+    color: white;
+    text-align: center;
+    z-index: 1;
+}
+.droite{
+    position: sticky;
+    float: right;
+    padding: 20px;
+    font-size: 6em;
+    color: white;
+    text-align: center;
+    z-index: 1;
+}
+.fa-chevron-down {
+    display: none;
+}
+.fa-chevron-up{
+    display: none;
+}
+.item{
+    padding:0 2px;
+}
+.item:hover{
+    margin: 0 20px;
+    transition: 500ms all;
+    transform: scale(1.5);
+}
+.item:hover .fa-chevron-down{
+    color:white;
+    position: absolute;
+    bottom: 5px;
+    left: 75px;
+    display: block;
+}
+.item:hover .fa-chevron-up{
+    color:white;
+    position: relative;
+    bottom: 5px;
+    left: 75px;
+    display: block;
+}
+

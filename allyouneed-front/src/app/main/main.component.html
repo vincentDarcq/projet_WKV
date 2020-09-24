@@ -52,35 +52,25 @@
   <hr>
   <div *ngIf="bestMoviesChecked" id="bestMoviesChecked" class="row">
     <div class="col-sm-3" id="bestMovie">
-      <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov }}" class="image" alt="{{ bestMovie.titre }}"></a>
+      <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov_horizontale }}" class="image" alt="{{ bestMovie.titre }}"></a>
       <br>
       {{ bestMovie.titre }}
       <div class="block">
-        <app-star-rating [score]="bestMovie.note" [forDisplay]="true"></app-star-rating>
+        <app-star-rating [score]="bestMovie.alloGrade" [forDisplay]="true"></app-star-rating>
       </div> 
       {{ bestMovie.year }}<br>
       <div class="synospis">{{ bestMovie.synopsis }}</div>
     </div>
     <div class="col-sm-9">
-      <div *ngFor="let movie of bestEightMovies">
-        <div class="col-sm-3" id="bestEightMovie" openDelay="1000" placement="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
-          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
-        </div>
-        <ng-template #tipContent>
-          <app-infobulle [movie]="movie"></app-infobulle>
-        </ng-template>
-      </div>
+      <app-caroussel [inputMovies]="bestGrades"></app-caroussel>
     </div>
   </div>
   <a [routerLink]="['/movieForm']"><button class="btn btn-primary">Ajouter un film</button></a>
   <h1><strong>Les films</strong></h1>
   <div *ngFor="let movie of movies">
     <div class="col-sm-2" id="movie" openDelay="1000" position="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
-      <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+      <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov_horizontale }}" class="image" alt="{{ movie.titre }}"/></a>  	
     </div>	
-    <ng-template #tipContent>
-      <app-infobulle [movie]="movie"></app-infobulle>
-    </ng-template> 
   </div>
 </div> 
 

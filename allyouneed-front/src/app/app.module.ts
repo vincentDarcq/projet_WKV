@@ -26,6 +26,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CheckboxesComponent } from './checkboxes/checkboxes.component';
 import { InfobulleComponent } from './infobulle/infobulle.component';
+import { CarousselComponent } from './caroussel/caroussel.component';
 
 
 let config = new AuthServiceConfig([
@@ -56,7 +57,8 @@ export function provideConfig() {
     EditPasswordComponent,
     StarRatingComponent,
     CheckboxesComponent,
-    InfobulleComponent
+    InfobulleComponent,
+    CarousselComponent
   ],
   imports: [
     BrowserAnimationsModule,

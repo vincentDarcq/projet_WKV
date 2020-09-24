@@ -3,10 +3,10 @@
   <div class="container mt-5 card">
     <div class="row">
       <div class="col-sm-6">
-        <img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/>         	
+        <img src="{{ movie.cov_verticale }}" class="image" alt="{{ movie.titre }}"/>         	
       </div>
       <div class="col-sm-6" *ngIf="movie.pegi">
-        <img src="{{ movie.pegi }}" class="pegi"/>         	
+        <p>{{ movie.pegi }}</p>          	
       </div>
       <div class="col-sm-6" *ngIf="movie.avertissement" style="font-weight: bold;">
         <p>{{ movie.avertissement }}</p>      	
@@ -19,10 +19,10 @@
           <p *ngIf="noteMovie == -1">Aucune note n'est donnée pour ce film</p>
       </div>
       <div class="col-sm-6" *ngIf="currentUser">
-        <p *ngIf="noteUserFromBack != -1">Votre note pour ce film : 
+        <p *ngIf="noteUserFromBack !== -1">Votre note pour ce film : 
           <app-star-rating [score]="noteUserFromBack" [forDisplay]="true"></app-star-rating>
         </p>
-        <p *ngIf="noteUserFromBack == -1">
+        <p *ngIf="noteUserFromBack === -1">
           Notez ce film :
           <app-star-rating [maxScore]="5" [forDisplay]="false" (rateChanged)="onRateChange($event)"></app-star-rating>
           <button class="btn btn-primary" (click)="giveMark()">Noter le film</button>        		

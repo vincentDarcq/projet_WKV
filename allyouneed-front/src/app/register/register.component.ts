@@ -41,9 +41,9 @@ export class RegisterComponent implements OnInit {
     if(this.loginForm.controls.password.errors){
       return;
     }
-    this.login = new User(this.loginForm.value.pseudonyme, this.loginForm.value.password,
-      this.loginForm.value.email, this.loginForm.value.question, this.loginForm.value.reponse);
-    this.loginService.register(this.login); 
+    this.login = new User(this.loginForm.value.pseudonyme, this.loginForm.value.email, 
+      this.loginForm.value.password, this.loginForm.value.question, this.loginForm.value.reponse);
+      this.loginService.register(this.login); 
   }
 
   displayPassword(){

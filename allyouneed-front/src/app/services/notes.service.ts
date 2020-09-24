@@ -39,6 +39,16 @@ export class NotesService {
     return this.bestMovies;
   }
 
+  public getBestAllocine(): Array<Movie>{
+    this.notes.splice(0, this.notes.length);
+    this.httpClient.get(this.wsUrl + `/bestAllocine`)
+      .subscribe((list: Array<Movie>) => {
+        this.bestMovies.push(...list);
+      }
+      );
+    return this.bestMovies;
+  }
+
   public getNoteForMovie(idmovie: Number): Number {
     this.httpClient.get(this.wsUrl + `/movie` + `/${idmovie}`)
     .subscribe((note: Number) => {

@@ -34,12 +34,11 @@ export class MovieComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    this.movieService.getMovies()
     this.idmovie = Number(this.route.snapshot.params.id);
     this.movie = this.movieService.getMovie(this.idmovie);
     this.comments = this.commentMovieService.getCommentsMovie(this.idmovie);
     this.noteMovie = this.noteMovieService.getNote(this.idmovie);
-    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser !== null){
       this.noteUserFromBack = this.noteMovieService.getNoteByUserForMovie(this.idmovie, this.currentUser.id);
       if(this.currentUser.filmsfavoris){

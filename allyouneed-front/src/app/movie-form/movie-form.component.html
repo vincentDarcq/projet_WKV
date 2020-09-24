@@ -22,9 +22,17 @@
               <input [(ngModel)]="newMovie.casting" name="casting" id="casting" class="form-control" required/>
           </div>
           <div class="form-group">
-              <label for="cov">Couverture : </label>
-              <input [(ngModel)]="newMovie.cov" name="cov" id="cov" class="form-control" required/>
+              <label for="cov_verticale">Couverture verticale: </label>
+              <input [(ngModel)]="newMovie.cov_verticale" name="cov_verticale" id="cov_verticale" class="form-control" required/>
           </div>	
+          <div class="form-group">
+            <label for="cov_horizontale">Couverture horizontale: </label>
+            <input [(ngModel)]="newMovie.cov_horizontale" name="cov_horizontale" id="cov_horizontale" class="form-control" required/>
+          </div>
+          <div class="form-group">
+            <label for="time">Durée: </label>
+            <input [(ngModel)]="newMovie.time" name="time" id="time" class="form-control" required/>
+          </div>
           <div class="form-group">
               <label for="year">Année : </label>
               <input [(ngModel)]="newMovie.year" name="year" id="year" class="form-control" required/>
