@@ -13,6 +13,8 @@ export class CarousselComponent implements OnInit {
   @Input() inputMovies
   movies: Array<Movie>
   sections: Sections
+  sectionsSize: number
+  activeSection: Section
   item: Movie
   show: boolean = false
 
@@ -36,6 +38,8 @@ export class CarousselComponent implements OnInit {
         arraySection.push(this.movies[i])
       }
     }
+    this.sectionsSize = this.sections.sections.length
+    this.activeSection = this.sections.sections[0]
   }
 
   showDetails(movie: Movie){
@@ -46,5 +50,22 @@ export class CarousselComponent implements OnInit {
   hideDetails(){
     this.show = !this.show
     this.item = null
+  }
+
+  prevSection(){
+    for(let i=0; i<this.sections.sections.length; i++){
+      if(this.activeSection === this.sections.sections[i]){
+        this.activeSection = this.sections.sections[i-1]
+      }
+    }
+  }
+
+  nextSection(){
+    for(let i=0; i<this.sections.sections.length; i++){
+      if(this.activeSection === this.sections.sections[i]){
+        this.activeSection = this.sections.sections[i+1]
+        break
+      }
+    }
   }
 }

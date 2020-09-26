@@ -74,6 +74,7 @@ export class MainComponent implements OnInit, DoCheck {
     this.realisateurs = this.movieService.getRealisateurs()
     this.notes = this.noteService.getNotes()
     this.bestGrades = this.noteService.getBestAllocine()
+    console.log(this.bestGrades)
     this.movieService.getSearch().subscribe(
       (search) => {
         this.movieSearch(search)
