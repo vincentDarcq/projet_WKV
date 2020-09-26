@@ -1,6 +1,4 @@
-.row{
-    scroll-behavior: smooth;
-}
+
 button{
     position: absolute;
     color: #fff;
@@ -11,11 +9,11 @@ button{
     z-index: 2;
 }
 .prev{
-    top:0; bottom:0; left:0;
+    top:15px; bottom:0; left:0;
     background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
 }
 .next{
-    top:0; bottom:0; right:0;
+    top:15px; bottom:0; right:0;
     background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
 }
 section{
@@ -37,6 +35,7 @@ section{
 .col-sm-3:hover .fa-chevron-down{
     color:white;
     position: absolute;
+    font-size: 2em;
     bottom: 5px;
     left: 75px;
     display: block;
@@ -44,6 +43,7 @@ section{
 .col-sm-3:hover .fa-chevron-up{
     color:white;
     position: relative;
+    font-size: 2em;
     bottom: 5px;
     left: 75px;
     display: block;
