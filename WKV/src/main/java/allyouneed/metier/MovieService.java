@@ -130,7 +130,6 @@ public class MovieService extends RestService<Movie> {
 			int cpt = 0;
 			for(Movie movie : movies) {
 				if(movie.getCasting().indexOf(actor) != -1) {
-					System.out.println("if");
 					cpt++;
 				}
 			}

@@ -29,16 +29,20 @@ public class Movie{
 	private String genres;
 	
 	@Column
-	private String genresPrecis;
-	
-	@Column
 	private String casting;
 	
 	@Column
 	private String realisateur;
 	
 	@Column
-	private String cov;
+	private String cov_horizontale;
+	
+	@Column
+	private String cov_verticale;
+	
+	private Float grade;
+	
+	private Float alloGrade;
 	
 	@Column
 	private int year;
@@ -62,16 +66,44 @@ public class Movie{
 		return "Movie [id=" + this.id + ", titre=" + this.titre + ", genres=" + this.genres + ", synopsis=" + this.synopsis + ", realisateur=" + this.realisateur+ ", year=" + this.year + "]";
 	}
 	
+	public String getCov_horizontale() {
+		return cov_horizontale;
+	}
+
+	public void setCov_horizontale(String cov_horizontale) {
+		this.cov_horizontale = cov_horizontale;
+	}
+
+	public String getCov_verticale() {
+		return cov_verticale;
+	}
+
+	public void setCov_verticale(String cov_verticale) {
+		this.cov_verticale = cov_verticale;
+	}
+
+	public Float getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Float grade) {
+		this.grade = grade;
+	}
+
+	public Float getAlloGrade() {
+		return alloGrade;
+	}
+
+	public void setAlloGrade(Float alloGrade) {
+		this.alloGrade = alloGrade;
+	}
+
 	public String getAvertissement() {
 		return avertissement;
 	}
 
 	public void setAvertissement(String avertissement) {
 		this.avertissement = avertissement;
-	}
-
-	public String getCov() {
-		return cov;
 	}	
 
 	public String getPegi() {
@@ -88,10 +120,6 @@ public class Movie{
 
 	public void setYear(int year) {
 		this.year = year;
-	}
-
-	public void setCov(String cov) {
-		this.cov = cov;
 	}
 
 	public int getId() {
