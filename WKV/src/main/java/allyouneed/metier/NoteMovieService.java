@@ -58,17 +58,22 @@ public class NoteMovieService extends RestService<NoteMovie> {
 	
 	public List<Movie> getBestAlloGrades(){
 		List<Movie> movies = this.daoMovie.findAll();
-		Map<Float, Movie> grades = new HashMap<Float, Movie>();
+		Map<Movie, Float> grades = new HashMap<Movie, Float>();
 		List<Movie> bestMovies = new ArrayList<Movie>();
+		List<Float> notes = new ArrayList<Float>();
 		for(Movie movie : movies) {
 			if(movie.getAlloGrade() != null) {
-				grades.put(movie.getAlloGrade(), movie);
+				grades.put(movie, movie.getAlloGrade());
+				notes.add(movie.getAlloGrade());
 			}
 		}
-		List<Float> notes = new ArrayList<Float>(grades.keySet());
 		Collections.sort(notes, Collections.reverseOrder());
-		for(int i=0; i<grades.size(); i++) {
-			bestMovies.add(grades.get(notes.get(i)));
+		for(int i=0; i<notes.size(); i++) {
+			for(Movie movie : grades.keySet()) {
+				if(movie.getAlloGrade() == notes.get(i)) {
+					bestMovies.add(movie);
+				}
+			}
 		}
 		return bestMovies;
 	}
