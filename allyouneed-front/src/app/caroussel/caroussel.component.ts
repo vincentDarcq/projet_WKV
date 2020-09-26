@@ -12,16 +12,14 @@ export class CarousselComponent implements OnInit {
 
   @Input() inputMovies
   movies: Array<Movie>
-  sections1: Sections
-  sections2: Sections
+  sections: Sections
   item: Movie
   show: boolean = false
 
   constructor() {
     this.movies = new Array()
     this.item = new Movie()
-    this.sections1 = new Sections();
-    this.sections2 = new Sections();
+    this.sections = new Sections();
    }
 
   ngOnInit(): void {
@@ -33,7 +31,7 @@ export class CarousselComponent implements OnInit {
         arraySection.push(this.movies[i])
       }else{
         stringSection = JSON.stringify(arraySection)
-        this.sections1.push(JSON.parse(stringSection))
+        this.sections.push(JSON.parse(stringSection))
         arraySection.splice(0, arraySection.length)
         arraySection.push(this.movies[i])
       }
