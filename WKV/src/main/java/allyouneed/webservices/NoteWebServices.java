@@ -52,4 +52,9 @@ public class NoteWebServices {
 	public List<Movie> bestMovies(){
 		return this.noteMovieService.getBestGrades();
 	}
+	
+	@GetMapping("/bestAllocine")
+	public List<Movie> bestAlloMovies(){
+		return this.noteMovieService.getBestAlloGrades();
+	}
 }
