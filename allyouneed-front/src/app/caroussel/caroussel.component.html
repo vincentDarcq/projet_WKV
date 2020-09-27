@@ -1,4 +1,4 @@
-<button (click)="prevSection()" *ngIf="activeSection !== sections.sections[0]" class="prev"><</button>
+<button (click)="prevSection()" *ngIf="activeSection !== sections.sections[0]" class="fa fa-arrow-circle-left"></button>
 <div class="row">
     <div class="section" id="{{i}}" *ngFor="let movie of activeSection">
         <div class='col-sm-3'>
@@ -9,4 +9,4 @@
         <app-infobulle [movie]="movie" *ngIf="item === movie"></app-infobulle>
     </div>
 </div>
-<button (click)="nextSection()" *ngIf="activeSection !== sections.sections[sectionsSize-1]" class="next">></button>
+<button (click)="nextSection()" *ngIf="activeSection !== sections.sections[sectionsSize-1]" class="fa fa-arrow-circle-right"></button>

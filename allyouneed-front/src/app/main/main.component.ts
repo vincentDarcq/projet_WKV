@@ -17,10 +17,10 @@ export class MainComponent implements OnInit, DoCheck {
   bestMovie: Movie;
   firstLine: Array<Movie>;
   secondLine: Array<Movie>;
-  bestGrades: Array<Movie>;
+  bestAlloGrades: Array<Movie>;
   movieSearched: Array<Movie>;
   moviesExcluded: Array<Movie>;
-  genre: Array<string>;
+  genres: Array<string>;
   genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
   "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
   genresAvance: Array<string>;
@@ -55,8 +55,8 @@ export class MainComponent implements OnInit, DoCheck {
     this.movieSearched = new Array();
     this.firstLine = new Array();
     this.secondLine = new Array();
-    this.bestGrades = new Array();
-    this.genre = new Array();
+    this.bestAlloGrades = new Array();
+    this.genres = new Array();
     this.genresSelected = new Array();
     this.genresAvance = new Array();
     this.realisateursSelected = new Array();
@@ -69,12 +69,11 @@ export class MainComponent implements OnInit, DoCheck {
     this.tenReals = this.movieService.getTenReals()
     this.tenActors = this.movieService.getTenActors()
     this.movies = this.movieService.getMovies()
-    this.genre = this.movieService.getGenres()
+    this.genres = this.movieService.getGenres()
     this.actors = this.movieService.getActors()
     this.realisateurs = this.movieService.getRealisateurs()
     this.notes = this.noteService.getNotes()
-    this.bestGrades = this.noteService.getBestAllocine()
-    console.log(this.bestGrades)
+    this.bestAlloGrades = this.noteService.getBestAllocine()
     this.movieService.getSearch().subscribe(
       (search) => {
         this.movieSearch(search)
@@ -86,12 +85,22 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if(this.genre.length > 0 && this.genresAvance.length === 0){
+    if(this.genres.length > 0 && this.genresAvance.length === 0){
       this.genresAvance = this.movieService.getGenresAvances()
     }
-    if(this.bestGrades.length >=1 && !this.bestMoviesChecked){
+    if(this.bestAlloGrades.length >=1 && !this.bestMoviesChecked){
       this.bestMoviesChecked = true
-      this.bestMovie = this.bestGrades[0];
+      this.bestMovie = this.bestAlloGrades[0];
+    }
+    if(this.realisateurs.length >=1){
+      for(let i=0; i<this.realisateurs.length; i++){
+        this.realisateurs[i] = this.realisateurs[i].toLowerCase()
+      }
+    }
+    if(this.actors.length >=1){
+      for(let i=0; i<this.actors.length; i++){
+        this.actors[i] = this.actors[i].toLowerCase()
+      }
     }
   }
 
@@ -121,36 +130,36 @@ export class MainComponent implements OnInit, DoCheck {
     this.actorFound = false
     if(this.genresAvance.indexOf(searchValue.toLowerCase()) !== -1){
       this.genreFound = true
-      this.genreInput = searchValue
+      this.genreInput = this.getUpperForFirstLetter(searchValue)
     }else if(this.realisateurs.indexOf(searchValue.toLowerCase()) !== -1){
       this.realFound = true
-      this.realInput = searchValue
+      this.realInput = this.getUpperForFirstLetter(searchValue)
     }else if(this.actors.indexOf(searchValue.toLowerCase()) !== -1){
       this.actorFound = true
-      this.actorInput = searchValue
+      this.actorInput = this.getUpperForFirstLetter(searchValue)
     }
   }
 
   selected(selected: Array<string>, type: string){  
     if(type === "genres"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionGenres(selected)
+        this.bestAlloGrades = this.movieService.getMovieByExclusionGenres(this.bestAlloGrades, selected)
       }else{
-        this.movies = this.movieService.getMovieByInclusionGenres(selected)
+        this.bestAlloGrades = this.movieService.getMovieByInclusionGenres(this.bestAlloGrades, selected)
       }
     }
     if(type === "realisateurs"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionReals(selected)
+        this.bestAlloGrades = this.movieService.getMovieByExclusionReals(this.bestAlloGrades, selected)
       }else {
-        this.movies = this.movieService.getMovieByInclusionReals(selected)
+        this.bestAlloGrades = this.movieService.getMovieByInclusionReals(this.bestAlloGrades, selected)
       }
     }
     if(type === "acteurs"){
       if(this.exclusion){
-        this.movies = this.movieService.getMovieByExclusionActors(selected)
+        this.bestAlloGrades = this.movieService.getMovieByExclusionActors(this.bestAlloGrades, selected)
       }else {
-        this.movies = this.movieService.getMovieByInclusionActors(selected)
+        this.bestAlloGrades = this.movieService.getMovieByInclusionActors(this.bestAlloGrades, selected)
       }
     }
   }
@@ -176,6 +185,16 @@ export class MainComponent implements OnInit, DoCheck {
       this.displayGenres = false
       this.displayGenresAvance = false
       this.displayRealisateurs = false
+    }
+  }
+
+  getUpperForFirstLetter(type: string){
+    let indexSpace = type.indexOf(" ")
+    if(indexSpace === -1){      
+      return type[0].toUpperCase()+type.substring(1)
+    }else {
+      return type[0].toUpperCase()+type.substring(1, indexSpace) +
+      " " + type[indexSpace+1].toUpperCase()+type.substring(indexSpace+2)
     }
   }
 

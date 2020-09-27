@@ -184,9 +184,9 @@ export class MoviesService {
     return this.tenReals;
   }
 
-  public getMovieByExclusionGenres(genres: Array<String>): Array<Movie> {
+  public getMovieByExclusionGenres(movies: Array<Movie>, genres: Array<String>): Array<Movie> {
     this.moviesByExclusionGenres.splice(0, this.moviesByExclusionGenres.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       this.present = false;
       for(let genre of genres) {
         if(JSON.stringify(movie.genre) != "") {
@@ -203,9 +203,9 @@ export class MoviesService {
     return this.moviesByExclusionGenres;
   }
 
-  public getMovieByInclusionGenres(genres: Array<String>): Array<Movie> {
+  public getMovieByInclusionGenres(movies: Array<Movie>, genres: Array<String>): Array<Movie> {
     this.moviesByInclusionGenres.splice(0, this.moviesByInclusionGenres.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       this.present = false;
       for(let genre of genres) {
         if(JSON.stringify(movie.genre) != "") {
@@ -223,9 +223,9 @@ export class MoviesService {
     }
   }
 
-  public getMovieByExclusionReals(reals: Array<String>): Array<Movie> {
+  public getMovieByExclusionReals(movies: Array<Movie>, reals: Array<String>): Array<Movie> {
     this.moviesByExclusionReals.splice(0, this.moviesByExclusionReals.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       this.present = false;
       for(let real of reals) {
         if(JSON.stringify(movie.realisateur) != "") {
@@ -242,9 +242,9 @@ export class MoviesService {
     return this.moviesByExclusionReals;
   }
 
-  public getMovieByInclusionReals(reals: Array<String>): Array<Movie> {
+  public getMovieByInclusionReals(movies: Array<Movie>, reals: Array<String>): Array<Movie> {
     this.moviesByInclusionReals.splice(0, this.moviesByInclusionReals.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       for(let real of reals) {
         if(JSON.stringify(movie.realisateur) != "") {
           this.index = movie.realisateur.toLowerCase().indexOf(real.toLowerCase());
@@ -261,9 +261,9 @@ export class MoviesService {
     }
   }
 
-  public getMovieByExclusionActors(actors: Array<String>): Array<Movie> {
+  public getMovieByExclusionActors(movies: Array<Movie>, actors: Array<String>): Array<Movie> {
     this.moviesByExclusionActors.splice(0, this.moviesByExclusionActors.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       this.present = false;
       for(let actor of actors) {
         if(JSON.stringify(movie.casting) != "") {
@@ -280,9 +280,9 @@ export class MoviesService {
     return this.moviesByExclusionActors;
   }
 
-  public getMovieByInclusionActors(actors: Array<String>): Array<Movie> {
+  public getMovieByInclusionActors(movies: Array<Movie>, actors: Array<String>): Array<Movie> {
     this.moviesByInclusionActors.splice(0, this.moviesByInclusionActors.length);
-    for(let movie of this.movies) {
+    for(let movie of movies) {
       this.present = false;
       for(let actor of actors) {
         if(JSON.stringify(movie.casting) != "") {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, DoCheck } from '@angular/core';
 import { Movie } from '../models/movie';
 import { Section } from '../models/section';
 import { Sections } from '../models/sections';
@@ -8,10 +8,12 @@ import { Sections } from '../models/sections';
   templateUrl: './caroussel.component.html',
   styleUrls: ['./caroussel.component.css']
 })
-export class CarousselComponent implements OnInit {
+export class CarousselComponent implements OnInit, DoCheck {
 
   @Input() inputMovies
   movies: Array<Movie>
+  moviesSize: number
+  changed: boolean
   sections: Sections
   sectionsSize: number
   activeSection: Section
@@ -26,6 +28,22 @@ export class CarousselComponent implements OnInit {
 
   ngOnInit(): void {
     this.movies = this.inputMovies
+    this.moviesSize = this.movies.length
+    this.changed = true
+    this.fillSections()
+  }
+
+  ngDoCheck(){
+    this.movies = this.inputMovies
+    if(this.moviesSize !== this.movies.length){
+      this.moviesSize = this.movies.length
+      this.changed = true
+      this.fillSections()
+    }
+  }
+
+  fillSections(){
+    this.sections = new Sections();
     let arraySection = new Array<Movie>()
     let stringSection = ""
     for(let i=1; i<this.movies.length; i++){
@@ -39,7 +57,10 @@ export class CarousselComponent implements OnInit {
       }
     }
     this.sectionsSize = this.sections.sections.length
-    this.activeSection = this.sections.sections[0]
+    if(this.changed){
+      this.activeSection = this.sections.sections[0]
+    }
+    this.changed = false
   }
 
   showDetails(movie: Movie){

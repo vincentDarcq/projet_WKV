@@ -1,18 +1,17 @@
 
 button{
     position: absolute;
-    color: #fff;
     text-decoration: none;
-    font-size: 6em;
+    font-size: 3em;
     height: 80px;
     text-align: center;
     z-index: 2;
 }
-.prev{
+.fa-arrow-circle-left{
     top:15px; bottom:0; left:0;
     background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
 }
-.next{
+.fa-arrow-circle-right{
     top:15px; bottom:0; right:0;
     background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
 }
