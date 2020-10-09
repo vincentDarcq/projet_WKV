@@ -27,6 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CheckboxesComponent } from './checkboxes/checkboxes.component';
 import { InfobulleComponent } from './infobulle/infobulle.component';
 import { CarousselComponent } from './caroussel/caroussel.component';
+import { HighlightDirective } from './directives/highlight.directive';
 
 
 let config = new AuthServiceConfig([
@@ -58,7 +59,8 @@ export function provideConfig() {
     StarRatingComponent,
     CheckboxesComponent,
     InfobulleComponent,
-    CarousselComponent
+    CarousselComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserAnimationsModule,
