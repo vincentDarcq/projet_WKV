@@ -10,6 +10,7 @@ export class CheckboxesComponent implements OnInit{
   @Input() itemFound;
   @Input() itemInput;
   @Input() items;
+  @Input() itemsSelectedFromMain
   @Output() itemsSelected = new EventEmitter();
   itemSelected: Array<string>;
 
@@ -18,6 +19,9 @@ export class CheckboxesComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    for(let item of this.itemsSelectedFromMain){
+      this.itemSelected.push(item)
+    }
   }
 
   selected(selected: string){  
