@@ -185,7 +185,7 @@ export class MoviesService {
   }
 
   public getMovieByExclusionGenres(movies: Array<Movie>, genres: Array<String>): Array<Movie> {
-    this.moviesByExclusionGenres.splice(0, this.moviesByExclusionGenres.length);
+    this.moviesByExclusionGenres = new Array<Movie>()
     for(let movie of movies) {
       this.present = false;
       for(let genre of genres) {
@@ -204,7 +204,7 @@ export class MoviesService {
   }
 
   public getMovieByInclusionGenres(movies: Array<Movie>, genres: Array<String>): Array<Movie> {
-    this.moviesByInclusionGenres.splice(0, this.moviesByInclusionGenres.length);
+    this.moviesByInclusionGenres = new Array<Movie>()
     for(let movie of movies) {
       this.present = false;
       for(let genre of genres) {
@@ -224,7 +224,7 @@ export class MoviesService {
   }
 
   public getMovieByExclusionReals(movies: Array<Movie>, reals: Array<String>): Array<Movie> {
-    this.moviesByExclusionReals.splice(0, this.moviesByExclusionReals.length);
+    this.moviesByExclusionReals = new Array<Movie>()
     for(let movie of movies) {
       this.present = false;
       for(let real of reals) {
@@ -243,7 +243,7 @@ export class MoviesService {
   }
 
   public getMovieByInclusionReals(movies: Array<Movie>, reals: Array<String>): Array<Movie> {
-    this.moviesByInclusionReals.splice(0, this.moviesByInclusionReals.length);
+    this.moviesByInclusionReals = new Array<Movie>()
     for(let movie of movies) {
       for(let real of reals) {
         if(JSON.stringify(movie.realisateur) != "") {
@@ -262,7 +262,7 @@ export class MoviesService {
   }
 
   public getMovieByExclusionActors(movies: Array<Movie>, actors: Array<String>): Array<Movie> {
-    this.moviesByExclusionActors.splice(0, this.moviesByExclusionActors.length);
+    this.moviesByExclusionActors = new Array<Movie>()
     for(let movie of movies) {
       this.present = false;
       for(let actor of actors) {
@@ -281,7 +281,7 @@ export class MoviesService {
   }
 
   public getMovieByInclusionActors(movies: Array<Movie>, actors: Array<String>): Array<Movie> {
-    this.moviesByInclusionActors.splice(0, this.moviesByInclusionActors.length);
+    this.moviesByInclusionActors = new Array<Movie>()
     for(let movie of movies) {
       this.present = false;
       for(let actor of actors) {
