@@ -23,10 +23,10 @@
       <input *ngIf="displayActeurs" placeholder="Chercher un acteur" (input)="searched($event.target.value)" type="text" class="form-control"/>
     </li>
   </ul>
-  <app-checkboxes *ngIf="displayGenres" [items]="genresSimple" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayGenresAvance" [items]="genresAvance" [itemFound]="genreFound" [itemInput]="genreInput" (itemsSelected)="selected($event, 'genres')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayRealisateurs" [items]="tenReals" [itemFound]="realFound" [itemInput]="realInput" (itemsSelected)="selected($event, 'realisateurs')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayActeurs" [items]="tenActors" [itemFound]="actorFound" [itemInput]="actorInput" (itemsSelected)="selected($event, 'acteurs')"></app-checkboxes>     
+  <app-checkboxes *ngIf="displayGenres" [itemsSelectedFromMain]="genresSelectedS" [items]="genresSimple" (itemsSelected)="selected($event, 'genresS')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayGenresAvance" [itemsSelectedFromMain]="genresSelectedA" [items]="genresAvance" [itemFound]="genreFound" [itemInput]="genreInput" (itemsSelected)="selected($event, 'genresA')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayRealisateurs" [itemsSelectedFromMain]="realisateursSelected" [items]="tenReals" [itemFound]="realFound" [itemInput]="realInput" (itemsSelected)="selected($event, 'realisateurs')"></app-checkboxes>  
+  <app-checkboxes *ngIf="displayActeurs" [itemsSelectedFromMain]="actorsSelected" [items]="tenActors" [itemFound]="actorFound" [itemInput]="actorInput" (itemsSelected)="selected($event, 'acteurs')"></app-checkboxes>     
   <br>
   <div *ngIf="searching">
     <h2><strong>Votre Recherche</strong></h2>

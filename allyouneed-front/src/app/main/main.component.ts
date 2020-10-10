@@ -29,7 +29,8 @@ export class MainComponent implements OnInit, DoCheck {
   tenReals: Array<string>;
   tenActors: Array<string>;
   actors: Array<string>;
-  genresSelected: Array<string>;
+  genresSelectedS: Array<string>;
+  genresSelectedA: Array<string>;
   realisateursSelected: Array<string>;
   actorsSelected: Array<string>;
   currentUser: User;
@@ -57,15 +58,17 @@ export class MainComponent implements OnInit, DoCheck {
     this.secondLine = new Array();
     this.bestAlloGrades = new Array();
     this.genres = new Array();
-    this.genresSelected = new Array();
+    this.genresSelectedS = new Array();
+    this.genresSelectedA = new Array();
+    this.realisateursSelected = new Array();
+    this.actorsSelected = new Array();
     this.genresAvance = new Array();
     this.realisateursSelected = new Array();
     this.tenActors = new Array();
-    this.actorsSelected = new Array();
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }  
   
   ngOnInit() {   
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.tenReals = this.movieService.getTenReals()
     this.tenActors = this.movieService.getTenActors()
     this.movies = this.movieService.getMovies()
@@ -140,15 +143,28 @@ export class MainComponent implements OnInit, DoCheck {
     }
   }
 
+  genreSelected(selected: Array<string>){
+    if(this.exclusion){
+      this.bestAlloGrades = this.movieService.getMovieByExclusionGenres(this.bestAlloGrades, selected)
+    }else{
+      this.bestAlloGrades = this.movieService.getMovieByInclusionGenres(this.bestAlloGrades, selected)
+    }
+  }
+
   selected(selected: Array<string>, type: string){  
-    if(type === "genres"){
-      if(this.exclusion){
-        this.bestAlloGrades = this.movieService.getMovieByExclusionGenres(this.bestAlloGrades, selected)
-      }else{
-        this.bestAlloGrades = this.movieService.getMovieByInclusionGenres(this.bestAlloGrades, selected)
-      }
+    if(type === "genresS"){
+      this.genresSelectedS = new Array<string>()
+      this.genresSelectedS = selected
+      this.genreSelected(selected)
+    }
+    if(type === "genresA"){
+      this.genresSelectedA = new Array<string>()
+      this.genresSelectedA = selected
+      this.genreSelected(selected)
     }
     if(type === "realisateurs"){
+      this.realisateursSelected = new Array<string>()
+      this.realisateursSelected = selected
       if(this.exclusion){
         this.bestAlloGrades = this.movieService.getMovieByExclusionReals(this.bestAlloGrades, selected)
       }else {
@@ -156,6 +172,8 @@ export class MainComponent implements OnInit, DoCheck {
       }
     }
     if(type === "acteurs"){
+      this.actorsSelected = new Array<string>()
+      this.actorsSelected = selected
       if(this.exclusion){
         this.bestAlloGrades = this.movieService.getMovieByExclusionActors(this.bestAlloGrades, selected)
       }else {
