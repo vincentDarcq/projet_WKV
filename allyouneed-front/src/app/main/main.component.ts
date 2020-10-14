@@ -15,11 +15,9 @@ export class MainComponent implements OnInit, DoCheck {
 
   movies: Array<Movie>;
   bestMovie: Movie;
-  firstLine: Array<Movie>;
-  secondLine: Array<Movie>;
   bestAlloGrades: Array<Movie>;
+  oldBestAlloGrades: Array<Movie>;
   movieSearched: Array<Movie>;
-  moviesExcluded: Array<Movie>;
   genres: Array<string>;
   genresSimple: Array<string> = ["Animation", "Biopic", "Comédie", "Documentaire", 
   "Drame", "Histoire", "Thriller", "Epouvante-Horreur", "Science fiction", "Aventure"];
@@ -52,11 +50,9 @@ export class MainComponent implements OnInit, DoCheck {
   constructor(private movieService: MoviesService,
               private noteService: NotesService) {
 
-    this.moviesExcluded = new Array();
     this.movieSearched = new Array();
-    this.firstLine = new Array();
-    this.secondLine = new Array();
     this.bestAlloGrades = new Array();
+    this.oldBestAlloGrades = new Array()
     this.genres = new Array();
     this.genresSelectedS = new Array();
     this.genresSelectedA = new Array();
@@ -77,6 +73,7 @@ export class MainComponent implements OnInit, DoCheck {
     this.realisateurs = this.movieService.getRealisateurs()
     this.notes = this.noteService.getNotes()
     this.bestAlloGrades = this.noteService.getBestAllocine()
+    this.oldBestAlloGrades = this.bestAlloGrades
     this.movieService.getSearch().subscribe(
       (search) => {
         this.movieSearch(search)
@@ -145,39 +142,53 @@ export class MainComponent implements OnInit, DoCheck {
 
   genreSelected(selected: Array<string>){
     if(this.exclusion){
-      this.bestAlloGrades = this.movieService.getMovieByExclusionGenres(this.bestAlloGrades, selected)
+      this.bestAlloGrades = this.movieService.getMovieByExclusionGenres(
+        this.oldBestAlloGrades, 
+        this.bestAlloGrades, 
+        this.genresSelectedS, 
+        this.genresSelectedA, 
+        this.realisateursSelected, 
+        this.actorsSelected)
     }else{
-      this.bestAlloGrades = this.movieService.getMovieByInclusionGenres(this.bestAlloGrades, selected)
+      this.bestAlloGrades = this.movieService.getMovieByInclusionGenres(this.oldBestAlloGrades, selected)
     }
   }
 
   selected(selected: Array<string>, type: string){  
     if(type === "genresS"){
-      this.genresSelectedS = new Array<string>()
       this.genresSelectedS = selected
       this.genreSelected(selected)
     }
     if(type === "genresA"){
-      this.genresSelectedA = new Array<string>()
       this.genresSelectedA = selected
       this.genreSelected(selected)
     }
     if(type === "realisateurs"){
-      this.realisateursSelected = new Array<string>()
       this.realisateursSelected = selected
       if(this.exclusion){
-        this.bestAlloGrades = this.movieService.getMovieByExclusionReals(this.bestAlloGrades, selected)
+        this.bestAlloGrades = this.movieService.getMovieByExclusionReals(
+          this.oldBestAlloGrades, 
+          this.bestAlloGrades, 
+          this.genresSelectedS, 
+          this.genresSelectedA, 
+          this.realisateursSelected, 
+          this.actorsSelected)
       }else {
-        this.bestAlloGrades = this.movieService.getMovieByInclusionReals(this.bestAlloGrades, selected)
+        this.bestAlloGrades = this.movieService.getMovieByInclusionReals(this.oldBestAlloGrades, selected)
       }
     }
     if(type === "acteurs"){
-      this.actorsSelected = new Array<string>()
       this.actorsSelected = selected
       if(this.exclusion){
-        this.bestAlloGrades = this.movieService.getMovieByExclusionActors(this.bestAlloGrades, selected)
+        this.bestAlloGrades = this.movieService.getMovieByExclusionActors(
+          this.oldBestAlloGrades, 
+          this.bestAlloGrades, 
+          this.genresSelectedS, 
+          this.genresSelectedA, 
+          this.realisateursSelected, 
+          this.actorsSelected)
       }else {
-        this.bestAlloGrades = this.movieService.getMovieByInclusionActors(this.bestAlloGrades, selected)
+        this.bestAlloGrades = this.movieService.getMovieByInclusionActors(this.oldBestAlloGrades, selected)
       }
     }
   }
