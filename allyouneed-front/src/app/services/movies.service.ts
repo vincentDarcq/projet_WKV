@@ -168,6 +168,29 @@ export class MoviesService {
     return moviesExcluded
   }
 
+  private eraseOldSelected(oldMovies: Array<Movie>, movies: Array<Movie>, moviesByExclusion: Array<Movie>, genres: Array<string>, realisateurs: Array<string>, acteurs: Array<string>){
+    for(let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)){
+      if(moviesByExclusion.indexOf(movie) !== -1){
+        for(let genre of genres){
+          if(movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1){
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+          }
+        }
+        for(let real of realisateurs){
+          if(movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1){
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+          }
+        }
+        for(let act of acteurs){
+          if(movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1){
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+          }
+        }
+      }
+    }
+    return moviesByExclusion
+  }
+
   public getMovieByExclusionGenres(oldMovies: Array<Movie>, movies: Array<Movie>, genresS: Array<string>, genresA: Array<string>, realisateurs: Array<string>, acteurs: Array<string>): Array<Movie> {
     let genres = new Array()
     for(let genre of genresS){
@@ -191,25 +214,8 @@ export class MoviesService {
         moviesByExclusionGenres.push(movie);
       }
     }
-    for(let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)){
-      if(moviesByExclusionGenres.indexOf(movie) !== -1){
-        for(let genre of genres){
-          if(movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1){
-            moviesByExclusionGenres.splice(moviesByExclusionGenres.indexOf(movie), 1)
-          }
-        }
-        for(let real of realisateurs){
-          if(movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1){
-            moviesByExclusionGenres.splice(moviesByExclusionGenres.indexOf(movie), 1)
-          }
-        }
-        for(let act of acteurs){
-          if(movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1){
-            moviesByExclusionGenres.splice(moviesByExclusionGenres.indexOf(movie), 1)
-          }
-        }
-      }
-    }
+    moviesByExclusionGenres = this.eraseOldSelected(
+      oldMovies, movies, moviesByExclusionGenres, genres, realisateurs, acteurs)
     return moviesByExclusionGenres;
   }
 
@@ -255,25 +261,8 @@ export class MoviesService {
         moviesByExclusionReals.push(movie);
       }
     }
-    for(let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)){
-      if(moviesByExclusionReals.indexOf(movie) !== -1){
-        for(let genre of genres){
-          if(movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1){
-            moviesByExclusionReals.splice(moviesByExclusionReals.indexOf(movie), 1)
-          }
-        }
-        for(let real of realisateurs){
-          if(movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1){
-            moviesByExclusionReals.splice(moviesByExclusionReals.indexOf(movie), 1)
-          }
-        }
-        for(let act of acteurs){
-          if(movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1){
-            moviesByExclusionReals.splice(moviesByExclusionReals.indexOf(movie), 1)
-          }
-        }
-      }
-    }
+    moviesByExclusionReals = this.eraseOldSelected(
+      oldMovies, movies, moviesByExclusionReals, genres, realisateurs, acteurs)
     return moviesByExclusionReals;
   }
 
@@ -319,25 +308,8 @@ export class MoviesService {
         moviesByExclusionActors.push(movie);
       }
     }
-    for(let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)){
-      if(moviesByExclusionActors.indexOf(movie) !== -1){
-        for(let genre of genres){
-          if(movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1){
-            moviesByExclusionActors.splice(moviesByExclusionActors.indexOf(movie), 1)
-          }
-        }
-        for(let real of realisateurs){
-          if(movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1){
-            moviesByExclusionActors.splice(moviesByExclusionActors.indexOf(movie), 1)
-          }
-        }
-        for(let act of acteurs){
-          if(movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1){
-            moviesByExclusionActors.splice(moviesByExclusionActors.indexOf(movie), 1)
-          }
-        }
-      }
-    }
+    moviesByExclusionActors = this.eraseOldSelected(
+      oldMovies, movies, moviesByExclusionActors, genres, realisateurs, acteurs)
     return moviesByExclusionActors;
   }
 
