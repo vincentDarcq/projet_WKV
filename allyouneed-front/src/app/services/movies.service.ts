@@ -1,38 +1,45 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Movie } from '../models/movie';
-import { environment as ENV } from '../../environments/environment';
-import { Subject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Movie } from "../models/movie";
+import { environment as ENV } from "../../environments/environment";
+import { Subject, Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class MoviesService {
-
-  private movies : Array<Movie>;
-  private genres : Array<string>;
-  private actors : Array<string>;
-  private tenActors : Array<string>;
-  private tenReals : Array<string>;
-  private realisateurs : Array<string>;
+  private movies: Array<Movie>;
+  private genres: Array<string>;
+  private actors: Array<string>;
+  private tenActors: Array<string>;
+  private tenReals: Array<string>;
+  private realisateurs: Array<string>;
   private wsUrl: string;
   private search = new Subject<any>();
-  private IMDBApi = 'http://www.omdbapi.com/?apikey=6b81888&s=inception';
-  private genresSimple: Array<string> = ["animation", "biopic", "comédie", "documentaire", 
-    "drame", "histoire", "thriller", "epouvante-Horreur", "science fiction", "aventure"];
+  private IMDBApi = "http://www.omdbapi.com/?apikey=6b81888&t=Inception";
+  private genresSimple: Array<string> = [
+    "animation",
+    "biopic",
+    "comédie",
+    "documentaire",
+    "drame",
+    "histoire",
+    "thriller",
+    "epouvante-Horreur",
+    "science fiction",
+    "aventure",
+  ];
   private genresAvance: Array<string>;
 
-
   constructor(private httpClient: HttpClient) {
-    this.wsUrl = ENV.apiUrl + '/movies';
-   }
+    this.wsUrl = ENV.apiUrl + "/movies";
+  }
 
   public getMovies(): Array<Movie> {
-    this.movies = new Array()
-    this.httpClient.get(this.wsUrl)
-      .subscribe((list: Array<Movie>) =>
-        this.movies.push(...list)
-        );
+    this.movies = new Array();
+    this.httpClient
+      .get(this.wsUrl)
+      .subscribe((list: Array<Movie>) => this.movies.push(...list));
     return this.movies;
   }
 
@@ -44,300 +51,397 @@ export class MoviesService {
   }
 
   private getIndexMovie(id: Number): number {
-    console.log("movies = "+this.movies)
-    return this.movies.findIndex(
-      (movie) => movie.id === id
-    );
+    return this.movies.findIndex((movie) => movie.id === id);
   }
-  
+
   public createMovie(movie: Movie) {
-      this.httpClient.post<Movie>(this.wsUrl, movie)
-      .subscribe((movieFromJee) => this.movies.push(new Movie(movieFromJee.titre,
-        movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
-        movieFromJee.realisateur, movieFromJee.cov_verticale, movieFromJee.cov_horizontale,
-        movie.time, movieFromJee.year, movieFromJee.pegi, movieFromJee.avertissement, movieFromJee.id))
-        );
+    this.httpClient
+      .post<Movie>(this.wsUrl, movie)
+      .subscribe((movieFromJee) =>
+        this.movies.push(
+          new Movie(
+            movieFromJee.titre,
+            movieFromJee.synopsis,
+            movieFromJee.genre,
+            movieFromJee.casting,
+            movieFromJee.realisateur,
+            movieFromJee.cov_verticale,
+            movieFromJee.cov_horizontale,
+            movie.time,
+            movieFromJee.year,
+            movieFromJee.pegi,
+            movieFromJee.avertissement,
+            movieFromJee.id
+          )
+        )
+      );
   }
 
   public updateMovie(movie: Movie) {
-    this.httpClient.put<Movie>(this.wsUrl + `/${movie.id}`, movie)
+    this.httpClient
+      .put<Movie>(this.wsUrl + `/${movie.id}`, movie)
       .subscribe((movieFromJee) => {
         const index = this.getIndexMovie(movie.id);
         if (index >= 0) {
-          this.movies.splice(index, 1, new Movie(movieFromJee.titre,
-            movieFromJee.synopsis, movieFromJee.genre, movieFromJee.casting,
-            movieFromJee.realisateur, movieFromJee.cov_verticale, movieFromJee.cov_horizontale,
-            movie.time, movieFromJee.year, movieFromJee.pegi, movieFromJee.avertissement, movieFromJee.id));
+          this.movies.splice(
+            index,
+            1,
+            new Movie(
+              movieFromJee.titre,
+              movieFromJee.synopsis,
+              movieFromJee.genre,
+              movieFromJee.casting,
+              movieFromJee.realisateur,
+              movieFromJee.cov_verticale,
+              movieFromJee.cov_horizontale,
+              movie.time,
+              movieFromJee.year,
+              movieFromJee.pegi,
+              movieFromJee.avertissement,
+              movieFromJee.id
+            )
+          );
         }
       });
   }
 
-  public getApi(){
-    var newMovie
-    this.httpClient.get(this.IMDBApi)
-    .subscribe((movie: any) => {
-      console.log(movie.Search)
+  public getApi() {
+    this.httpClient.get(this.IMDBApi).subscribe((movie: any) => {
+      console.log(movie);
       //newMovie = new Movie(movie.Title, movie.Plot, this.getGenresFromApi(movie.Genre), movie.Actors, movie.Director, movie.Poster,
       //movie.Year)
       //this.createMovie(newMovie)
-    })
+    });
   }
 
-  getGenresFromApi(genre: string): string{
-    var genres = ""
-    while(genre.indexOf(", ") !== -1){
-      if(this.genresSimple.indexOf(genre.substring(0, genre.indexOf(", "))) !== -1 || 
-      this.genresAvance.indexOf(genre.substring(0, genre.indexOf(", "))) !== -1){
-        if(genres !== ""){
-          genres = genres + genre.substring(0, genre.indexOf(", "))
-        }else {
-          genres = genres + genre.substring(0, genre.indexOf(", ")) + ", "
+  getGenresFromApi(genre: string): string {
+    var genres = "";
+    while (genre.indexOf(", ") !== -1) {
+      if (
+        this.genresSimple.indexOf(genre.substring(0, genre.indexOf(", "))) !==
+          -1 ||
+        this.genresAvance.indexOf(genre.substring(0, genre.indexOf(", "))) !==
+          -1
+      ) {
+        if (genres !== "") {
+          genres = genres + genre.substring(0, genre.indexOf(", "));
+        } else {
+          genres = genres + genre.substring(0, genre.indexOf(", ")) + ", ";
         }
-        genre = genre.substring(genre.indexOf(", ")+2)
-      }else {
-        genre = genre.substring(genre.indexOf(", ")+2)
+        genre = genre.substring(genre.indexOf(", ") + 2);
+      } else {
+        genre = genre.substring(genre.indexOf(", ") + 2);
       }
     }
-    if(this.genresSimple.indexOf(genre) !== -1 || this.genresAvance.indexOf(genre) !== -1){
-      genres = genres + genre
+    if (
+      this.genresSimple.indexOf(genre) !== -1 ||
+      this.genresAvance.indexOf(genre) !== -1
+    ) {
+      genres = genres + genre;
     }
-    return genres
+    return genres;
   }
 
-  public getGenres(): Array<string>{
-    this.genres = new Array()
-    this.httpClient.get(this.wsUrl + `/genres`)
+  public getGenres(): Array<string> {
+    this.genres = new Array();
+    this.httpClient
+      .get(this.wsUrl + `/genres`)
       .subscribe((list: Array<string>) => {
-        this.genres.push(...list)
+        this.genres.push(...list);
       });
-      return this.genres
-  } 
+    return this.genres;
+  }
 
   public getGenresAvances(): Array<string> {
-    this.genresAvance = new Array()
-    for(let genre of this.genres){
-      if(this.genresSimple.indexOf(genre) === -1){
-        genre = genre[0].toUpperCase()+genre.substring(1)
-        this.genresAvance.push(genre)
+    this.genresAvance = new Array();
+    for (let genre of this.genres) {
+      if (this.genresSimple.indexOf(genre) === -1) {
+        genre = genre[0].toUpperCase() + genre.substring(1);
+        this.genresAvance.push(genre);
       }
     }
-    return this.genresAvance
+    return this.genresAvance;
   }
 
   public getRealisateurs(): Array<string> {
-    this.realisateurs = new Array()
-    this.httpClient.get(this.wsUrl + `/realisateurs`)
-      .subscribe((list: Array<string>) => this.realisateurs.push(...list)
-      );
+    this.realisateurs = new Array();
+    this.httpClient
+      .get(this.wsUrl + `/realisateurs`)
+      .subscribe((list: Array<string>) => this.realisateurs.push(...list));
     return this.realisateurs;
   }
 
   public getActors(): Array<string> {
-    this.actors = new Array()
-    this.httpClient.get(this.wsUrl + `/acteurs`)
-    .subscribe((list: Array<string>) => this.actors.push(...list)
-    );
+    this.actors = new Array();
+    this.httpClient
+      .get(this.wsUrl + `/acteurs`)
+      .subscribe((list: Array<string>) => this.actors.push(...list));
     return this.actors;
   }
 
   public getTenActors(): Array<string> {
-    this.tenActors = new Array()
-    this.httpClient.get(this.wsUrl + `/tenActeurs`)
-    .subscribe((list: Array<string>) => {
-      this.tenActors.push(...list)
-    });
+    this.tenActors = new Array();
+    this.httpClient
+      .get(this.wsUrl + `/tenActeurs`)
+      .subscribe((list: Array<string>) => {
+        this.tenActors.push(...list);
+      });
     return this.tenActors;
   }
 
   public getTenReals(): Array<string> {
-    this.tenReals = new Array()
-    this.httpClient.get(this.wsUrl + `/tenRealisateurs`)
-    .subscribe((list: Array<string>) => {
-      this.tenReals.push(...list)
-    });
+    this.tenReals = new Array();
+    this.httpClient
+      .get(this.wsUrl + `/tenRealisateurs`)
+      .subscribe((list: Array<string>) => {
+        this.tenReals.push(...list);
+      });
     return this.tenReals;
   }
 
-  private getMoviesAlreadyExcluded(oldMovies: Array<Movie>, movies: Array<Movie>){
-    let moviesExcluded = new Array()
-    for(let movie of oldMovies){
-      if(movies.indexOf(movie) === -1){
-        moviesExcluded.push(movie)
+  private getMoviesAlreadyExcluded(
+    oldMovies: Array<Movie>,
+    movies: Array<Movie>
+  ) {
+    let moviesExcluded = new Array();
+    for (let movie of oldMovies) {
+      if (movies.indexOf(movie) === -1) {
+        moviesExcluded.push(movie);
       }
     }
-    return moviesExcluded
+    return moviesExcluded;
   }
 
-  private eraseOldSelected(oldMovies: Array<Movie>, movies: Array<Movie>, moviesByExclusion: Array<Movie>, genres: Array<string>, realisateurs: Array<string>, acteurs: Array<string>){
-    for(let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)){
-      if(moviesByExclusion.indexOf(movie) !== -1){
-        for(let genre of genres){
-          if(movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1){
-            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+  private eraseOldSelected(
+    oldMovies: Array<Movie>,
+    movies: Array<Movie>,
+    moviesByExclusion: Array<Movie>,
+    genres: Array<string>,
+    realisateurs: Array<string>,
+    acteurs: Array<string>
+  ) {
+    for (let movie of this.getMoviesAlreadyExcluded(oldMovies, movies)) {
+      if (moviesByExclusion.indexOf(movie) !== -1) {
+        for (let genre of genres) {
+          if (movie.genre.toLowerCase().indexOf(genre.toLowerCase()) !== -1) {
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1);
           }
         }
-        for(let real of realisateurs){
-          if(movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1){
-            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+        for (let real of realisateurs) {
+          if (
+            movie.realisateur.toLowerCase().indexOf(real.toLowerCase()) !== -1
+          ) {
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1);
           }
         }
-        for(let act of acteurs){
-          if(movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1){
-            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1)
+        for (let act of acteurs) {
+          if (movie.casting.toLowerCase().indexOf(act.toLowerCase()) !== -1) {
+            moviesByExclusion.splice(moviesByExclusion.indexOf(movie), 1);
           }
         }
       }
     }
-    return moviesByExclusion
+    return moviesByExclusion;
   }
 
-  public getMovieByExclusionGenres(oldMovies: Array<Movie>, movies: Array<Movie>, genresS: Array<string>, genresA: Array<string>, realisateurs: Array<string>, acteurs: Array<string>): Array<Movie> {
-    let genres = new Array()
-    for(let genre of genresS){
-      genres.push(genre)
+  public getMovieByExclusionGenres(
+    oldMovies: Array<Movie>,
+    movies: Array<Movie>,
+    genresS: Array<string>,
+    genresA: Array<string>,
+    realisateurs: Array<string>,
+    acteurs: Array<string>
+  ): Array<Movie> {
+    let genres = new Array();
+    for (let genre of genresS) {
+      genres.push(genre);
     }
-    for(let genre of genresA){
-      genres.push(genre)
+    for (let genre of genresA) {
+      genres.push(genre);
     }
-    let moviesByExclusionGenres = new Array<Movie>()
-    for(let movie of oldMovies) {
+    let moviesByExclusionGenres = new Array<Movie>();
+    for (let movie of oldMovies) {
       let present = false;
-      for(let genre of genres) {
-        if(JSON.stringify(movie.genre) != "") {
+      for (let genre of genres) {
+        if (JSON.stringify(movie.genre) != "") {
           let index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
-          if(index != -1) {
+          if (index != -1) {
             present = true;
           }
-        }				
+        }
       }
-      if(!present) {
+      if (!present) {
         moviesByExclusionGenres.push(movie);
       }
     }
     moviesByExclusionGenres = this.eraseOldSelected(
-      oldMovies, movies, moviesByExclusionGenres, genres, realisateurs, acteurs)
+      oldMovies,
+      movies,
+      moviesByExclusionGenres,
+      genres,
+      realisateurs,
+      acteurs
+    );
     return moviesByExclusionGenres;
   }
 
-  public getMovieByInclusionGenres(movies: Array<Movie>, genres: Array<String>): Array<Movie> {
-    let moviesByInclusionGenres = new Array<Movie>()
-    for(let movie of movies) {
-      for(let genre of genres) {
-        if(JSON.stringify(movie.genre) != "") {
+  public getMovieByInclusionGenres(
+    movies: Array<Movie>,
+    genres: Array<String>
+  ): Array<Movie> {
+    let moviesByInclusionGenres = new Array<Movie>();
+    for (let movie of movies) {
+      for (let genre of genres) {
+        if (JSON.stringify(movie.genre) != "") {
           let index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
-          if(index != -1) {
-            moviesByInclusionGenres.push(movie)
+          if (index != -1) {
+            moviesByInclusionGenres.push(movie);
           }
-        }				
+        }
       }
     }
-    if(genres.length >= 1){
+    if (genres.length >= 1) {
       return moviesByInclusionGenres;
-    }else {
+    } else {
       return this.movies;
     }
   }
 
-  public getMovieByExclusionReals(oldMovies: Array<Movie>, movies: Array<Movie>, genresS: Array<string>, genresA: Array<string>, realisateurs: Array<string>, acteurs: Array<string>): Array<Movie> {
-    let genres = new Array()
-    for(let genre of genresS){
-      genres.push(genre)
+  public getMovieByExclusionReals(
+    oldMovies: Array<Movie>,
+    movies: Array<Movie>,
+    genresS: Array<string>,
+    genresA: Array<string>,
+    realisateurs: Array<string>,
+    acteurs: Array<string>
+  ): Array<Movie> {
+    let genres = new Array();
+    for (let genre of genresS) {
+      genres.push(genre);
     }
-    for(let genre of genresA){
-      genres.push(genre)
+    for (let genre of genresA) {
+      genres.push(genre);
     }
-    let moviesByExclusionReals = new Array<Movie>()
-    for(let movie of oldMovies) {
+    let moviesByExclusionReals = new Array<Movie>();
+    for (let movie of oldMovies) {
       let present = false;
-      for(let real of realisateurs) {
-        if(JSON.stringify(movie.realisateur) != "") {
-          let index = movie.realisateur.toLowerCase().indexOf(real.toLowerCase());
-          if(index != -1) {
+      for (let real of realisateurs) {
+        if (JSON.stringify(movie.realisateur) != "") {
+          let index = movie.realisateur
+            .toLowerCase()
+            .indexOf(real.toLowerCase());
+          if (index != -1) {
             present = true;
           }
-        }				
+        }
       }
-      if(!present) {
+      if (!present) {
         moviesByExclusionReals.push(movie);
       }
     }
     moviesByExclusionReals = this.eraseOldSelected(
-      oldMovies, movies, moviesByExclusionReals, genres, realisateurs, acteurs)
+      oldMovies,
+      movies,
+      moviesByExclusionReals,
+      genres,
+      realisateurs,
+      acteurs
+    );
     return moviesByExclusionReals;
   }
 
-  public getMovieByInclusionReals(movies: Array<Movie>, reals: Array<String>): Array<Movie> {
-    let moviesByInclusionReals = new Array<Movie>()
-    for(let movie of movies) {
-      for(let real of reals) {
-        if(JSON.stringify(movie.realisateur) != "") {
-          let index = movie.realisateur.toLowerCase().indexOf(real.toLowerCase());
-          if(index != -1) {
+  public getMovieByInclusionReals(
+    movies: Array<Movie>,
+    reals: Array<String>
+  ): Array<Movie> {
+    let moviesByInclusionReals = new Array<Movie>();
+    for (let movie of movies) {
+      for (let real of reals) {
+        if (JSON.stringify(movie.realisateur) != "") {
+          let index = movie.realisateur
+            .toLowerCase()
+            .indexOf(real.toLowerCase());
+          if (index != -1) {
             moviesByInclusionReals.push(movie);
           }
         }
       }
     }
-    if(reals.length >= 1){
+    if (reals.length >= 1) {
       return moviesByInclusionReals;
-    }else {
+    } else {
       return this.movies;
     }
   }
 
-  public getMovieByExclusionActors(oldMovies: Array<Movie>, movies: Array<Movie>, genresS: Array<string>, genresA: Array<string>, realisateurs: Array<string>, acteurs: Array<string>): Array<Movie> {
-    let genres = new Array()
-    for(let genre of genresS){
-      genres.push(genre)
+  public getMovieByExclusionActors(
+    oldMovies: Array<Movie>,
+    movies: Array<Movie>,
+    genresS: Array<string>,
+    genresA: Array<string>,
+    realisateurs: Array<string>,
+    acteurs: Array<string>
+  ): Array<Movie> {
+    let genres = new Array();
+    for (let genre of genresS) {
+      genres.push(genre);
     }
-    for(let genre of genresA){
-      genres.push(genre)
+    for (let genre of genresA) {
+      genres.push(genre);
     }
-    let moviesByExclusionActors = new Array<Movie>()
-    for(let movie of oldMovies) {
+    let moviesByExclusionActors = new Array<Movie>();
+    for (let movie of oldMovies) {
       let present = false;
-      for(let actor of acteurs) {
-        if(JSON.stringify(movie.casting) != "") {
+      for (let actor of acteurs) {
+        if (JSON.stringify(movie.casting) != "") {
           let index = movie.casting.toLowerCase().indexOf(actor.toLowerCase());
-          if(index != -1) {
+          if (index != -1) {
             present = true;
           }
-        }				
+        }
       }
-      if(!present) {
+      if (!present) {
         moviesByExclusionActors.push(movie);
       }
     }
     moviesByExclusionActors = this.eraseOldSelected(
-      oldMovies, movies, moviesByExclusionActors, genres, realisateurs, acteurs)
+      oldMovies,
+      movies,
+      moviesByExclusionActors,
+      genres,
+      realisateurs,
+      acteurs
+    );
     return moviesByExclusionActors;
   }
 
-  public getMovieByInclusionActors(movies: Array<Movie>, actors: Array<String>): Array<Movie> {
-    let moviesByInclusionActors = new Array<Movie>()
-    for(let movie of movies) {
-      for(let actor of actors) {
-        if(JSON.stringify(movie.casting) != "") {
+  public getMovieByInclusionActors(
+    movies: Array<Movie>,
+    actors: Array<String>
+  ): Array<Movie> {
+    let moviesByInclusionActors = new Array<Movie>();
+    for (let movie of movies) {
+      for (let actor of actors) {
+        if (JSON.stringify(movie.casting) != "") {
           let index = movie.casting.toLowerCase().indexOf(actor.toLowerCase());
-          if(index != -1) {
+          if (index != -1) {
             moviesByInclusionActors.push(movie);
           }
-        }				
+        }
       }
     }
-    if(actors.length >= 1){
+    if (actors.length >= 1) {
       return moviesByInclusionActors;
-    }else {
+    } else {
       return this.movies;
     }
   }
 
-  setSearch(search: string){
+  setSearch(search: string) {
     this.search.next(search);
   }
 
-  getSearch(): Observable<any>{
+  getSearch(): Observable<any> {
     return this.search.asObservable();
   }
-   
 }

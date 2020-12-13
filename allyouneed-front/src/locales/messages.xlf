@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="d3ea3e374a81758730de32dc3c30b4b32a241fbc" datatype="html">
+        <source>
+    Vous ne savez pas ce que vous voulez, mais vous savez ce que vous ne voulez
+    pas... Exclusio est là !
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="060f15e9e37681318cc3d90154f1d90f3e373e76" datatype="html">
+        <source>
+    Un simple clique et vous enlevez ce qui ne vous plait pas, Exclusio se
+    charge du reste !
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="273a2f766229859c6caf7534d645deb49db7d96f" datatype="html">
+        <source>
+      Passer en mode Inclusion
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8c84718c7c344d302d0fec453c7ab20d960be259" datatype="html">
+        <source>
+      Passer en mode Exclusion
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c1cc3624749c3307b39b950d19e7702a9fb98709" datatype="html">
+        <source>
+        Exclusions simples
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1616c9c33f64a39eff732ba53814ee25be672eb4" datatype="html">
+        <source>
+        Sous genres
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b9827e8098f7cae8e03da8a36be0b8db9e7b6d65" datatype="html">
+        <source>
+        Réalisateurs
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dfa8c5ee6c74f396f89478ee010d1d4e0d74dc5d" datatype="html">
+        <source>
+        Acteurs
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8465318eeac95f832e7a8c641815eb6cbe08d7c6" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Votre Recherche<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1a2a275afae52b604eef4c75bc72a8c1f955004a" datatype="html">
+        <source>Selection de films</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/main/main.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="134dd9c462d746ff13574cfb5afc91030f5ae63e" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ itemInput }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/checkboxes/checkboxes.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d4c48c24d69237fa3071e885635b7f4bd4c84049" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ item }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/checkboxes/checkboxes.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a10cf341c12bf25f50fd1a73439720aa76885dc9" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ item }}"/> : </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/checkboxes/checkboxes.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1a7391c494239efe2ad440cff51f17e9a03bc6b0" datatype="html">
+        <source>Fermer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/checkboxes/checkboxes.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

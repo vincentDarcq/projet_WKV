@@ -1,39 +1,120 @@
-<div class="container"> 
-  <h2>Vous ne savez pas ce que vous voulez, mais vous savez ce que vous ne voulez pas... Exclusio est là !</h2>
-  <h3>Un simple clique et vous enlevez ce qui ne vous plait pas, Exclusio se charge du reste !</h3>	
+<div class="container">
+  <h2 i18n>
+    Vous ne savez pas ce que vous voulez, mais vous savez ce que vous ne voulez
+    pas... Exclusio est là !
+  </h2>
+  <h3 i18n>
+    Un simple clique et vous enlevez ce qui ne vous plait pas, Exclusio se
+    charge du reste !
+  </h3>
   <div class="mode">
-    <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion">Passer en mode Inclusion</button>
-    <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion">Passer en mode Exclusion</button>
+    <button
+      class="btn btn-primary"
+      (click)="switchMode()"
+      *ngIf="exclusion"
+      i18n
+    >
+      Passer en mode Inclusion
+    </button>
+    <button
+      class="btn btn-primary"
+      (click)="switchMode()"
+      *ngIf="!exclusion"
+      i18n
+    >
+      Passer en mode Exclusion
+    </button>
     <button (click)="testIMDB()">test Api</button>
   </div>
   <ul>
-    <li [ngClass]="{'items':displayGenres}">
-      <button (click)="displayBoxes('genresSimples')" class="btn btn-link mb-2" i18n>Exclusions simples</button>
+    <li [ngClass]="{ items: displayGenres }">
+      <button
+        (click)="displayBoxes('genresSimples')"
+        class="btn btn-link mb-2"
+        i18n
+      >
+        Exclusions simples
+      </button>
     </li>
-    <li [ngClass]="{'items':displayGenresAvance}">
-      <button (click)="displayBoxes('genresAvances')" class="btn btn-link mb-2" i18n>Sous genres</button>
-      <input *ngIf="displayGenresAvance" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    <li [ngClass]="{ items: displayGenresAvance }">
+      <button
+        (click)="displayBoxes('genresAvances')"
+        class="btn btn-link mb-2"
+        i18n
+      >
+        Sous genres
+      </button>
+      <input
+        *ngIf="displayGenresAvance"
+        (input)="searched($event.target.value)"
+        type="text"
+        class="form-control"
+      />
     </li>
-    <li [ngClass]="{'items':displayRealisateurs}">
-      <button (click)="displayBoxes('reals')" class="btn btn-link mb-2" i18n>Réalisateurs</button>
-      <input *ngIf="displayRealisateurs" placeholder="Chercher un réalisateur" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    <li [ngClass]="{ items: displayRealisateurs }">
+      <button (click)="displayBoxes('reals')" class="btn btn-link mb-2" i18n>
+        Réalisateurs
+      </button>
+      <input
+        *ngIf="displayRealisateurs"
+        placeholder="Chercher un réalisateur"
+        (input)="searched($event.target.value)"
+        type="text"
+        class="form-control"
+      />
     </li>
-    <li [ngClass]="{'items':displayActeurs}">
-      <button (click)="displayBoxes('acteurs')" class="btn btn-link mb-2" i18n>Acteurs</button>
-      <input *ngIf="displayActeurs" placeholder="Chercher un acteur" (input)="searched($event.target.value)" type="text" class="form-control"/>
+    <li [ngClass]="{ items: displayActeurs }">
+      <button (click)="displayBoxes('acteurs')" class="btn btn-link mb-2" i18n>
+        Acteurs
+      </button>
+      <input
+        *ngIf="displayActeurs"
+        placeholder="Chercher un acteur"
+        (input)="searched($event.target.value)"
+        type="text"
+        class="form-control"
+      />
     </li>
   </ul>
-  <app-checkboxes *ngIf="displayGenres" [itemsSelectedFromMain]="genresSelectedS" [items]="genresSimple" (itemsSelected)="selected($event, 'genresS')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayGenresAvance" [itemsSelectedFromMain]="genresSelectedA" [items]="genresAvance" [itemFound]="genreFound" [itemInput]="genreInput" (itemsSelected)="selected($event, 'genresA')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayRealisateurs" [itemsSelectedFromMain]="realisateursSelected" [items]="tenReals" [itemFound]="realFound" [itemInput]="realInput" (itemsSelected)="selected($event, 'realisateurs')"></app-checkboxes>  
-  <app-checkboxes *ngIf="displayActeurs" [itemsSelectedFromMain]="actorsSelected" [items]="tenActors" [itemFound]="actorFound" [itemInput]="actorInput" (itemsSelected)="selected($event, 'acteurs')"></app-checkboxes>     
-  <br>
+  <app-checkboxes
+    *ngIf="displayGenres"
+    [itemsSelectedFromMain]="genresSelectedS"
+    [items]="genresSimple"
+    (itemsSelected)="selected($event, 'genresS')"
+  ></app-checkboxes>
+  <app-checkboxes
+    *ngIf="displayGenresAvance"
+    [itemsSelectedFromMain]="genresSelectedA"
+    [items]="genresAvance"
+    [itemFound]="genreFound"
+    [itemInput]="genreInput"
+    (itemsSelected)="selected($event, 'genresA')"
+  ></app-checkboxes>
+  <app-checkboxes
+    *ngIf="displayRealisateurs"
+    [itemsSelectedFromMain]="realisateursSelected"
+    [items]="tenReals"
+    [itemFound]="realFound"
+    [itemInput]="realInput"
+    (itemsSelected)="selected($event, 'realisateurs')"
+  ></app-checkboxes>
+  <app-checkboxes
+    *ngIf="displayActeurs"
+    [itemsSelectedFromMain]="actorsSelected"
+    [items]="tenActors"
+    [itemFound]="actorFound"
+    [itemInput]="actorInput"
+    (itemsSelected)="selected($event, 'acteurs')"
+  ></app-checkboxes>
+  <br />
   <div *ngIf="searching">
-    <h2><strong>Votre Recherche</strong></h2>
+    <h2 i18n><strong>Votre Recherche</strong></h2>
     <div class="row">
       <div *ngFor="let movie of movieSearched">
         <div class="col-sm-2" id="movie">
-          <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"/></a>  	
+          <a [routerLink]="['/movie', movie.id]"
+            ><img src="{{ movie.cov }}" class="image" alt="{{ movie.titre }}"
+          /></a>
         </div>
       </div>
     </div>
@@ -45,32 +126,53 @@
   </ul>
   <ul class="navbar-nav mr-auto navbar-right">
     <div class="checkboxrondes">
-      Compact <input type="checkbox" class="rond">
-      Complet <input type="checkbox" class="rond">
+      Compact <input type="checkbox" class="rond" /> Complet
+      <input type="checkbox" class="rond" />
     </div>
   </ul>
-  <hr>
+  <hr />
   <div *ngIf="bestMoviesChecked" id="bestMoviesChecked" class="row">
     <div class="col-sm-3" id="bestMovie">
-      <a [routerLink]="['/movie', bestMovie.id ]"><img src="{{ bestMovie.cov_horizontale }}" class="image" alt="{{ bestMovie.titre }}"></a>
-      <br>
+      <a [routerLink]="['/movie', bestMovie.id]"
+        ><img
+          src="{{ bestMovie.cov_horizontale }}"
+          class="image"
+          alt="{{ bestMovie.titre }}"
+      /></a>
+      <br />
       {{ bestMovie.titre }}
       <div class="block">
-        <app-star-rating [score]="bestMovie.alloGrade" [forDisplay]="true"></app-star-rating>
-      </div> 
-      {{ bestMovie.year }}<br>
+        <app-star-rating
+          [score]="bestMovie.alloGrade"
+          [forDisplay]="true"
+        ></app-star-rating>
+      </div>
+      {{ bestMovie.year }}<br />
       <div class="synospis">{{ bestMovie.synopsis }}</div>
     </div>
     <div class="col-sm-9">
       <app-caroussel [inputMovies]="bestAlloGrades"></app-caroussel>
     </div>
   </div>
-  <a [routerLink]="['/movieForm']"><button class="btn btn-primary">Ajouter un film</button></a>
+  <a [routerLink]="['/movieForm']"
+    ><button class="btn btn-primary">Ajouter un film</button></a
+  >
   <h1><strong>Les films</strong></h1>
   <div *ngFor="let movie of movies">
-    <div class="col-sm-2" id="movie" openDelay="1000" position="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
-      <a [routerLink]="['/movie', movie.id ]"><img src="{{ movie.cov_horizontale }}" class="image" alt="{{ movie.titre }}"/></a>  	
-    </div>	
+    <div
+      class="col-sm-2"
+      id="movie"
+      openDelay="1000"
+      position="top"
+      [ngbTooltip]="tipContent"
+      tooltipClass="my-custom-class"
+    >
+      <a [routerLink]="['/movie', movie.id]"
+        ><img
+          src="{{ movie.cov_horizontale }}"
+          class="image"
+          alt="{{ movie.titre }}"
+      /></a>
+    </div>
   </div>
-</div> 
-
+</div>

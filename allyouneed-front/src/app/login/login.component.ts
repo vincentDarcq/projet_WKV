@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.users = this.loginService.getUsers();
-    JSON.stringify(this.users);
     this.authService.authState.subscribe((user) => {
+      console.log(user)
       this.fbuser = user;
       this.loggedIn = (user != null);
     });
@@ -47,15 +47,13 @@ export class LoginComponent implements OnInit, DoCheck {
           this.fbuserIsInBdd = true;
           this.login = new User(this.fbuser.firstName, this.fbuser.email);
           this.loginService.login(this.login);
-          this.router.navigate(['']);
         }
       }
       //Si le compte FB n'est pas en BDD, on l'enregistre
       if(!this.fbuserIsInBdd){
         this.login = new User(this.fbuser.firstName, this.fbuser.email);
         this.loginService.register(this.login, "facebook");  
-        this.loginService.login(this.login);
-        this.router.navigate(['']);      
+        this.loginService.login(this.login);    
       }
     }
   }
@@ -79,6 +77,10 @@ export class LoginComponent implements OnInit, DoCheck {
 
   signInWithFB(): void {
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(){
+    this.authService.signOut();
   }
 
 }

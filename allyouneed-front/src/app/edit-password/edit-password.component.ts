@@ -31,7 +31,6 @@ export class EditPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.users = this.loginService.getUsers();
-    JSON.stringify(this.users);
     this.passForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}')]],
     });
