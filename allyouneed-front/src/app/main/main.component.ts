@@ -65,8 +65,8 @@ export class MainComponent implements OnInit, DoCheck {
   
   ngOnInit() {   
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.tenReals = this.movieService.getTenReals()
-    this.tenActors = this.movieService.getTenActors()
+    this.tenReals = this.movieService.getTenReals();
+    this.tenActors = this.movieService.getTenActors();
     this.movies = this.movieService.getMovies()
     this.genres = this.movieService.getGenres()
     this.actors = this.movieService.getActors()
