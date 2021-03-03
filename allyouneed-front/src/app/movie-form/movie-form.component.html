@@ -11,7 +11,7 @@
           </div>
           <div class="form-group">
               <label for="genres">Genres : </label>
-              <input [(ngModel)]="newMovie.genre" name="genres" id="genres" class="form-control" required/>
+              <input [(ngModel)]="newMovie.genres" name="genres" id="genres" class="form-control" required/>
           </div>
           <div class="form-group">
               <label for="realisateur">Réalisateur : </label>
@@ -29,15 +29,23 @@
             <label for="cov_horizontale">Couverture horizontale: </label>
             <input [(ngModel)]="newMovie.cov_horizontale" name="cov_horizontale" id="cov_horizontale" class="form-control" required/>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="display : inline-block; vertical-align : top;">
             <label for="time">Durée: </label>
             <input [(ngModel)]="newMovie.time" name="time" id="time" class="form-control" required/>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="display : inline-block; vertical-align : top;">
+            <label for="time">AlloCiné note: </label>
+            <input [(ngModel)]="newMovie.alloGrade" name="alloGrade" id="alloGrade" class="form-control" required/>
+          </div>
+          <div class="form-group" style="display : inline-block; vertical-align : top;">
+            <label for="time">Imdb note: </label>
+            <input [(ngModel)]="newMovie.imdbGrade" name="imdbGrade" id="imdbGrade" class="form-control" required/>
+          </div>
+          <div class="form-group" style="display : inline-block; vertical-align : top;">
               <label for="year">Année : </label>
               <input [(ngModel)]="newMovie.year" name="year" id="year" class="form-control" required/>
           </div>	
-          <div class="form-group">
+          <div class="form-group" style="display : inline-block; vertical-align : top;">
               <label for="pegi">Pegi : </label>
               <input [(ngModel)]="newMovie.pegi" name="pegi" id="pegi" class="form-control"/>
           </div> 

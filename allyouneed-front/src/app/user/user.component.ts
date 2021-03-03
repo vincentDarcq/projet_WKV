@@ -22,8 +22,10 @@ export class UserComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    this.user = JSON.parse(localStorage.getItem('currentUser'))
-    this.movies = this.movieService.getMovies()
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.movieService.movies.subscribe( movies => {
+      this.movies = movies;
+    })
   }
 
   ngDoCheck(){

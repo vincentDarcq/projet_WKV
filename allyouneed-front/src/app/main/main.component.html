@@ -8,76 +8,40 @@
     charge du reste !
   </h3>
   <div class="mode">
-    <button
-      class="btn btn-primary"
-      (click)="switchMode()"
-      *ngIf="exclusion"
-      i18n
-    >
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="exclusion" i18n>
       Passer en mode Inclusion
     </button>
-    <button
-      class="btn btn-primary"
-      (click)="switchMode()"
-      *ngIf="!exclusion"
-      i18n
-    >
+    <button class="btn btn-primary" (click)="switchMode()" *ngIf="!exclusion" i18n>
       Passer en mode Exclusion
     </button>
     <button (click)="testIMDB()">test Api</button>
   </div>
   <ul>
     <li [ngClass]="{ items: displayGenres }">
-      <button
-        (click)="displayBoxes('genresSimples')"
-        class="btn btn-link mb-2"
-        i18n
-      >
+      <button (click)="displayBoxes('genresSimples')" class="btn btn-link mb-2" i18n>
         Exclusions simples
       </button>
     </li>
     <li [ngClass]="{ items: displayGenresAvance }">
-      <button
-        (click)="displayBoxes('genresAvances')"
-        class="btn btn-link mb-2"
-        i18n
-      >
+      <button (click)="displayBoxes('genresAvances')" class="btn btn-link mb-2" i18n>
         Sous genres
       </button>
-      <input
-        *ngIf="displayGenresAvance"
-        (input)="searched($event.target.value)"
-        type="text"
-        class="form-control"
-      />
+      <input *ngIf="displayGenresAvance" (input)="searched($event.target.value)" type="text" class="form-control"/>
     </li>
     <li [ngClass]="{ items: displayRealisateurs }">
       <button (click)="displayBoxes('reals')" class="btn btn-link mb-2" i18n>
         Réalisateurs
       </button>
-      <input
-        *ngIf="displayRealisateurs"
-        placeholder="Chercher un réalisateur"
-        (input)="searched($event.target.value)"
-        type="text"
-        class="form-control"
-      />
+      <input *ngIf="displayRealisateurs" placeholder="Chercher un réalisateur" (input)="searched($event.target.value)" type="text" class="form-control"/>
     </li>
     <li [ngClass]="{ items: displayActeurs }">
       <button (click)="displayBoxes('acteurs')" class="btn btn-link mb-2" i18n>
         Acteurs
       </button>
-      <input
-        *ngIf="displayActeurs"
-        placeholder="Chercher un acteur"
-        (input)="searched($event.target.value)"
-        type="text"
-        class="form-control"
-      />
+      <input *ngIf="displayActeurs" placeholder="Chercher un acteur" (input)="searched($event.target.value)" type="text" class="form-control"/>
     </li>
   </ul>
-  <app-checkboxes
-    *ngIf="displayGenres"
+  <app-checkboxes *ngIf="displayGenres"
     [itemsSelectedFromMain]="genresSelectedS"
     [items]="genresSimple"
     (itemsSelected)="selected($event, 'genresS')"
@@ -124,12 +88,6 @@
       <h1><strong i18n>Selection de films</strong></h1>
     </li>
   </ul>
-  <ul class="navbar-nav mr-auto navbar-right">
-    <div class="checkboxrondes">
-      Compact <input type="checkbox" class="rond" /> Complet
-      <input type="checkbox" class="rond" />
-    </div>
-  </ul>
   <hr />
   <div *ngIf="bestMoviesChecked" id="bestMoviesChecked" class="row">
     <div class="col-sm-3" id="bestMovie">
@@ -142,10 +100,7 @@
       <br />
       {{ bestMovie.titre }}
       <div class="block">
-        <app-star-rating
-          [score]="bestMovie.alloGrade"
-          [forDisplay]="true"
-        ></app-star-rating>
+        <app-star-rating [score]="bestMovie.alloGrade" [forDisplay]="true"></app-star-rating>
       </div>
       {{ bestMovie.year }}<br />
       <div class="synospis">{{ bestMovie.synopsis }}</div>
@@ -159,20 +114,9 @@
   >
   <h1><strong>Les films</strong></h1>
   <div *ngFor="let movie of movies">
-    <div
-      class="col-sm-2"
-      id="movie"
-      openDelay="1000"
-      position="top"
-      [ngbTooltip]="tipContent"
-      tooltipClass="my-custom-class"
-    >
+    <div class="col-sm-2" id="movie" openDelay="1000" position="top" [ngbTooltip]="tipContent" tooltipClass="my-custom-class">
       <a [routerLink]="['/movie', movie.id]"
-        ><img
-          src="{{ movie.cov_horizontale }}"
-          class="image"
-          alt="{{ movie.titre }}"
-      /></a>
+        ><img src="{{ movie.cov_horizontale }}" class="image" alt="{{ movie.titre }}"/></a>
     </div>
   </div>
 </div>

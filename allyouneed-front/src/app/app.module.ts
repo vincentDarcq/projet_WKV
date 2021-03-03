@@ -34,6 +34,7 @@ import { CarousselComponent } from "./caroussel/caroussel.component";
 import { HighlightDirective } from "./directives/highlight.directive";
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
+import { TenStarRatingComponent } from './ten-star-rating/ten-star-rating.component';
 
 //permet d'utiliser les pipes avec la version française
 registerLocaleData(localeFr);
@@ -69,6 +70,7 @@ export function provideConfig() {
     InfobulleComponent,
     CarousselComponent,
     HighlightDirective,
+    TenStarRatingComponent,
   ],
   imports: [
     BrowserAnimationsModule,

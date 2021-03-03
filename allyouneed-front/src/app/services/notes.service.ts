@@ -3,34 +3,33 @@ import { HttpClient } from '@angular/common/http';
 import { environment as ENV } from '../../environments/environment';
 import { Note } from '../models/note';
 import { Movie } from '../models/movie';
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
 
-  wsUrl: string;
-  private notes : Array<Note>;
+  public wsUrl: string= ENV.apiUrl + '/notes'
+  public notes : BehaviorSubject<Array<Note>>;
   private bestMovies : Array<Movie>;
   private note: Number;
 
   constructor(private httpClient: HttpClient) { 
-    this.notes = new Array();
+    this.notes = new BehaviorSubject(Array<Note>());;
     this.bestMovies = new Array();
-    this.wsUrl = ENV.apiUrl + '/notes';
+    this.httpClient.get(this.wsUrl)
+      .subscribe((list: Array<Note>) => {
+        this.notes.next(list)
+      });
   }
 
   public getNotes(): Array<Note>{
-    this.notes.splice(0, this.notes.length)
-    this.httpClient.get(this.wsUrl)
-      .subscribe((list: Array<Note>) => {
-        this.notes.push(...list)
-      });
-    return this.notes;
+    return this.notes.value;
   }
 
   public getBestNotes(): Array<Movie>{
-    this.notes.splice(0, this.notes.length);
+    this.notes.value.splice(0, this.notes.value.length);
     this.httpClient.get(this.wsUrl + `/best`)
       .subscribe((list: Array<Movie>) => {
         this.bestMovies.push(...list);
@@ -40,7 +39,7 @@ export class NotesService {
   }
 
   public getBestAllocine(): Array<Movie>{
-    this.notes.splice(0, this.notes.length);
+    this.notes.value.splice(0, this.notes.value.length);
     this.httpClient.get(this.wsUrl + `/bestAllocine`)
       .subscribe((list: Array<Movie>) => {
         this.bestMovies.push(...list);
@@ -59,7 +58,7 @@ export class NotesService {
   }
 
   public getNoteByUserForMovie(idmovie: Number, iduser: Number){
-    for(let note of this.notes){
+    for(let note of this.notes.value){
       if(note.user.id === iduser && note.movie.id === idmovie){
         this.note = note.note;
       }else {
@@ -80,7 +79,8 @@ export class NotesService {
   public getNote(id: Number): Number {
     let comp = 0;
     let total = 0;
-    for(let note of this.notes){
+    console.log(this.notes.value)
+    for(let note of this.notes.value){
       if(note.movie.id === id){
         total += note.note;
         comp ++;

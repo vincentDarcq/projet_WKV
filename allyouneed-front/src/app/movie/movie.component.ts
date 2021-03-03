@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { MoviesService } from '../services/movies.service';
 import { User } from '../models/user';
 import { Comment } from '../models/comment';
@@ -29,15 +29,28 @@ export class MovieComponent implements OnInit {
   constructor(private movieService: MoviesService,
               private commentMovieService: CommentsService,
               private noteMovieService: NotesService,
-              private route: ActivatedRoute,
-              private loginService: LoginService,
-              private router: Router) { }
+              private activatedRoute: ActivatedRoute,
+              private loginService: LoginService) { 
+    }
 
   ngOnInit() {
-    this.idmovie = Number(this.route.snapshot.params.id);
-    this.movie = this.movieService.getMovie(this.idmovie);
-    this.comments = this.commentMovieService.getCommentsMovie(this.idmovie);
-    this.noteMovie = this.noteMovieService.getNote(this.idmovie);
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.idmovie = Number(params.get('id'));
+    });
+    this.movieService.movies.subscribe( movies => {
+      const id = movies.findIndex((movie) => this.idmovie === movie.id);
+      this.movie = movies[id];
+      console.log(this.movie);
+      this.comments = this.commentMovieService.getCommentsMovie(id);
+    })
+    this.noteMovieService.notes.subscribe( notes => {
+      if(notes.length > 0){
+        const id = notes.findIndex((note) => this.idmovie === note.movie.id);
+        if(id !== -1){
+          this.noteMovie = notes[id].note;
+        }
+      }
+    })
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser !== null){
       this.noteUserFromBack = this.noteMovieService.getNoteByUserForMovie(this.idmovie, this.currentUser.id);

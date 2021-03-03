@@ -2,17 +2,17 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Movie } from "../models/movie";
 import { environment as ENV } from "../../environments/environment";
-import { Subject, Observable } from "rxjs";
+import { Subject, Observable, BehaviorSubject } from "rxjs";
+import { movies } from "../models/movies";
 
 @Injectable({
   providedIn: "root",
 })
 export class MoviesService {
-  private movies: Array<Movie>;
+  public movies: BehaviorSubject<Array<Movie>>;
+  private moviesToSave = movies;
   private genres: Array<string>;
   private actors: Array<string>;
-  private tenActors: Array<string>;
-  private tenReals: Array<string>;
   private realisateurs: Array<string>;
   private wsUrl: string;
   private search = new Subject<any>();
@@ -33,36 +33,26 @@ export class MoviesService {
 
   constructor(private httpClient: HttpClient) {
     this.wsUrl = ENV.apiUrl + "/movies";
-  }
-
-  public getMovies(): Array<Movie> {
-    this.movies = new Array();
+    this.movies = new BehaviorSubject(Array<Movie>());
     this.httpClient
       .get(this.wsUrl)
-      .subscribe((list: Array<Movie>) => this.movies.push(...list));
-    return this.movies;
-  }
-
-  public getMovie(id: Number): Movie {
-    const index = this.getIndexMovie(id);
-    if (index >= 0) {
-      return this.movies[index];
-    }
+      .subscribe((list: Array<Movie>) => this.movies.next(list) );
   }
 
   private getIndexMovie(id: Number): number {
-    return this.movies.findIndex((movie) => movie.id === id);
+    return this.movies.value.findIndex((movie) => movie.id === id);
   }
 
   public createMovie(movie: Movie) {
+    let movies = this.movies.value;
     this.httpClient
       .post<Movie>(this.wsUrl, movie)
-      .subscribe((movieFromJee) =>
-        this.movies.push(
+      .subscribe((movieFromJee) => {
+        movies.push(
           new Movie(
             movieFromJee.titre,
             movieFromJee.synopsis,
-            movieFromJee.genre,
+            movieFromJee.genres,
             movieFromJee.casting,
             movieFromJee.realisateur,
             movieFromJee.cov_verticale,
@@ -74,22 +64,24 @@ export class MoviesService {
             movieFromJee.id
           )
         )
-      );
+        this.movies.next(movies);
+      });
   }
 
   public updateMovie(movie: Movie) {
+    let movies = this.movies.value;
     this.httpClient
       .put<Movie>(this.wsUrl + `/${movie.id}`, movie)
       .subscribe((movieFromJee) => {
         const index = this.getIndexMovie(movie.id);
         if (index >= 0) {
-          this.movies.splice(
+          movies.splice(
             index,
             1,
             new Movie(
               movieFromJee.titre,
               movieFromJee.synopsis,
-              movieFromJee.genre,
+              movieFromJee.genres,
               movieFromJee.casting,
               movieFromJee.realisateur,
               movieFromJee.cov_verticale,
@@ -98,21 +90,144 @@ export class MoviesService {
               movieFromJee.year,
               movieFromJee.pegi,
               movieFromJee.avertissement,
-              movieFromJee.id
+              movieFromJee.id,
+              movieFromJee.grade,
+              movieFromJee.alloGrade,
+              movieFromJee.imdbGrade
             )
           );
+          this.movies.next(movies);
         }
       });
   }
 
-  public getApi() {
-    this.httpClient.get(this.IMDBApi).subscribe((movie: any) => {
+  public getAlternativeIMDb(){
+    this.httpClient.get("https://movie-database-imdb-alternative.p.rapidapi.com/", {
+      headers: {
+        "x-rapidapi-key": "6864765bafmshd5917a84cf4a549p114e8bjsn283ffb541696",
+	      "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
+	      "useQueryString": 'true'
+      },
+      params: {
+        "s": "Outlander",
+        "page": "1",
+        "r": "json",
+        "type": "series"
+      }
+    }).subscribe((movie: any) => {
       console.log(movie);
-      //newMovie = new Movie(movie.Title, movie.Plot, this.getGenresFromApi(movie.Genre), movie.Actors, movie.Director, movie.Poster,
-      //movie.Year)
-      //this.createMovie(newMovie)
-    });
+    })
   }
+
+  public getIMDb() {
+    let titres = new Array<string>();
+    for(let t of this.moviesToSave){
+      for(let m of this.movies.value){
+        titres.push(m.titre);
+      }
+      if(titres.indexOf(t) === -1){
+        const headers = {
+          "x-rapidapi-key": "6864765bafmshd5917a84cf4a549p114e8bjsn283ffb541696",
+          "x-rapidapi-host": "imdb8.p.rapidapi.com",
+          "useQueryString": 'true'
+        }
+        const headers2 = {
+          "x-rapidapi-key": "6864765bafmshd5917a84cf4a549p114e8bjsn283ffb541696",
+          "x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+          "useQueryString": 'true'
+        }
+        let newMovie = new Movie();
+        newMovie.titre = t;
+        this.httpClient.get("https://imdb8.p.rapidapi.com/title/auto-complete", {
+          headers: headers,
+          params: {
+            "q": t
+          }
+        }).subscribe((datas: any) => {
+          console.log("1er appel")
+          const id = datas.d[0].id;
+          newMovie.year = datas.d[0].y;
+          newMovie.cov_horizontale = datas.d[0].i.imageUrl;
+          this.httpClient.get("https://movies-tvshows-data-imdb.p.rapidapi.com/", {
+            headers: headers2,
+            params: {
+              "type": "get-movie-details",
+              "imdb": id
+            }
+          }).subscribe((datas: any) => {
+            console.log("2e appel")
+            console.log(datas)
+            for(let i=0; i<6; i++){
+              if(datas.stars[i]){
+                const cast = newMovie.casting ? newMovie.casting : "";
+                newMovie.casting = cast + datas.stars[i] + ", ";
+              }
+            }
+            for(let i=0; i<3; i++){
+              if(datas.directors[i]){
+                const real = newMovie.realisateur ? newMovie.realisateur : ""
+                newMovie.realisateur = real + datas.directors[i] + ", ";
+              }
+            }
+            newMovie.casting = newMovie.casting.substring(0, newMovie.casting.length-2);
+            newMovie.realisateur = newMovie.realisateur.substring(0, newMovie.realisateur.length-2);
+            this.httpClient.get("https://imdb8.p.rapidapi.com/title/get-overview-details", {
+              headers: headers,
+              params: {
+                "tconst": id,
+                "currentCountry": "US"
+              }
+            }).subscribe((datas: any) => {
+              console.log("3e appel")
+              newMovie.imdbGrade = datas.ratings.rating;
+              newMovie.time = datas.title.runningTimeInMinutes+"mn";
+              newMovie.synopsis = datas.plotSummary.text;
+              if(datas.genres.indexOf("Adventure") !== -1){
+                newMovie.genres = "Aventure, ";
+              }
+              if(datas.genres.indexOf("Comedy") !== -1){
+                newMovie.genres += newMovie.genres ? newMovie.genres : "" + "Comedie, ";
+              }
+              if(datas.genres.indexOf("Drama") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Drame, ";
+              }
+              if(datas.genres.indexOf("Biography") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Biopic, ";
+              }
+              if(datas.genres.indexOf("Sci-Fi") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Science fiction, ";
+              }
+              if(datas.genres.indexOf("Family") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Jeunesse, ";
+              }
+              if(datas.genres.indexOf("Horror") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Epouvante-Horreur, ";
+              }
+              if(datas.genres.indexOf("History") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Histoire, ";
+              }
+              if(datas.genres.indexOf("War") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Guerre, ";
+              }
+              if(datas.genres.indexOf("Documentary") !== -1){
+                newMovie.genres = newMovie.genres ? newMovie.genres : "" + "Documentaire, ";
+              }
+              for(let genre of datas.genres){
+                if(genre !== "Adventure" || genre !== "Comedy" || genre !== "Drama" || genre !== "Biography" 
+                || genre !== "Sci-Fi" || genre !== "Family" || genre !== "Horror" || genre !== "History" 
+                || genre !== "War" || genre !== "Documentary"){
+                  newMovie.genres = newMovie.genres + genre + ", ";
+                }
+              }
+              newMovie.genres = newMovie.genres.substring(0, newMovie.genres.length-2);
+              console.log(newMovie);
+              //this.createMovie(newMovie)
+            })
+          })
+        })
+      }
+    }
+  };
 
   getGenresFromApi(genre: string): string {
     var genres = "";
@@ -179,26 +294,6 @@ export class MoviesService {
     return this.actors;
   }
 
-  public getTenActors(): Array<string> {
-    this.tenActors = new Array();
-    this.httpClient
-      .get(this.wsUrl + `/tenActeurs`)
-      .subscribe((list: Array<string>) => {
-        this.tenActors.push(...list);
-      });
-    return this.tenActors;
-  }
-
-  public getTenReals(): Array<string> {
-    this.tenReals = new Array();
-    this.httpClient
-      .get(this.wsUrl + `/tenRealisateurs`)
-      .subscribe((list: Array<string>) => {
-        this.tenReals.push(...list);
-      });
-    return this.tenReals;
-  }
-
   private getMoviesAlreadyExcluded(
     oldMovies: Array<Movie>,
     movies: Array<Movie>
@@ -263,8 +358,8 @@ export class MoviesService {
     for (let movie of oldMovies) {
       let present = false;
       for (let genre of genres) {
-        if (JSON.stringify(movie.genre) != "") {
-          let index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
+        if (JSON.stringify(movie.genres) != "") {
+          let index = movie.genres.toLowerCase().indexOf(genre.toLowerCase());
           if (index != -1) {
             present = true;
           }
@@ -292,8 +387,8 @@ export class MoviesService {
     let moviesByInclusionGenres = new Array<Movie>();
     for (let movie of movies) {
       for (let genre of genres) {
-        if (JSON.stringify(movie.genre) != "") {
-          let index = movie.genre.toLowerCase().indexOf(genre.toLowerCase());
+        if (JSON.stringify(movie.genres) != "") {
+          let index = movie.genres.toLowerCase().indexOf(genre.toLowerCase());
           if (index != -1) {
             moviesByInclusionGenres.push(movie);
           }
@@ -303,7 +398,7 @@ export class MoviesService {
     if (genres.length >= 1) {
       return moviesByInclusionGenres;
     } else {
-      return this.movies;
+      return this.movies.value;
     }
   }
 
@@ -370,7 +465,7 @@ export class MoviesService {
     if (reals.length >= 1) {
       return moviesByInclusionReals;
     } else {
-      return this.movies;
+      return this.movies.value;
     }
   }
 
@@ -433,7 +528,7 @@ export class MoviesService {
     if (actors.length >= 1) {
       return moviesByInclusionActors;
     } else {
-      return this.movies;
+      return this.movies.value;
     }
   }
 

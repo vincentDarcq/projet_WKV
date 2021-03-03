@@ -1,4 +1,11 @@
-.container 
-{
-    color: black;
+.container {
+  color: black;
+}
+
+#year,
+#pegi,
+#time,
+#alloGrade,
+#imdbGrade {
+  width: 100px;
 }

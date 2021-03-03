@@ -1,13 +1,13 @@
-.image{
-    width: 150px;
-    height: 190px;
+.image {
+  width: 150px;
+  height: 190px;
 }
 
-.container{
-    color: white;
-    background-color:#478688;
+p,
+label {
+  color: white;
 }
 
-body{
-    background-color:#478688;
+h1 {
+  color: white;
 }

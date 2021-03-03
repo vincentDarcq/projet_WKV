@@ -1,127 +1,149 @@
-<body>
-  <h1>{{ movie.titre }}</h1>
-  <div class="container mt-5 card">
-    <div class="row">
-      <div class="col-sm-6">
-        <img
-          src="{{ movie.cov_verticale }}"
-          class="image"
-          alt="{{ movie.titre }}"
-        />
-      </div>
-      <div class="col-sm-6" *ngIf="movie.pegi">
-        <p>{{ movie.pegi }}</p>
-      </div>
-      <div
-        class="col-sm-6"
-        *ngIf="movie.avertissement"
-        style="font-weight: bold"
-      >
-        <p>{{ movie.avertissement }}</p>
-      </div>
-      <div class="col-sm-6">
-        <p>Note moyenne :</p>
-        <p *ngIf="noteMovie != -1">
-          <app-star-rating
-            [score]="noteMovie"
-            [forDisplay]="true"
-          ></app-star-rating>
-        </p>
-        <p *ngIf="noteMovie == -1">Aucune note n'est donnée pour ce film</p>
-      </div>
-      <div class="col-sm-6" *ngIf="currentUser">
-        <p *ngIf="noteUserFromBack !== -1">
-          Votre note pour ce film :
-          <app-star-rating
-            [score]="noteUserFromBack"
-            [forDisplay]="true"
-          ></app-star-rating>
-        </p>
-        <p *ngIf="noteUserFromBack === -1">
-          Notez ce film :
-          <app-star-rating
-            [maxScore]="5"
-            [forDisplay]="false"
-            (rateChanged)="onRateChange($event)"
-          ></app-star-rating>
-          <button class="btn btn-primary" (click)="giveMark()">
-            Noter le film
-          </button>
-        </p>
-      </div>
+<h1 *ngIf="movie">{{ movie.titre }}</h1>
+<div class="card-body" *ngIf="movie">
+  <div
+  *ngIf="movie.avertissement"
+  style="font-weight: bold"
+  >
+    <p>{{ movie.avertissement }}</p>
+  </div>
+  <div
+  *ngIf="movie.pegi"
+  style="font-weight: bold"
+  >
+    <p>{{ movie.pegi }}</p>
+  </div>
+  <div class="row" *ngIf="movie">
+    <div class="col-sm-2">
+      <img
+      src="{{ movie.cov_verticale }}"
+      class="image"
+      alt="{{ movie.titre }}"
+      />
     </div>
-    <ng-container class="row" *ngIf="isFavori">
-      <h2>{{ movie.titre }} est dans vos favoris</h2>
-      <a (click)="supprimerFavoris()" class="nav-link"
-        ><button class="btn btn-primary">supprimer des favoris</button></a
-      >
-    </ng-container>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="genres">Genres : </label>
-        <p>{{ movie.genre }}</p>
-      </div>
-      <div class="form-group">
-        <label for="synopsis">Synopsis : </label>
-        <p>{{ movie.synopsis }}</p>
-      </div>
-      <div class="form-group">
-        <label for="realisateur">realisateur : </label>
-        <p>{{ movie.realisateur }}</p>
-      </div>
-      <div class="form-group">
-        <label for="casting">casting : </label>
-        <p>{{ movie.casting }}</p>
-      </div>
-      <div class="form-group">
-        <label for="année">Année : </label>
-        <p>{{ movie.year }}</p>
-      </div>
-      <nav class="navbar navbar-expand-lg">
-        <ul class="navbar-nav mr-auto">
-          <li routerLinkActive="nav-item active">
-            <a [routerLink]="['/movieForm', movie.id]" class="nav-link"
-              ><button class="btn btn-primary">Modifier le film</button></a
-            >
-          </li>
-          <li *ngIf="!isFavori" routerLinkActive="nav-item active">
-            <a (click)="ajouterFavoris()" class="nav-link"
-              ><button class="btn btn-primary">ajouter aux favoris</button></a
-            >
-          </li>
-        </ul>
-      </nav>
+    <div class="col-sm-10">
+      <p>{{ movie.synopsis }}</p>
       <div class="row">
-        <div *ngFor="let com of comments">
-          <div class="form-group">
-            <label>{{ com.user.pseudonyme }} le {{ com.date }} : </label>
-            <p>
-              {{ com.comment }}
-              <a (click)="suppComment(com.id)"
-                ><img
-                  src="https://www.icone-png.com/png/19/18746.png"
-                  *ngIf="
-                    currentUser &&
-                    currentUser.pseudonyme === com.user.pseudonyme
-                  "
-                  style="width: 15px; height: 15px"
-              /></a>
-            </p>
-          </div>
+        <div class="form-group col-sm-2">
+          <label for="genres">Genres : </label>
+          <p>{{ movie.genres }}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label for="realisateur">realisateur : </label>
+          <p>{{ movie.realisateur }}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label for="casting">casting : </label>
+          <p>{{ movie.casting }}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label for="année">Année : </label>
+          <p>{{ movie.year }}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label for="année">Durée : </label>
+          <p>{{ movie.time }}</p>
         </div>
       </div>
-      <ng-container class="row" *ngIf="currentUser">
-        <p>Commentez :</p>
-        <textarea
-          [(ngModel)]="comment"
-          name="commentaire"
-          id="commentaire"
-          class="form-control"
-          placeholder="Tapez votre commentaire ici..."
-        >
-        </textarea>
-        <button class="btn btn-success" (click)="addComment()">Publier</button>
-      </ng-container>
     </div>
   </div>
-</body>
+  <div class="col-sm-2">
+    <p>Note moyenne :</p>
+    <p *ngIf="noteMovie != -1">
+      <app-star-rating
+        [score]="noteMovie"
+        [forDisplay]="true"
+      ></app-star-rating>
+    </p>
+    <p *ngIf="noteMovie == -1">Aucune note n'est donnée pour ce film</p>
+  </div>
+  <div class="col-sm-4 column">      
+    <div style="color: white;">
+        Note de Allociné :
+      <app-star-rating
+      [score]="movie.alloGrade"
+      [forDisplay]="true"
+      ></app-star-rating>
+    </div>
+    <div style="color: white;">
+        Note de IMDb :
+      <app-ten-star-rating
+      [score]="movie.imdbGrade"
+      [forDisplay]="true"
+      ></app-ten-star-rating>
+    </div>
+  </div>
+  <div class="col-sm-6" *ngIf="currentUser">
+    <p *ngIf="noteUserFromBack !== -1">
+      Votre note pour ce film :
+      <app-star-rating
+        [score]="noteUserFromBack"
+        [forDisplay]="true"
+      ></app-star-rating>
+    </p>
+    <p *ngIf="noteUserFromBack === -1">
+      Notez ce film :
+      <app-star-rating
+        [maxScore]="5"
+        [forDisplay]="false"
+        (rateChanged)="onRateChange($event)"
+      ></app-star-rating>
+      <button class="btn btn-primary" (click)="giveMark()">
+        Noter le film
+      </button>
+    </p>
+  </div>
+</div>
+<ng-container class="row" *ngIf="isFavori">
+  <h2>{{ movie.titre }} est dans vos favoris</h2>
+  <a (click)="supprimerFavoris()" class="nav-link"
+    ><button class="btn btn-primary">supprimer des favoris</button></a
+  >
+</ng-container>
+<br>
+<div class="card-body" *ngIf="movie">
+  <nav class="navbar navbar-expand-lg">
+    <ul class="navbar-nav mr-auto">
+      <li routerLinkActive="nav-item active">
+        <a [routerLink]="['/movieForm', movie.id]" class="nav-link"
+          ><button class="btn btn-primary">Modifier le film</button></a
+        >
+      </li>
+      <li *ngIf="!isFavori" routerLinkActive="nav-item active">
+        <a (click)="ajouterFavoris()" class="nav-link"
+          ><button class="btn btn-primary">ajouter aux favoris</button></a
+        >
+      </li>
+    </ul>
+  </nav>
+  <div class="row">
+    <div *ngFor="let com of comments">
+      <div class="form-group">
+        <label>{{ com.user.pseudonyme }} le {{ com.date }} : </label>
+        <p>
+          {{ com.comment }}
+          <a (click)="suppComment(com.id)"
+            ><img
+              src="https://www.icone-png.com/png/19/18746.png"
+              *ngIf="
+                currentUser &&
+                currentUser.pseudonyme === com.user.pseudonyme
+              "
+              style="width: 15px; height: 15px"
+          /></a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <ng-container class="row" *ngIf="currentUser">
+    <p>Commentez :</p>
+    <textarea
+      [(ngModel)]="comment"
+      name="commentaire"
+      id="commentaire"
+      class="form-control"
+      placeholder="Tapez votre commentaire ici..."
+    >
+    </textarea>
+    <button class="btn btn-success" (click)="addComment()">Publier</button>
+  </ng-container>
+</div>

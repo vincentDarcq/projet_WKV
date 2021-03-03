@@ -19,10 +19,8 @@ const routes: Routes = [
   { path:'user', component: UserComponent},
   { path:'register', component: RegisterComponent},
   { path:'movie/:id', component: MovieComponent},
-  { path:'movieForm', component: MovieFormComponent},
   { path:'movieForm/:id', component: MovieFormComponent},
   { path:'serie/:id', component: SerieComponent},
-  { path:'serieForm', component: SerieFormComponent},
   { path:'serieForm/:id', component: SerieFormComponent},
   { path: '**', redirectTo: '' }
 ];

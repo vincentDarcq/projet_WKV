@@ -28,14 +28,12 @@ export class CheckboxesComponent implements OnInit{
     if(typeof this.itemInput !== "undefined" && this.itemInput === selected){
       this.itemFound = false
     }
-    this.items.splice(this.items.indexOf(selected), 1)
     this.itemSelected.push(selected)
     this.itemsSelected.next(this.itemSelected)
   }
 
   restored(restored: string){
     this.itemSelected.splice(this.itemSelected.indexOf(restored), 1)
-    this.items.push(restored)
     this.itemsSelected.next(this.itemSelected)
   }
 
