@@ -2,7 +2,11 @@ package allyouneed.metier;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,8 +30,8 @@ public class MovieService extends RestService<Movie> {
 		List<String> genres = new ArrayList<String>();
 		String genre;
 		for(Movie movie : movies) {
-			genre = movie.getGenre().toLowerCase();
-			if(movie.getGenre() != null) {				
+			genre = movie.getGenres().toLowerCase();
+			if(movie.getGenres() != null) {				
 				int indexEnd = genre.indexOf(", ");
 				if(indexEnd == -1) {
 					if(!genres.contains(genre)) {
@@ -122,10 +126,11 @@ public class MovieService extends RestService<Movie> {
 		return actors;
 	}
 	
-	public List<String> getTenActorsByOccurences(){
+	public List<String> getActorsByOccurences(){
 		List<Movie> movies = this.readAll();
 		List<String> actors = this.getActors();
-		List<String> tenActors = new ArrayList<String>();
+		List<String> sortActors = new ArrayList<String>();
+		Map<String, Integer> ActorsWithOccurs = new HashMap<String, Integer>();
 		for(String actor : actors) {
 			int cpt = 0;
 			for(Movie movie : movies) {
@@ -133,17 +138,20 @@ public class MovieService extends RestService<Movie> {
 					cpt++;
 				}
 			}
-			if(cpt >= 10 && tenActors.size() < 10) {
-				tenActors.add(actor);
-			}
+			ActorsWithOccurs.put(actor, cpt);
 		}
-		return tenActors;
-	}
+		ActorsWithOccurs = this.sortHashMapByValues(ActorsWithOccurs);
+		for(String actor : ActorsWithOccurs.keySet()) {
+			sortActors.add(actor);
+		}
+		return sortActors;
+	}	
 	
-	public List<String> getTenRealsByOccurences(){
+	public List<String> getRealsByOccurences(){
 		List<Movie> movies = this.readAll();
 		List<String> reals = this.getRealisateurs();
-		List<String> tenReals = new ArrayList<String>();
+		List<String> sortReals = new ArrayList<String>();
+		Map<String, Integer> RealsWithOccurs = new HashMap<String, Integer>();
 		for(String real : reals) {
 			int cpt = 0;
 			for(Movie movie : movies) {
@@ -151,10 +159,42 @@ public class MovieService extends RestService<Movie> {
 					cpt++;
 				}
 			}
-			if(cpt >= 5 && tenReals.size() < 10) {
-				tenReals.add(real);
+			RealsWithOccurs.put(real, cpt);
+		}
+		RealsWithOccurs = this.sortHashMapByValues(RealsWithOccurs);
+		for(String real : RealsWithOccurs.keySet()) {
+			sortReals.add(real);
+		}
+		return sortReals;
+	}
+	
+	public LinkedHashMap<String, Integer> sortHashMapByValues(
+			Map<String, Integer> passedMap) {
+		List<String> mapKeys = new ArrayList<>(passedMap.keySet());
+		List<Integer> mapValues = new ArrayList<>(passedMap.values());
+		Collections.sort(mapValues, Collections.reverseOrder());
+		Collections.sort(mapKeys);
+		
+		LinkedHashMap<String, Integer> sortedMap =
+				new LinkedHashMap<>();
+		
+		Iterator<Integer> valueIt = mapValues.iterator();
+		while (valueIt.hasNext()) {
+			Integer val = valueIt.next();
+			Iterator<String> keyIt = mapKeys.iterator();
+			
+			while (keyIt.hasNext()) {
+				String key = keyIt.next();
+				Integer comp1 = passedMap.get(key);
+				Integer comp2 = val;
+				
+				if (comp1 == comp2) {
+					keyIt.remove();
+					sortedMap.put(key, val);
+					break;
+				}
 			}
 		}
-		return tenReals;
+		return sortedMap;
 	}
 }

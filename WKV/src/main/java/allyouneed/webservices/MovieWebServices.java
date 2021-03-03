@@ -65,24 +65,14 @@ public class MovieWebServices {
 	public List<String> listGenres() {
 		return this.movieService.getGenres();
 	}
+
+	@GetMapping("/acteurs")
+	public List<String> listTenActors() {
+		return this.movieService.getActorsByOccurences();
+	}
 	
 	@GetMapping("/realisateurs")
-	public List<String> listRealisateurs() {
-		return this.movieService.getRealisateurs();
-	}
-	
-	@GetMapping("/acteurs")
-	public List<String> listActors() {
-		return this.movieService.getActors();
-	}
-
-	@GetMapping("/tenActeurs")
-	public List<String> listTenActors() {
-		return this.movieService.getTenActorsByOccurences();
-	}
-	
-	@GetMapping("/tenRealisateurs")
 	public List<String> listTenReals() {
-		return this.movieService.getTenRealsByOccurences();
+		return this.movieService.getRealsByOccurences();
 	}
 }

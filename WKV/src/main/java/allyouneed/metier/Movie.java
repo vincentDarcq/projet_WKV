@@ -44,6 +44,8 @@ public class Movie{
 	
 	private Float alloGrade;
 	
+	private Float imdbGrade;
+	
 	@Column
 	private int year;
 	
@@ -52,6 +54,8 @@ public class Movie{
 	
 	@Column
 	private String avertissement;
+	
+	private String time;
 	
 	public Movie() {
 		
@@ -66,6 +70,22 @@ public class Movie{
 		return "Movie [id=" + this.id + ", titre=" + this.titre + ", genres=" + this.genres + ", synopsis=" + this.synopsis + ", realisateur=" + this.realisateur+ ", year=" + this.year + "]";
 	}
 	
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public Float getImdbGrade() {
+		return imdbGrade;
+	}
+
+	public void setImdbGrade(Float imdbGrade) {
+		this.imdbGrade = imdbGrade;
+	}
+
 	public String getCov_horizontale() {
 		return cov_horizontale;
 	}
@@ -138,11 +158,11 @@ public class Movie{
 		this.titre = titre;
 	}
 
-	public String getGenre() {
+	public String getGenres() {
 		return genres;
 	}
 
-	public void setGenre(String genre) {
+	public void setGenres(String genre) {
 		this.genres = genre;
 	}
 
